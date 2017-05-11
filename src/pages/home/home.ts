@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+import { RecipeDetailsPage } from '../recipe-details/recipe-details';
 import { RecipesProvider } from '../../providers/recipes/recipes';
 
 @Component({
@@ -20,6 +21,12 @@ export class HomePage {
   ionViewDidLoad(){
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
+    });
+  }
+
+  viewRecipe(recipe){
+    this.navCtrl.push(RecipeDetailsPage, {
+      recipe: recipe
     });
   }
 
