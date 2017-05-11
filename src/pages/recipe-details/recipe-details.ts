@@ -16,9 +16,12 @@ import { RecipesProvider } from '../../providers/recipes/recipes';
 })
 export class RecipeDetailsPage {
   recipe;
+  
+  servings: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public recipeService: RecipesProvider) {
     this.recipe = this.navParams.get('recipe');
+    this.servings = this.recipe.servings;
   }
 
 }

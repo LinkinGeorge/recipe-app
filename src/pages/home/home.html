@@ -6,11 +6,11 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding *ngIf="recipes">
+<ion-content padding>
   <ion-searchbar [(ngModel)]="ingrQuery" placeholder="Suche nach Zutaten"></ion-searchbar>
   <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
   <ion-searchbar [(ngModel)]="titleQuery" placeholder="Suche nach Titel"></ion-searchbar>
-  <ion-list>
+  <ion-list *ngIf="recipes">
     <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery" (click)="viewRecipe(recipe)">
       <ion-card>
         <img *ngIf="!recipe.heroImage" src="assets/images/comingsoon.jpg" style="height:250px; object-fit:cover"/>
