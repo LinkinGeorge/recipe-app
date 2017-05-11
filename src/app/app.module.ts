@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -9,15 +10,18 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
 import { RecipesProvider } from '../providers/recipes/recipes';
+import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    RecipeDetailsPage
+    RecipeDetailsPage,
+    FilterRecipesPipe
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpModule,
     IonicModule.forRoot(MyApp)
   ],

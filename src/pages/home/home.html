@@ -7,9 +7,13 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list >
-    <ion-item *ngFor="let recipe of recipes" (click)="viewRecipe(recipe)">
+  <ion-searchbar [(ngModel)]="ingrQuery" placeholder="Suche nach Zutaten"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="titleQuery" placeholder="Suche nach Titel"></ion-searchbar>
+  <ion-list *ngIf="recipes">
+    <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery" (click)="viewRecipe(recipe)">
       {{ recipe.title }}
     </ion-item>
   </ion-list>
+  <button type="button" (click)="log()"></button>
 </ion-content>

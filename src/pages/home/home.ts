@@ -11,6 +11,10 @@ import { RecipesProvider } from '../../providers/recipes/recipes';
 export class HomePage {
   recipes;
 
+  ingrQuery = '';
+  ctgQuery = '';
+  titleQuery = '';
+
   constructor(
     public navCtrl: NavController,
     public recipeService: RecipesProvider
@@ -28,6 +32,10 @@ export class HomePage {
     this.navCtrl.push(RecipeDetailsPage, {
       recipe: recipe
     });
+  }
+
+  log() {
+    console.log(this.ingrQuery);
   }
 
 }
