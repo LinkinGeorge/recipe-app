@@ -11,13 +11,15 @@ import { HomePage } from '../pages/home/home';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
 import { RecipesProvider } from '../providers/recipes/recipes';
 import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
+import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     RecipeDetailsPage,
-    FilterRecipesPipe
+    FilterRecipesPipe,
+    ThumbnailPipe
   ],
   imports: [
     BrowserModule,
