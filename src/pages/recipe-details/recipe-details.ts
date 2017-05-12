@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
@@ -22,6 +22,7 @@ export class RecipeDetailsPage {
 
   constructor(
     public navCtrl: NavController, 
+    public toastCtrl: ToastController,
     public navParams: NavParams, 
     public recipeService: RecipesProvider, 
     public shoppingListService: ShoppingListProvider
@@ -31,8 +32,13 @@ export class RecipeDetailsPage {
   }
 
   addIngredient(ingr: string) {
-    
     this.shoppingListService.addItem(ingr);
+    const message = ingr + ' zur Liste hinzugefügt';
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 1500
+    });
+    toast.present();
   }
 
 }

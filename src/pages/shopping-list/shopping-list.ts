@@ -21,7 +21,6 @@ export class ShoppingListPage {
     this.shoppingListServcice.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
-        console.log(JSON.parse(list));
       }
     })
   }
@@ -34,7 +33,6 @@ export class ShoppingListPage {
     this.shoppingListServcice.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
-        console.log(JSON.parse(list));
       }
     })
   }

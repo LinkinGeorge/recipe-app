@@ -29,17 +29,13 @@
     </ion-row>
 </ion-grid>
 <h2 text-center margin-bottom>Zutaten</h2>
-<ion-card>
-  <ion-card-content>
-    <ion-list inset lines>
-      <ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
-        <span #ingredient>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
-        <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
-        <ion-icon name="cart" (click)="addIngredient(ingredient.textContent)"></ion-icon>
-      </ion-item>
-    </ion-list>
-  </ion-card-content>
-</ion-card>
+<ion-list>
+    <button ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
+      <ion-icon name="cart" item-right (click)="addIngredient(ingredient.textContent)"></ion-icon>
+      <span #ingredient>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
+      <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
+    </button>
+</ion-list>
 <h2 text-center margin-bottom>Beschreibung</h2>
 <ion-card *ngIf="recipe.description">
   <ion-card-content>
