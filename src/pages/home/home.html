@@ -6,15 +6,15 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-searchbar [(ngModel)]="ingrQuery" placeholder="Suche nach Zutaten"></ion-searchbar>
   <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
   <ion-searchbar [(ngModel)]="titleQuery" placeholder="Suche nach Titel"></ion-searchbar>
-  <ion-list *ngIf="recipes">
+  <ion-list *ngIf="recipes" no-lines>
     <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery" (click)="viewRecipe(recipe)">
       <ion-card>
         <img *ngIf="!recipe.heroImage" src="assets/images/comingsoon.jpg" style="height:250px; object-fit:cover"/>
-        <img *ngIf="recipe.heroImage" src="{{ recipe.heroImage | thumbnail:600:0 }}" style="height:250px; object-fit:cover"/>
+        <img *ngIf="recipe.heroImage" src="{{ recipe.heroImage | thumbnail:600:0 }}" style="height:200px; object-fit:cover"/>
         <ion-card-content>
           <ion-card-title text-wrap>
             {{ recipe.title }}
@@ -29,5 +29,4 @@
       </ion-card>
     </ion-item>
   </ion-list>
-  <button type="button" (click)="log()"></button>
 </ion-content>

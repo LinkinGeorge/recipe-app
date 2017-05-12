@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
+
 /**
  * Generated class for the ShoppingListPage page.
  *
@@ -13,12 +15,33 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'shopping-list.html',
 })
 export class ShoppingListPage {
+  public shoppingList = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public shoppingListServcice: ShoppingListProvider) {
+    this.shoppingListServcice.getList().then((list) => {
+      if(list) {
+        this.shoppingList = JSON.parse(list);
+        console.log(JSON.parse(list));
+      }
+    })
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ShoppingListPage');
+
+  }
+
+  ionViewDidEnter() {
+    this.shoppingListServcice.getList().then((list) => {
+      if(list) {
+        this.shoppingList = JSON.parse(list);
+        console.log(JSON.parse(list));
+      }
+    })
+  }
+
+  removeItem(item) {
+    this.shoppingList.splice(this.shoppingList.indexOf(item), 1);
+    this.shoppingListServcice.removeItem(item);
   }
 
 }

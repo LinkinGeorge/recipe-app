@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
+import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
 
 /**
  * Generated class for the RecipeDetailsPage page.
@@ -19,9 +20,19 @@ export class RecipeDetailsPage {
   
   servings: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public recipeService: RecipesProvider) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public recipeService: RecipesProvider, 
+    public shoppingListService: ShoppingListProvider
+  ) {
     this.recipe = this.navParams.get('recipe');
     this.servings = this.recipe.servings;
+  }
+
+  addIngredient(ingr: string) {
+    
+    this.shoppingListService.addItem(ingr);
   }
 
 }

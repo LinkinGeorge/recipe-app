@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
@@ -18,6 +19,7 @@ import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
 import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
 import { DifficultyStringPipe } from '../pipes/difficulty-string/difficulty-string';
 import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
+import { ShoppingListProvider } from '../providers/shopping-list/shopping-list';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -42,6 +44,7 @@ const cloudSettings: CloudSettings = {
     HttpModule,
     MarkdownModule.forRoot(),
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
@@ -55,7 +58,8 @@ const cloudSettings: CloudSettings = {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    RecipesProvider
+    RecipesProvider,
+    ShoppingListProvider
   ]
 })
 export class AppModule {}

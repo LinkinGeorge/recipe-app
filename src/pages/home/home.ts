@@ -34,8 +34,4 @@ export class HomePage {
     });
   }
 
-  log() {
-    console.log(this.ingrQuery);
-  }
-
 }
