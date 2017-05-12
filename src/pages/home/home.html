@@ -29,6 +29,19 @@
     <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
     <ion-searchbar [(ngModel)]="titleQuery" placeholder="Suche nach Titel"></ion-searchbar>
   </div>
+  <div class="spin" *ngIf="!recipes">
+    <ion-spinner text-center></ion-spinner>
+  </div>
+  <ion-list inset no-lines *ngIf="recipes">
+    <ion-item>
+      <ion-label>Vegetarisch</ion-label>
+      <ion-toggle checked="false" (ionChange)="toggleCategory('Vegetarisch')"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Vegan</ion-label>
+      <ion-toggle checked="false" (ionChange)="toggleCategory('Vegan')"></ion-toggle>
+    </ion-item>
+  </ion-list>
   <ion-list *ngIf="recipes" no-lines>
     <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery | sortRecipes:sortType:sortDesc" (click)="viewRecipe(recipe)">
       <ion-card>

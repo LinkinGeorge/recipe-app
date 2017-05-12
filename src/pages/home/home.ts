@@ -40,6 +40,12 @@ export class HomePage {
     });
   }
 
+  viewRecipe(recipe){
+    this.navCtrl.push(RecipeDetailsPage, {
+      recipe: recipe
+    });
+  }
+
   toggleSearch() {
     this.searching = !this.searching;
   }
@@ -84,10 +90,27 @@ export class HomePage {
     actionSheet.present();
   }
 
-  viewRecipe(recipe){
-    this.navCtrl.push(RecipeDetailsPage, {
-      recipe: recipe
-    });
+  toggleCategory(ctg: string) {
+    if (!this.ctgQuery.includes(ctg)) {
+      // the category is not present in the query
+      if (this.ctgQuery === '') {
+        this.ctgQuery = ctg;
+      } else {
+        this.ctgQuery = this.ctgQuery.concat(', ' + ctg);
+      }
+    } else {
+      // category already present in query
+      if (this.ctgQuery.includes(',')) {
+        // there are multiple categories in query
+        if (this.ctgQuery.endsWith(ctg)) {
+          this.ctgQuery = this.ctgQuery.replace((', ' + ctg), '');
+        } else {
+          this.ctgQuery = this.ctgQuery.replace((ctg + ', '), '');
+        }
+      } else {
+        this.ctgQuery = '';
+      }
+    }
   }
 
 }
