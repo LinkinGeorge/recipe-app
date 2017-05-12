@@ -1,8 +1,19 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>
-      Maries und Georgs Rezeptbuch
+      Rezeptbuch
     </ion-title>
+    <ion-buttons end>
+      <button *ngIf="!sortDesc" ion-button icon-only (click)="sortDesc = true">
+        <ion-icon name="arrow-up"></ion-icon>
+      </button>
+      <button *ngIf="sortDesc" ion-button icon-only (click)="sortDesc = false">
+        <ion-icon name="arrow-down"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="showSortOptions()">
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -11,7 +22,7 @@
   <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
   <ion-searchbar [(ngModel)]="titleQuery" placeholder="Suche nach Titel"></ion-searchbar>
   <ion-list *ngIf="recipes" no-lines>
-    <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery" (click)="viewRecipe(recipe)">
+    <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery | sortRecipes:sortType:sortDesc" (click)="viewRecipe(recipe)">
       <ion-card>
         <img *ngIf="!recipe.heroImage" src="assets/images/comingsoon.jpg" style="height:250px; object-fit:cover"/>
         <img *ngIf="recipe.heroImage" src="{{ recipe.heroImage | thumbnail:600:0 }}" style="height:200px; object-fit:cover"/>

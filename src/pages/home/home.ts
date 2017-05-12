@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ActionSheetController } from 'ionic-angular';
 
 import { RecipeDetailsPage } from '../recipe-details/recipe-details';
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -15,8 +15,12 @@ export class HomePage {
   ctgQuery = '';
   titleQuery = '';
 
+  sortType = 'date';
+  sortDesc = true;
+
   constructor(
     public navCtrl: NavController,
+    public actionSheetCtrl: ActionSheetController,
     public recipeService: RecipesProvider
   ) {
 
@@ -26,6 +30,46 @@ export class HomePage {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
     });
+  }
+
+  showSortOptions() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Sortieren nach',
+      buttons: [
+        {
+          text: 'Datum',
+          handler: () => {
+            this.sortType = 'date';
+          }
+        },
+        {
+          text: 'Wie oft gekocht?',
+          handler: () => {
+            this.sortType = 'cook-counter';
+          }
+        },
+        {
+          text: 'Dauer',
+          handler: () => {
+            this.sortType = 'duration';
+          }
+        },
+        {
+          text: 'Schwierigkeit',
+          handler: () => {
+            this.sortType = 'difficulty';
+          }
+        },
+        {
+          text: 'Anzahl der Zutaten',
+          handler: () => {
+            this.sortType = 'ingredient-count';
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
   }
 
   viewRecipe(recipe){

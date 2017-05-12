@@ -18,6 +18,7 @@ import { ShoppingListProvider } from '../../providers/shopping-list/shopping-lis
 export class RecipeDetailsPage {
   recipe;
   
+  cookCount: number;
   servings: number;
 
   constructor(
@@ -28,6 +29,7 @@ export class RecipeDetailsPage {
     public shoppingListService: ShoppingListProvider
   ) {
     this.recipe = this.navParams.get('recipe');
+    this.cookCount = this.recipe.cookCount;
     this.servings = this.recipe.servings;
   }
 
@@ -39,6 +41,12 @@ export class RecipeDetailsPage {
       duration: 1500
     });
     toast.present();
+  }
+
+  increaseCookCount() {
+    this.cookCount++;
+    this.recipe.cookCount = this.cookCount;
+    this.recipeService.updateRecipe(this.recipe).subscribe();
   }
 
 }

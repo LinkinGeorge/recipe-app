@@ -1,11 +1,18 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>{{ recipe.title }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="increaseCookCount()">
+        <ion-icon name="timer"></ion-icon>
+        <ion-badge>{{ cookCount }}</ion-badge>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding *ngIf="recipe">
+  <h1 text-center margin text-wrap>{{ recipe.title }}</h1>
   <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{recipe.heroImage}}" alt="{{recipe.title}}">
   <ion-grid>
     <ion-row>

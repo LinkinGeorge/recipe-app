@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
@@ -21,6 +21,13 @@ export class RecipesProvider {
 
   getRecipe(recipeId) {
     return this.http.get(this.baseUrl + 'api/recipe/' + recipeId)
+      .map(res => res.json());
+  }
+
+  updateRecipe(recipe) {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.put(this.baseUrl + 'api/recipe/' + recipe._id, JSON.stringify(recipe), {headers: headers})
       .map(res => res.json());
   }
 
