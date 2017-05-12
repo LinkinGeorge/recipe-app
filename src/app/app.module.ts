@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
 import { MarkdownModule } from 'angular2-markdown';
 
 import { MyApp } from './app.component';
@@ -15,6 +17,12 @@ import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
 import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
 import { DifficultyStringPipe } from '../pipes/difficulty-string/difficulty-string';
 import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': '811a5500'
+  }
+}
 
 @NgModule({
   declarations: [
@@ -31,7 +39,8 @@ import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
     FormsModule,
     HttpModule,
     MarkdownModule.forRoot(),
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
