@@ -14,6 +14,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
+import { ConverterPage } from '../pages/converter/converter';
 import { RecipesProvider } from '../providers/recipes/recipes';
 import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
 import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
@@ -34,6 +35,7 @@ const cloudSettings: CloudSettings = {
     HomePage,
     ShoppingListPage,
     RecipeDetailsPage,
+    ConverterPage,
     FilterRecipesPipe,
     ThumbnailPipe,
     DifficultyStringPipe,
@@ -54,7 +56,8 @@ const cloudSettings: CloudSettings = {
     MyApp,
     HomePage,
     ShoppingListPage,
-    RecipeDetailsPage
+    RecipeDetailsPage,
+    ConverterPage
   ],
   providers: [
     StatusBar,

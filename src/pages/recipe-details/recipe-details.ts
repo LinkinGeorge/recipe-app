@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
 
+import { ConverterPage } from '../converter/converter';
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
 
-/**
- * Generated class for the RecipeDetailsPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-recipe-details',
@@ -24,6 +19,7 @@ export class RecipeDetailsPage {
   constructor(
     public navCtrl: NavController, 
     public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
     public navParams: NavParams, 
     public recipeService: RecipesProvider, 
     public shoppingListService: ShoppingListProvider
@@ -47,6 +43,11 @@ export class RecipeDetailsPage {
     this.cookCount++;
     this.recipe.cookCount = this.cookCount;
     this.recipeService.updateRecipe(this.recipe).subscribe();
+  }
+
+  showConverter() {
+    let converterModal = this.modalCtrl.create(ConverterPage);
+    converterModal.present();
   }
 
 }
