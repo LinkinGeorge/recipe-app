@@ -11,6 +11,7 @@ import { RecipesProvider } from '../../providers/recipes/recipes';
 export class HomePage {
   recipes;
 
+  searching = false;
   ingrQuery = '';
   ctgQuery = '';
   titleQuery = '';
@@ -30,6 +31,10 @@ export class HomePage {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
     });
+  }
+
+  toggleSearch() {
+    this.searching = !this.searching;
   }
 
   showSortOptions() {
