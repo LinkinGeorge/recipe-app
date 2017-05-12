@@ -33,6 +33,13 @@ export class HomePage {
     });
   }
 
+  doRefresh(refresher) {
+    this.recipeService.getAllRecipes().subscribe(recipes => {
+      this.recipes = recipes;
+      refresher.complete();
+    });
+  }
+
   toggleSearch() {
     this.searching = !this.searching;
   }

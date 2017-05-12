@@ -4,16 +4,16 @@
       Rezeptbuch
     </ion-title>
     <ion-buttons end>
-      <button *ngIf="!sortDesc" ion-button icon-only (click)="sortDesc = true">
+      <button class="nav-button" *ngIf="!sortDesc" ion-button icon-only (click)="sortDesc = true">
         <ion-icon name="arrow-up"></ion-icon>
       </button>
-      <button *ngIf="sortDesc" ion-button icon-only (click)="sortDesc = false">
+      <button class="nav-button" *ngIf="sortDesc" ion-button icon-only (click)="sortDesc = false">
         <ion-icon name="arrow-down"></ion-icon>
       </button>
-      <button ion-button icon-only (click)="showSortOptions()">
+      <button class="nav-button" ion-button icon-only (click)="showSortOptions()">
         <ion-icon name="funnel"></ion-icon>
       </button>
-      <button ion-button icon-only (click)="toggleSearch()">
+      <button class="nav-button" ion-button icon-only (click)="toggleSearch()">
         <ion-icon name="search"></ion-icon>
       </button>
     </ion-buttons>
@@ -21,6 +21,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="searching">
     <ion-searchbar [(ngModel)]="ingrQuery" placeholder="Suche nach Zutaten"></ion-searchbar>
     <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
@@ -29,7 +32,7 @@
   <ion-list *ngIf="recipes" no-lines>
     <ion-item *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery | sortRecipes:sortType:sortDesc" (click)="viewRecipe(recipe)">
       <ion-card>
-        <img *ngIf="!recipe.heroImage" src="assets/images/comingsoon.jpg" style="height:250px; object-fit:cover"/>
+        <img *ngIf="!recipe.heroImage" src="assets/images/comingsoon.jpg" style="height:200px; object-fit:cover"/>
         <img *ngIf="recipe.heroImage" src="{{ recipe.heroImage | thumbnail:600:0 }}" style="height:200px; object-fit:cover"/>
         <ion-card-content>
           <ion-card-title text-wrap>
