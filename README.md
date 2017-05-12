@@ -1,26 +1,12 @@
-This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
+## Georgs recipe app
 
-## How to use this template
+This is a recipe app developed with the Ionic Framework using Angular 4. The recipe data comes from my [recipe webapp](http://georgs-recipes.herokuapp.com/recipes) which uses a MEAN Stack and provides a basic API I can work with.
 
-*This template does not work on its own*. The shared files for each starter are found in the [ionic2-app-base repo](https://github.com/driftyco/ionic2-app-base).
+To see it in the browser you would first need to have ionic and cordova globally installed like this:
+`npm install -g ionic cordova`
 
-To use this template, either create a new ionic project using the ionic node.js utility, or copy the files from this repository into the [Starter App Base](https://github.com/driftyco/ionic2-app-base).
+After that, you can simply run `ionic serve` or `ionic serve -l` to kind of emulate a specific device.
 
-### With the Ionic CLI:
+However, to compile it to an APK, you would need to create your own app over at [Ionic](http://ionicframework.com/) and put this code into it. But there's a lot more involved with this, so you better follow their tutorial on how to do Native Builds in the docs.
 
-Take the name after `ionic2-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
-
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myBlank blank
-```
-
-Then, to run it, cd into `myBlank` and run:
-
-```bash
-$ ionic platform add ios
-$ ionic run ios
-```
-
-Substitute ios for android if not on a Mac.
-
+You can also always ask me for the APK if you really want to have the app on your phone! :)
