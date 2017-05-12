@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>{{ recipe.title }}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -31,7 +31,7 @@
 <h2 text-center margin-bottom>Zutaten</h2>
 <ion-list>
     <button ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
-      <ion-icon name="cart" item-right (click)="addIngredient(ingredient.textContent)"></ion-icon>
+      <ion-icon name="cart" item-right (click)="addIngredient(ingredient.textContent)" color="dark"></ion-icon>
       <span #ingredient>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
       <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
     </button>
