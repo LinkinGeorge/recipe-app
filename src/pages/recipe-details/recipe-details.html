@@ -13,10 +13,6 @@
 
 <ion-content padding *ngIf="recipe">
   <h1 text-center margin text-wrap>{{ recipe.title }}</h1>
-  <button ion-button (click)="showConverter()">
-    <ion-label>Umrechner</ion-label>
-    <ion-icon name="refresh" color="dark"></ion-icon>
-  </button>
   <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{recipe.heroImage}}" alt="{{recipe.title}}">
   <ion-grid>
     <ion-row>
@@ -47,6 +43,12 @@
       <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
     </button>
 </ion-list>
+<div text-center>
+  <button ion-button (click)="showConverter()">
+    <ion-label>Umrechner</ion-label>
+    <ion-icon name="refresh"></ion-icon>
+  </button>
+</div>
 <h2 text-center margin-bottom>Beschreibung</h2>
 <ion-card *ngIf="recipe.description">
   <ion-card-content>

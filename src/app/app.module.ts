@@ -22,6 +22,7 @@ import { DifficultyStringPipe } from '../pipes/difficulty-string/difficulty-stri
 import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
 import { ShoppingListProvider } from '../providers/shopping-list/shopping-list';
 import { SortRecipesPipe } from '../pipes/sort-recipes/sort-recipes';
+import { RoundPipe } from '../pipes/round/round';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -40,7 +41,8 @@ const cloudSettings: CloudSettings = {
     ThumbnailPipe,
     DifficultyStringPipe,
     CalcServingsPipe,
-    SortRecipesPipe
+    SortRecipesPipe,
+    RoundPipe
   ],
   imports: [
     BrowserModule,
