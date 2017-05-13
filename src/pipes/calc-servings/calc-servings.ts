@@ -84,7 +84,7 @@ export class CalcServingsPipe implements PipeTransform {
 
     function convertMetrics(ingr: string): string {
       // check if the unit is metric
-      const validMetric = /\d+\s?(g|kg|ml|l)/i;
+      const validMetric = /\d+\s?(g|kg|ml|l)\s+/i;
 
       if (ingr.match(validMetric) == null) {
         return ingr;
