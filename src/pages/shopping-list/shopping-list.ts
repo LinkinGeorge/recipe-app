@@ -16,6 +16,7 @@ import { ShoppingListProvider } from '../../providers/shopping-list/shopping-lis
 })
 export class ShoppingListPage {
   public shoppingList = [];
+  addingItem = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public shoppingListServcice: ShoppingListProvider) {
     this.shoppingListServcice.getList().then((list) => {
@@ -35,6 +36,13 @@ export class ShoppingListPage {
         this.shoppingList = JSON.parse(list);
       }
     })
+  }
+
+  addItem(item) {
+    if (item !== '') {
+      this.shoppingList.push(item);
+      this.shoppingListServcice.addItem(item);
+    }
   }
 
   removeItem(item) {

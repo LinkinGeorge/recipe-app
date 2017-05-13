@@ -1,10 +1,17 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>Einkaufsliste</ion-title>
+    <ion-buttons end *ngIf="addingItem">
+      <button ion-button (click)="addItem(newItem.value); newItem.value=''; addingItem=false">Hinzufügen</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-item style="border-bottom: 1px #e2e2e2 solid">
+    <ion-input #newItem type="text" placeholder="Hinzufügen" (keyup.enter)="addItem(newItem.value); newItem.value = ''"
+    (input)="addingItem = true"></ion-input>
+  </ion-item>
   <ion-list no-lines *ngIf="shoppingList">
     <ion-item *ngFor="let item of shoppingList">
       <ion-label>{{ item }}</ion-label>
