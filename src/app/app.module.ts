@@ -31,9 +31,11 @@ import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
 import { RoundPipe } from '../pipes/round/round';
 import { WeekdayPipe } from '../pipes/weekday/weekday';
 
+import { Environment } from '../environment';
+
 const cloudSettings: CloudSettings = {
   'core': {
-    'app_id': '811a5500'
+    'app_id': Environment.appId
   }
 }
 

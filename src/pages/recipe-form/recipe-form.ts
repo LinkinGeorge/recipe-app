@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
 
+import { Environment } from '../../environment';
+
 declare const filestack: {
   init(apiKey: string): {
     pick({ accept, maxFiles }: { accept: Array<string>, maxFiles: number, transformations: { crop: { circle: boolean } } }): Promise<{ filesUploaded: { handle: string, filename: string }[] }> 
@@ -142,7 +144,7 @@ export class RecipeFormPage {
   }
   
   async showHeroPicker() {
-    const client = filestack.init('AwD48ceQaWtGBs9plMog7z');
+    const client = filestack.init(Environment.filestackKey);
     const result = await client.pick({
       accept: ['image/*'],
       maxFiles: 1,
@@ -158,7 +160,7 @@ export class RecipeFormPage {
   }
   
   async showDescPicker() {
-    const client = filestack.init('AwD48ceQaWtGBs9plMog7z');
+    const client = filestack.init(Environment.filestackKey);
     const result = await client.pick({
       accept: ['image/*'],
       maxFiles: 1,
