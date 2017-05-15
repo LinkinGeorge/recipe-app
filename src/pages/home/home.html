@@ -24,6 +24,11 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <ion-fab right bottom>
+    <button ion-fab icon-only color="primary" (click)="newRecipe()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
   <div *ngIf="searching">
     <ion-searchbar [(ngModel)]="ingrQuery" placeholder="Suche nach Zutaten"></ion-searchbar>
     <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
