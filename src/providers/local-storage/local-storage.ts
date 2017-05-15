@@ -36,11 +36,11 @@ export class LocalStorageProvider {
     return this.storage.get('plan');
   }
 
-  addRecipe(recipe, date) {
+  addRecipe(recipe, date, custom) {
     if (this.datePresent(date)) {
       this.plan[this.getByDate(date)].recipe = recipe;
     } else {
-      this.plan.push({recipe: recipe, date: date});
+      this.plan.push({recipe: recipe, date: date, custom: custom});
     }
     this.storage.set('plan', JSON.stringify(this.plan));
   }
@@ -50,8 +50,8 @@ export class LocalStorageProvider {
     this.storage.set('plan', JSON.stringify(this.plan));
   }
 
-  removeRecipe(id: string) {
-    this.plan.splice(this.getById(id), 1);
+  removeRecipe(date: Date) {
+    this.plan.splice(this.getByDate(date), 1);
     this.storage.set('plan', JSON.stringify(this.plan));
   }
 

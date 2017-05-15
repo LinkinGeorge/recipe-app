@@ -9,6 +9,7 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
 })
 export class WeekplanPage {
   public plan = [];
+  editing = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public localStorage: LocalStorageProvider) {
     this.localStorage.getPlan().then((plan) => {
@@ -39,6 +40,29 @@ export class WeekplanPage {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     })
   }
+  
+  exitEditMode() {
+    this.editing = false;
+  }
+
+  editMode() {
+    this.editing = true;
+  }
+
+  addEntry(title, dayIndex) {
+    if (title !== '') {
+      const today = new Date(Date.now());
+      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = {title: title};
+      this.localStorage.addRecipe(null, this.addDays(today, dayIndex), title);
+    }
+  }
+
+  deleteEntry(dayIndex) {
+    const date = this.addDays(new Date(Date.now()), dayIndex);
+    this.plan[this.getByDate(date)].recipe = null;
+    this.plan[this.getByDate(date)].custom = '';
+    this.localStorage.removeRecipe(date);
+  }
 
   private addDays(date: Date, days: number): Date {
     const newDate = new Date();
@@ -50,6 +74,18 @@ export class WeekplanPage {
     return this.plan.findIndex((day) => {
       return new Date(day.date).getDay() === new Date(date).getDay();
     }) !== -1;
+  }
+  
+  private getById(id: string):number {
+    return this.plan.findIndex((day) => {
+      return day.recipe._id === id;
+    })
+  }
+  
+  private getByDate(date: Date):number {
+    return this.plan.findIndex((day) => {
+     return new Date(day.date).getDate() === new Date(date).getDate();
+    });
   }
 
 }

@@ -1,15 +1,32 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>Wochenplan</ion-title>
+    <ion-buttons end>
+      <button *ngIf="!editing" ion-button icon-only (click)="editMode()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+      <button *ngIf="editing" ion-button icon-only (click)="exitEditMode()">
+        <ion-icon name="checkbox-outline"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let day of plan">
-      <ion-label>{{ day.date | weekday }}</ion-label>
-      <ion-label *ngIf="day.recipe">{{ day.recipe.title }}</ion-label>
+    <ion-item *ngFor="let day of plan; let i = index">
+      <h5 *ngIf="!editing" class="date-label" style="display: inline-block">{{ day.date | weekday }}</h5>
+      <h5 *ngIf="editing" class="date-label" style="display: block">{{ day.date | weekday }}</h5>
+      <div *ngIf="editing" text-right style="margin-top: -12px">
+        <button *ngIf="day.recipe" ion-button round icon-only color="danger" style="height:25px; width:25px;" (click)="deleteEntry(day.recipe)">
+          <ion-icon name="delete"></ion-icon>
+        </button>
+      </div>
+      <ion-item *ngIf="editing && !day.recipe">
+        <ion-input #newentry type="text" placeholder="Titel" [(ngModel)]="day.custom" (keyup.enter)="newentry.value=''"></ion-input>
+      </ion-item>
+      <p class="recipe-title" *ngIf="day.recipe" text-wrap>{{ day.recipe.title }}</p>
     </ion-item>
   </ion-list>
 </ion-content>
