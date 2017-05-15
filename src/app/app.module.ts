@@ -15,15 +15,19 @@ import { HomePage } from '../pages/home/home';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { ShoppingListMenuPage } from '../pages/shopping-list-menu/shopping-list-menu';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
+import { WeekplanPage } from '../pages/weekplan/weekplan';
 import { ConverterPage } from '../pages/converter/converter';
+
 import { RecipesProvider } from '../providers/recipes/recipes';
+import { LocalStorageProvider } from '../providers/local-storage/local-storage';
+
 import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
 import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
 import { DifficultyStringPipe } from '../pipes/difficulty-string/difficulty-string';
 import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
-import { ShoppingListProvider } from '../providers/shopping-list/shopping-list';
 import { SortRecipesPipe } from '../pipes/sort-recipes/sort-recipes';
 import { RoundPipe } from '../pipes/round/round';
+import { WeekdayPipe } from '../pipes/weekday/weekday';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -38,13 +42,15 @@ const cloudSettings: CloudSettings = {
     ShoppingListPage,
     ShoppingListMenuPage,
     RecipeDetailsPage,
+    WeekplanPage,
     ConverterPage,
     FilterRecipesPipe,
     ThumbnailPipe,
     DifficultyStringPipe,
     CalcServingsPipe,
     SortRecipesPipe,
-    RoundPipe
+    RoundPipe,
+    WeekdayPipe
   ],
   imports: [
     BrowserModule,
@@ -62,6 +68,7 @@ const cloudSettings: CloudSettings = {
     ShoppingListPage,
     ShoppingListMenuPage,
     RecipeDetailsPage,
+    WeekplanPage,
     ConverterPage
   ],
   providers: [
@@ -69,7 +76,7 @@ const cloudSettings: CloudSettings = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RecipesProvider,
-    ShoppingListProvider
+    LocalStorageProvider
   ]
 })
 export class AppModule {}

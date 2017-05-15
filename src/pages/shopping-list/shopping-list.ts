@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { ShoppingListMenuPage } from '../shopping-list-menu/shopping-list-menu';
-import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
+import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 @IonicPage()
 @Component({
@@ -17,9 +17,9 @@ export class ShoppingListPage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public popoverCtrl: PopoverController,
-    public shoppingListServcice: ShoppingListProvider
+    public localStorage: LocalStorageProvider
   ) {
-    this.shoppingListServcice.getList().then((list) => {
+    this.localStorage.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
       }
@@ -27,7 +27,7 @@ export class ShoppingListPage {
   }
 
   ionViewDidEnter() {
-    this.shoppingListServcice.getList().then((list) => {
+    this.localStorage.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
       }
@@ -44,13 +44,13 @@ export class ShoppingListPage {
   addItem(item) {
     if (item !== '') {
       this.shoppingList.push(item);
-      this.shoppingListServcice.addItem(item);
+      this.localStorage.addItem(item);
     }
   }
 
   removeItem(item) {
     this.shoppingList.splice(this.shoppingList.indexOf(item), 1);
-    this.shoppingListServcice.removeItem(item);
+    this.localStorage.removeItem(item);
   }
 
 }
