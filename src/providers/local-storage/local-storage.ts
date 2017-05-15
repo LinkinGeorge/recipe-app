@@ -6,14 +6,7 @@ export class LocalStorageProvider {
   public plan = [];
   public list = [];
 
-  constructor(public storage: Storage) {
-    this.plan.forEach(recipe => {
-      if (recipe.date.getTime() < Date.now()) {
-        this.plan.splice(this.plan.indexOf(recipe), 1);
-      }
-    });
-    this.storage.set('plan', JSON.stringify(this.plan));
-  }
+  constructor(public storage: Storage) { }
 
   // SHOPPING LIST
 
@@ -34,6 +27,12 @@ export class LocalStorageProvider {
   // WEEKPLAN
 
   getPlan() {
+    this.plan.forEach(recipe => {
+      if (recipe.date.getTime() < Date.now()) {
+        this.plan.splice(this.plan.indexOf(recipe), 1);
+      }
+    });
+    this.storage.set('plan', JSON.stringify(this.plan));
     return this.storage.get('plan');
   }
 
@@ -64,13 +63,13 @@ export class LocalStorageProvider {
 
   private getByDate(date: Date):number {
     return this.plan.findIndex((day) => {
-      return day.date === date;
+     return new Date(day.date).getDate() === new Date(date).getDate();
     });
   }
 
   private datePresent(date: Date):boolean {
     return this.plan.findIndex((day) => {
-      return day.date === date;
+      return new Date(day.date).getDate() === new Date(date).getDate();
     }) !== -1;
   }
 

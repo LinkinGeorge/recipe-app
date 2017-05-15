@@ -23,7 +23,6 @@ export class WeekplanPage {
     this.localStorage.getPlan().then((plan) => {
       if (plan) {
         this.plan = JSON.parse(plan);
-        console.log(this.plan);
       }
       this.fillUpPlan();
     });
