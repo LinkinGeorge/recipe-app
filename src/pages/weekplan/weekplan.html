@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Wochenplan</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let day of plan">
+      <ion-label>{{ day.date | weekday }}</ion-label>
+      <ion-label *ngIf="day.recipe">{{ day.recipe.title }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

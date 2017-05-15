@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 
-import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
+import { ShoppingListMenuPage } from '../shopping-list-menu/shopping-list-menu';
+import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
-/**
- * Generated class for the ShoppingListPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-shopping-list',
@@ -18,36 +13,44 @@ export class ShoppingListPage {
   public shoppingList = [];
   addingItem = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shoppingListServcice: ShoppingListProvider) {
-    this.shoppingListServcice.getList().then((list) => {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public popoverCtrl: PopoverController,
+    public localStorage: LocalStorageProvider
+  ) {
+    this.localStorage.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
       }
     })
-  }
-
-  ionViewDidLoad() {
-
   }
 
   ionViewDidEnter() {
-    this.shoppingListServcice.getList().then((list) => {
+    this.localStorage.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
       }
     })
+  }
+
+  showMenu(event) {
+    let popover = this.popoverCtrl.create(ShoppingListMenuPage);
+    popover.present({
+      ev: event
+    });
   }
 
   addItem(item) {
     if (item !== '') {
       this.shoppingList.push(item);
-      this.shoppingListServcice.addItem(item);
+      this.localStorage.addItem(item);
     }
   }
 
   removeItem(item) {
     this.shoppingList.splice(this.shoppingList.indexOf(item), 1);
-    this.shoppingListServcice.removeItem(item);
+    this.localStorage.removeItem(item);
   }
 
 }

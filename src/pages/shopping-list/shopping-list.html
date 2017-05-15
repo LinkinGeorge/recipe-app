@@ -1,8 +1,11 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>Einkaufsliste</ion-title>
-    <ion-buttons end *ngIf="addingItem">
-      <button ion-button (click)="addItem(newItem.value); newItem.value=''; addingItem=false">Hinzufügen</button>
+    <ion-buttons end>
+      <button ion-button *ngIf="addingItem" (click)="addItem(newItem.value); newItem.value=''; addingItem=false">Hinzufügen</button>
+      <button ion-button icon-only (click)="showMenu($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

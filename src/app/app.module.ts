@@ -14,12 +14,14 @@ import { DndModule } from 'ng2-dnd';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
+import { ShoppingListMenuPage } from '../pages/shopping-list-menu/shopping-list-menu';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
+import { WeekplanPage } from '../pages/weekplan/weekplan';
 import { RecipeFormPage } from '../pages/recipe-form/recipe-form';
 import { ConverterPage } from '../pages/converter/converter';
 
 import { RecipesProvider } from '../providers/recipes/recipes';
-import { ShoppingListProvider } from '../providers/shopping-list/shopping-list';
+import { LocalStorageProvider } from '../providers/local-storage/local-storage';
 
 import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
 import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
@@ -27,6 +29,7 @@ import { DifficultyStringPipe } from '../pipes/difficulty-string/difficulty-stri
 import { SortRecipesPipe } from '../pipes/sort-recipes/sort-recipes';
 import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
 import { RoundPipe } from '../pipes/round/round';
+import { WeekdayPipe } from '../pipes/weekday/weekday';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -39,15 +42,18 @@ const cloudSettings: CloudSettings = {
     MyApp,
     HomePage,
     ShoppingListPage,
+    ShoppingListMenuPage,
     RecipeDetailsPage,
     RecipeFormPage,
+    WeekplanPage,
     ConverterPage,
     FilterRecipesPipe,
     ThumbnailPipe,
     DifficultyStringPipe,
     CalcServingsPipe,
     SortRecipesPipe,
-    RoundPipe
+    RoundPipe,
+    WeekdayPipe
   ],
   imports: [
     BrowserModule,
@@ -64,8 +70,10 @@ const cloudSettings: CloudSettings = {
     MyApp,
     HomePage,
     ShoppingListPage,
+    ShoppingListMenuPage,
     RecipeDetailsPage,
     RecipeFormPage,
+    WeekplanPage,
     ConverterPage
   ],
   providers: [
@@ -73,7 +81,7 @@ const cloudSettings: CloudSettings = {
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RecipesProvider,
-    ShoppingListProvider
+    LocalStorageProvider
   ]
 })
 export class AppModule {}
