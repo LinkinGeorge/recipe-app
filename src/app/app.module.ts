@@ -13,6 +13,7 @@ import { MarkdownModule } from 'angular2-markdown';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
+import { ShoppingListMenuPage } from '../pages/shopping-list-menu/shopping-list-menu';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
 import { ConverterPage } from '../pages/converter/converter';
 import { RecipesProvider } from '../providers/recipes/recipes';
@@ -35,6 +36,7 @@ const cloudSettings: CloudSettings = {
     MyApp,
     HomePage,
     ShoppingListPage,
+    ShoppingListMenuPage,
     RecipeDetailsPage,
     ConverterPage,
     FilterRecipesPipe,
@@ -58,6 +60,7 @@ const cloudSettings: CloudSettings = {
     MyApp,
     HomePage,
     ShoppingListPage,
+    ShoppingListMenuPage,
     RecipeDetailsPage,
     ConverterPage
   ],

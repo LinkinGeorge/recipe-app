@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 
+import { ShoppingListMenuPage } from '../shopping-list-menu/shopping-list-menu';
 import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
 
-/**
- * Generated class for the ShoppingListPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-shopping-list',
@@ -18,16 +13,17 @@ export class ShoppingListPage {
   public shoppingList = [];
   addingItem = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public shoppingListServcice: ShoppingListProvider) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public popoverCtrl: PopoverController,
+    public shoppingListServcice: ShoppingListProvider
+  ) {
     this.shoppingListServcice.getList().then((list) => {
       if(list) {
         this.shoppingList = JSON.parse(list);
       }
     })
-  }
-
-  ionViewDidLoad() {
-
   }
 
   ionViewDidEnter() {
@@ -36,6 +32,13 @@ export class ShoppingListPage {
         this.shoppingList = JSON.parse(list);
       }
     })
+  }
+
+  showMenu(event) {
+    let popover = this.popoverCtrl.create(ShoppingListMenuPage);
+    popover.present({
+      ev: event
+    });
   }
 
   addItem(item) {
