@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ActionSheetController } from 'ionic-angular';
 
 import { RecipeDetailsPage } from '../recipe-details/recipe-details';
+import { RecipeFormPage } from '../recipe-form/recipe-form';
 import { RecipesProvider } from '../../providers/recipes/recipes';
 
 @Component({
@@ -40,10 +41,14 @@ export class HomePage {
     });
   }
 
-  viewRecipe(recipe){
+  viewRecipe(recipe) {
     this.navCtrl.push(RecipeDetailsPage, {
       recipe: recipe
     });
+  }
+
+  newRecipe() {
+    this.navCtrl.push(RecipeFormPage);
   }
 
   toggleSearch() {

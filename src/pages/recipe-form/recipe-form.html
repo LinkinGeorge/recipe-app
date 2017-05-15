@@ -1,0 +1,156 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title *ngIf="!model.title">Neues Rezept</ion-title>
+    <ion-title *ngIf="model.title">{{ model.title }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="save()">
+        <ion-icon name="checkbox-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="page">
+      <ion-segment-button value="info">
+        Info
+      </ion-segment-button>
+      <ion-segment-button value="ingredients">
+        Zutaten
+      </ion-segment-button>
+      <ion-segment-button value="description">
+        Beschreibung
+      </ion-segment-button>
+      <ion-segment-button value="categories">
+        Kategorien
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div [ngSwitch]="page">
+
+    <!-- INFO TAB -->
+
+    <ion-list *ngSwitchCase="'info'">
+      <h2 text-center>Info</h2>
+      <ion-item>
+        <ion-label color="primary" stacked>Titel</ion-label>
+        <ion-input type="text" placeholder="Titel" [(ngModel)]="model.title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button block default (click)="showHeroPicker()">Titelbild</button>
+      </ion-item>
+
+      <ion-item>
+        <ion-range min="1" max="10" step="1" [(ngModel)]="model.servings">
+          <ion-label range-left>{{ model.servings }} Personen</ion-label>
+          <ion-icon range-right name="people"></ion-icon>
+        </ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-range min="0" max="180" step="5" snaps="true" [(ngModel)]="model.duration">
+          <ion-label range-left>{{ model.duration }} Minuten</ion-label>
+          <ion-icon range-right name="time"></ion-icon>
+        </ion-range>
+      </ion-item>
+
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-4>
+              <button ion-button default block [ngClass]="{'active':model.difficulty==1}" (click)="model.difficulty=1">Einfach</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button default block [ngClass]="{'active':model.difficulty==2}" (click)="model.difficulty=2">Mittel</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button default block [ngClass]="{'active':model.difficulty==3}"  (click)="model.difficulty=3">Schwer</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Vegetarisch</ion-label>
+        <ion-toggle [(ngModel)]="vegetarian" (ionChange)="updateVeggieOptions()" [disabled]="vegan"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-label>Vegan</ion-label>
+        <ion-toggle [(ngModel)]="vegan" (ionChange)="updateVeggieOptions()"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <!-- INGREDIENTS TAB -->
+
+    <ion-list *ngSwitchCase="'ingredients'">
+      <h2 text-center>Zutaten</h2>
+      <ion-item *ngIf="ingredients[0].name !== ''">
+        <ion-list dnd-sortable-container [sortableData]="ingredients">
+          <ion-item *ngFor="let ingr of ingredients; let i = index" dnd-sortable [sortableIndex]="i">
+            <span style="line-height: 1.75em">{{ ingr.name }} <span *ngIf="ingr.hint!=''"> ({{ ingr.hint }})</span></span>
+            <ion-icon padding-left name="trash" (click)="removeIngredient(ingr)" style="font-size: 1.75em; float: right" color="danger"></ion-icon>
+            <ion-icon padding-left name="create" (click)="editIngredient(i)" style="font-size: 1.75em; float: right" color="primary"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      <div *ngIf="!editing">
+        <ion-item>
+          <ion-input type="text" placeholder="Name" [(ngModel)]="newIngredient.name" (keyup.enter)="addIngredient(newIngredient)"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="text" placeholder="Hinweis" [(ngModel)]="newIngredient.hint" (keyup.enter)="addIngredient(newIngredient)"></ion-input>
+        </ion-item>
+        <ion-item>
+          <button ion-button default block (click)="addIngredient(newIngredient)">Hinzufügen</button>
+        </ion-item>
+      </div>
+      <div *ngIf="editing">
+        <ion-item>
+        <ion-input type="text" placeholder="Name" [(ngModel)]="newIngredient.name" (keyup.enter)="updateIngredient(editIngr)"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Hint" [(ngModel)]="newIngredient.hint" (keyup.enter)="updateIngredient(editIngr)"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button default block (click)="updateIngredient(editIngr)">Aktualisieren</button>
+      </ion-item>
+      </div>
+    </ion-list>
+
+    <!-- DESCRIPTION TAB -->
+
+    <ion-list *ngSwitchCase="'description'">
+      <h2 text-center>Beschreibung</h2>
+      <ion-item>
+        <ion-textarea rows="8" placeholder="Beschreibung - Markdown für Styling verfügbar" [(ngModel)]="model.description"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <button ion-button block default (click)="showDescPicker()">Anleitungsbild</button>
+      </ion-item>
+    </ion-list>
+
+    <!-- CATEGORIES TAB -->
+    
+    <ion-list *ngSwitchCase="'categories'">
+      <h2 text-center>Kategorien</h2>
+      <ion-item>
+        <ion-list>
+          <ion-item *ngFor="let ctg of categories">
+            {{ ctg }}
+            <ion-icon padding-left name="trash" (click)="removeCategory(ctg)"></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+      <ion-item>
+        <ion-input #ctg type="text" placeholder="Neue Kategorie" (keyup.enter)="addCategory(ctg.value); ctg.value = ''"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button ion-button default block (click)="addCategory(ctg.value); ctg.value = ''">Hinzufügen</button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
 
 import { ConverterPage } from '../converter/converter';
+import { RecipeFormPage } from '../recipe-form/recipe-form';
+
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { ShoppingListProvider } from '../../providers/shopping-list/shopping-list';
 
@@ -37,6 +39,12 @@ export class RecipeDetailsPage {
       duration: 1500
     });
     toast.present();
+  }
+
+  editRecipe() {
+    this.navCtrl.push(RecipeFormPage, {
+      recipe: this.recipe
+    });
   }
 
   increaseCookCount() {
