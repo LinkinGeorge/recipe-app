@@ -2,13 +2,13 @@
   <ion-navbar color="primary">
     <ion-title>Wochenplan</ion-title>
     <ion-buttons end>
-      <button *ngIf="!deleting" ion-button icon-only (click)="newEntry()">
+      <button class="nav-button" *ngIf="!deleting" ion-button icon-only (click)="newEntry()">
         <ion-icon name="add"></ion-icon>
       </button>
-      <button *ngIf="!deleting" ion-button icon-only (click)="deleteMode()">
+      <button class="nav-button" *ngIf="!deleting" ion-button icon-only (click)="deleteMode()">
         <ion-icon name="trash"></ion-icon>
       </button>
-      <button *ngIf="deleting" ion-button icon-only (click)="exitDeleteMode()">
+      <button class="nav-button" *ngIf="deleting" ion-button icon-only (click)="exitDeleteMode()">
         <ion-icon name="checkbox-outline"></ion-icon>
       </button>
     </ion-buttons>

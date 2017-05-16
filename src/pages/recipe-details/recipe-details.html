@@ -2,15 +2,8 @@
   <ion-navbar color="primary">
     <ion-title>{{ recipe.title }}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="selectDay()">
-        <ion-icon name="calendar"></ion-icon>
-      </button>
-      <button ion-button icon-only (click)="editRecipe()">
-        <ion-icon name="create"></ion-icon>
-      </button>
-      <button ion-button icon-only (click)="increaseCookCount()">
-        <ion-icon name="timer"></ion-icon>
-        <ion-badge>{{ cookCount }}</ion-badge>
+      <button ion-button icon-only (click)="showMenu($event)">
+        <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -43,9 +36,11 @@
 <h2 text-center margin-bottom>Zutaten</h2>
 <ion-list>
     <button ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
-      <ion-icon name="cart" item-right (click)="addIngredient(ingredient.textContent)" color="dark"></ion-icon>
-      <span #ingredient>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
-      <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
+      <ion-icon name="cart" item-right (click)="addToList(ingredient.textContent)" color="dark"></ion-icon>
+      <span #ingredient>
+        <span>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
+        <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
+      </span>
     </button>
 </ion-list>
 <div text-center>
