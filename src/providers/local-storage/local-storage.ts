@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { PlanEntry } from '../../models/plan-entry';
+
 @Injectable()
 export class LocalStorageProvider {
-  public plan = [];
+  public plan = new Array<PlanEntry>();
   public list = [];
 
   constructor(public storage: Storage) {
@@ -38,14 +40,13 @@ export class LocalStorageProvider {
     return this.storage.get('plan');
   }
 
-  addRecipe(recipe, date, custom) {
+  addRecipe(entry: PlanEntry) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
-      if (this.datePresent(date)) {
-        this.plan[this.getByDate(date)].recipe = recipe;
-        this.plan[this.getByDate(date)].custom = custom;
+      if (this.datePresent(entry.date)) {
+        this.plan[this.getByDate(entry.date)] = entry;
       } else {
-        this.plan.push({recipe: recipe, date: date, custom: custom});
+        this.plan.push(entry);
       }
       this.storage.set('plan', JSON.stringify(this.plan));
     }));

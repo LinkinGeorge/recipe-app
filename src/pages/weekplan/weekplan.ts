@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
+import { PlanEntry } from '../../models/plan-entry';
 import { WeekplanNewEntryPage } from '../weekplan-new-entry/weekplan-new-entry';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
@@ -10,7 +11,7 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
   templateUrl: 'weekplan.html',
 })
 export class WeekplanPage {
-  public plan = [];
+  public plan = new Array<PlanEntry>();
   deleting = false;
 
   constructor(
@@ -51,7 +52,8 @@ export class WeekplanPage {
       const today = new Date(Date.now());
       this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = null;
       this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = title;
-      this.localStorage.addRecipe(null, this.addDays(today, dayIndex), title);
+      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
+      this.localStorage.addRecipe(newEntry);
     }
   }
 

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, ActionSheetController } from 'ionic-angular';
 
+import { PlanEntry } from '../../models/plan-entry';
+
 import { ConverterPage } from '../converter/converter';
 import { RecipeFormPage } from '../recipe-form/recipe-form';
 
@@ -67,49 +69,49 @@ export class RecipeDetailsPage {
         {
           text: this.getWeekdayString(today),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, today, '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, today, ''));
             this.showWeekplanToast(today);
           }
         },
         {
           text: this.getWeekdayString(this.addDays(today, 1)),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, this.addDays(today, 1), '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, this.addDays(today, 1), ''));
             this.showWeekplanToast(this.addDays(today, 1));
           }
         },
         {
           text: this.getWeekdayString(this.addDays(today, 2)),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, this.addDays(today, 2), '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, this.addDays(today, 2), ''));
             this.showWeekplanToast(this.addDays(today, 2));
           }
         },
         {
           text: this.getWeekdayString(this.addDays(today, 3)),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, this.addDays(today, 3), '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, this.addDays(today, 3), ''));
             this.showWeekplanToast(this.addDays(today, 3));
           }
         },
         {
           text: this.getWeekdayString(this.addDays(today, 4)),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, this.addDays(today, 4), '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, this.addDays(today, 4), ''));
             this.showWeekplanToast(this.addDays(today, 4));
           }
         },
         {
           text: this.getWeekdayString(this.addDays(today, 5)),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, this.addDays(today, 5), '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, this.addDays(today, 5), ''));
             this.showWeekplanToast(this.addDays(today, 5));
           }
         },
         {
           text: this.getWeekdayString(this.addDays(today, 6)),
           handler: () => {
-            this.localStorage.addRecipe(this.recipe, this.addDays(today, 6), '');
+            this.localStorage.addRecipe(new PlanEntry(this.recipe, this.addDays(today, 6), ''));
             this.showWeekplanToast(this.addDays(today, 6));
           }
         }
