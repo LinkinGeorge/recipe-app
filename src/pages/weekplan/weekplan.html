@@ -18,7 +18,7 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let day of plan; let i = index">
+    <ion-item *ngFor="let day of plan; let i = index" (click)="viewRecipe(day.recipe)">
       <h5 class="date-label">{{ day.date | weekday }}</h5>
       <div class="recipe-title" *ngIf="hasRecipe(day)" text-wrap>
         <div *ngIf="day.recipe">{{ day.recipe.title }}</div>

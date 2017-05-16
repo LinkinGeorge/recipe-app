@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { PlanEntry } from '../../models/plan-entry';
+import { RecipeDetailsPage } from '../recipe-details/recipe-details';
 import { WeekplanNewEntryPage } from '../weekplan-new-entry/weekplan-new-entry';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
@@ -71,7 +72,15 @@ export class WeekplanPage {
       return false;
     }
   }
-  
+
+  viewRecipe(recipe = null) {
+    if (recipe !== null) {
+      this.navCtrl.push(RecipeDetailsPage, {
+        recipe: recipe
+      });
+    }
+  }
+
   exitDeleteMode() {
     this.deleting = false;
   }
