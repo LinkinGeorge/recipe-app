@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Neuer Eintrag</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Wochentag</ion-label>
+      <ion-select [(ngModel)]="day" interface="popover">
+        <ion-option value="0" >{{ getDate(0) | weekday }}</ion-option>
+        <ion-option value="1" >{{ getDate(1) | weekday }}</ion-option>
+        <ion-option value="2" >{{ getDate(2) | weekday }}</ion-option>
+        <ion-option value="3" >{{ getDate(3) | weekday }}</ion-option>
+        <ion-option value="4" >{{ getDate(4) | weekday }}</ion-option>
+        <ion-option value="5" >{{ getDate(5) | weekday }}</ion-option>
+        <ion-option value="6" >{{ getDate(6) | weekday }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating >Titel</ion-label>
+      <ion-input #newentry type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button ion-button block default (click)="save(newentry.value)">Hinzufügen</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

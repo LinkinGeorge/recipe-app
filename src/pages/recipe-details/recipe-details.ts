@@ -125,6 +125,12 @@ export class RecipeDetailsPage {
   }
 
   getWeekdayString(date: Date): string {
+    if (date.getDay() === new Date(Date.now()).getDay()) {
+      return 'Heute'
+    }
+    if (date.getDay() === new Date(Date.now()).getDay() + 1) {
+      return 'Morgen'
+    }
     switch (date.getDay()) {
       case 0:
         return 'Sonntag'
@@ -142,12 +148,12 @@ export class RecipeDetailsPage {
         return 'Samstag'
     
       default:
-        return 'Keine Ahnung'
+        return 'Niemals'
     }
   }
 
   private showWeekplanToast(date: Date) {
-    const message = 'Am ' + this.getWeekdayString(date) + ' gibt es ' + this.recipe.title;
+    const message = this.getWeekdayString(date) + ' gibt es ' + this.recipe.title;
     let toast = this.toastCtrl.create({
       message: message,
       duration: 2000

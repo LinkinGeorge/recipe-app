@@ -6,7 +6,9 @@ export class LocalStorageProvider {
   public plan = [];
   public list = [];
 
-  constructor(public storage: Storage) { }
+  constructor(public storage: Storage) {
+    this.removeExpired();
+  }
 
   // SHOPPING LIST
 
@@ -15,50 +17,62 @@ export class LocalStorageProvider {
   }
 
   addItem(item: string) {
-    this.list.push(item);
-    this.storage.set('list', JSON.stringify(this.list));
+    this.getList().then((list) => {
+      this.list = JSON.parse(list);
+      this.list.push(item);
+      this.storage.set('list', JSON.stringify(this.list));
+    });
   }
 
   removeItem(item: string) {
-    this.list.splice(this.list.indexOf(item), 1);
-    this.storage.set('list', JSON.stringify(this.list));
+    this.getList().then((list) => {
+      this.list = JSON.parse(list);
+      this.list.splice(this.list.indexOf(item), 1);
+      this.storage.set('list', JSON.stringify(this.list));
+    });
   }
 
   // WEEKPLAN
 
   getPlan() {
-    this.plan.forEach(recipe => {
-      if (recipe.date.getTime() < Date.now()) {
-        this.plan.splice(this.plan.indexOf(recipe), 1);
-      }
-    });
-    this.storage.set('plan', JSON.stringify(this.plan));
     return this.storage.get('plan');
   }
 
   addRecipe(recipe, date, custom) {
-    if (this.datePresent(date)) {
-      this.plan[this.getByDate(date)].recipe = recipe;
-    } else {
-      this.plan.push({recipe: recipe, date: date, custom: custom});
-    }
-    this.storage.set('plan', JSON.stringify(this.plan));
-  }
-
-  updateRecipe(recipe) {
-    this.plan[this.getById(recipe._id)].recipe = recipe;
-    this.storage.set('plan', JSON.stringify(this.plan));
+    this.getPlan().then((plan => {
+      this.plan = JSON.parse(plan);
+      if (this.datePresent(date)) {
+        this.plan[this.getByDate(date)].recipe = recipe;
+        this.plan[this.getByDate(date)].custom = custom;
+      } else {
+        this.plan.push({recipe: recipe, date: date, custom: custom});
+      }
+      this.storage.set('plan', JSON.stringify(this.plan));
+    }));
   }
 
   removeRecipe(date: Date) {
-    this.plan.splice(this.getByDate(date), 1);
-    this.storage.set('plan', JSON.stringify(this.plan));
+    this.getPlan().then((plan => {
+      this.plan = JSON.parse(plan);
+      this.plan.splice(this.getByDate(date), 1);
+      this.storage.set('plan', JSON.stringify(this.plan));
+    }));
   }
 
-  private getById(id: string):number {
-    return this.plan.findIndex((day) => {
-      return day.recipe._id === id;
-    })
+  private removeExpired() {
+    this.storage.get('plan').then((plan) => {
+      if (plan) {
+        this.plan = JSON.parse(plan);
+        this.plan.forEach(recipe => {
+          const recipeDate = new Date(new Date(recipe.date).setHours(0,0,0,0));
+          const today = new Date(new Date(Date.now()).setHours(0,0,0,0));
+          if (recipeDate.getTime() < today.getTime()) {
+            this.plan.splice(this.plan.indexOf(recipe), 1);
+          }
+        });
+      }
+      this.storage.set('plan', JSON.stringify(this.plan));
+    });
   }
 
   private getByDate(date: Date):number {

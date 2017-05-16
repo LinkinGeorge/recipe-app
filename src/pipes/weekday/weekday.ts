@@ -7,6 +7,12 @@ export class WeekdayPipe implements PipeTransform {
 
   transform(date: Date):string {
     const toCheck = new Date(date);
+    if (toCheck.getDay() === new Date(Date.now()).getDay()) {
+      return 'Heute'
+    }
+    if (toCheck.getDay() === new Date(Date.now()).getDay() + 1) {
+      return 'Morgen'
+    }
     switch (toCheck.getDay()) {
       case 0:
         return 'Sonntag'

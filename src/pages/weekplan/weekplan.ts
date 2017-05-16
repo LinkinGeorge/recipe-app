@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+
+import { WeekplanNewEntryPage } from '../weekplan-new-entry/weekplan-new-entry';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 @IonicPage()
@@ -9,9 +11,14 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
 })
 export class WeekplanPage {
   public plan = [];
-  editing = false;
+  deleting = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public localStorage: LocalStorageProvider) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public modalCtrl: ModalController,
+    public localStorage: LocalStorageProvider
+  ) {
     this.localStorage.getPlan().then((plan) => {
       if (plan) {
         this.plan = JSON.parse(plan);
@@ -29,30 +36,21 @@ export class WeekplanPage {
     });
   }
 
-  fillUpPlan() {
-    const today = new Date(Date.now())
-    for (var i = 0; i < 7; i++) {
-      if (!this.datePresent(this.addDays(today, i))) {
-        this.plan.push({recipe: null, date: this.addDays(today, i)});
+  newEntry() {
+    let newEntryModal = this.modalCtrl.create(WeekplanNewEntryPage);
+    newEntryModal.onDidDismiss(data => {
+      if (data) {
+        this.addEntry(data.title, data.day);
       }
-    }
-    this.plan.sort(function (a, b) {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
     })
-  }
-  
-  exitEditMode() {
-    this.editing = false;
-  }
-
-  editMode() {
-    this.editing = true;
+    newEntryModal.present();
   }
 
   addEntry(title, dayIndex) {
     if (title !== '') {
       const today = new Date(Date.now());
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = {title: title};
+      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = null;
+      this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = title;
       this.localStorage.addRecipe(null, this.addDays(today, dayIndex), title);
     }
   }
@@ -62,6 +60,34 @@ export class WeekplanPage {
     this.plan[this.getByDate(date)].recipe = null;
     this.plan[this.getByDate(date)].custom = '';
     this.localStorage.removeRecipe(date);
+  }
+
+  hasRecipe(entry) {
+    if (entry.recipe !== null || entry.custom !== '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  exitDeleteMode() {
+    this.deleting = false;
+  }
+
+  deleteMode() {
+    this.deleting = true;
+  }
+
+  private fillUpPlan() {
+    const today = new Date(Date.now())
+    for (var i = 0; i < 7; i++) {
+      if (!this.datePresent(this.addDays(today, i))) {
+        this.plan.push({recipe: null, date: this.addDays(today, i), custom: ''});
+      }
+    }
+    this.plan.sort(function (a, b) {
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    })
   }
 
   private addDays(date: Date, days: number): Date {
@@ -74,12 +100,6 @@ export class WeekplanPage {
     return this.plan.findIndex((day) => {
       return new Date(day.date).getDay() === new Date(date).getDay();
     }) !== -1;
-  }
-  
-  private getById(id: string):number {
-    return this.plan.findIndex((day) => {
-      return day.recipe._id === id;
-    })
   }
   
   private getByDate(date: Date):number {

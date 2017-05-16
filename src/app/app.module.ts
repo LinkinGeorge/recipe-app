@@ -17,6 +17,7 @@ import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
 import { ShoppingListMenuPage } from '../pages/shopping-list-menu/shopping-list-menu';
 import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
 import { WeekplanPage } from '../pages/weekplan/weekplan';
+import { WeekplanNewEntryPage } from '../pages/weekplan-new-entry/weekplan-new-entry';
 import { RecipeFormPage } from '../pages/recipe-form/recipe-form';
 import { ConverterPage } from '../pages/converter/converter';
 
@@ -48,6 +49,7 @@ const cloudSettings: CloudSettings = {
     RecipeDetailsPage,
     RecipeFormPage,
     WeekplanPage,
+    WeekplanNewEntryPage,
     ConverterPage,
     FilterRecipesPipe,
     ThumbnailPipe,
@@ -76,6 +78,7 @@ const cloudSettings: CloudSettings = {
     RecipeDetailsPage,
     RecipeFormPage,
     WeekplanPage,
+    WeekplanNewEntryPage,
     ConverterPage
   ],
   providers: [

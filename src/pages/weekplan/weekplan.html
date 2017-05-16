@@ -2,10 +2,13 @@
   <ion-navbar color="primary">
     <ion-title>Wochenplan</ion-title>
     <ion-buttons end>
-      <button *ngIf="!editing" ion-button icon-only (click)="editMode()">
-        <ion-icon name="create"></ion-icon>
+      <button *ngIf="!deleting" ion-button icon-only (click)="newEntry()">
+        <ion-icon name="add"></ion-icon>
       </button>
-      <button *ngIf="editing" ion-button icon-only (click)="exitEditMode()">
+      <button *ngIf="!deleting" ion-button icon-only (click)="deleteMode()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button *ngIf="deleting" ion-button icon-only (click)="exitDeleteMode()">
         <ion-icon name="checkbox-outline"></ion-icon>
       </button>
     </ion-buttons>
@@ -16,17 +19,17 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let day of plan; let i = index">
-      <h5 *ngIf="!editing" class="date-label" style="display: inline-block">{{ day.date | weekday }}</h5>
-      <h5 *ngIf="editing" class="date-label" style="display: block">{{ day.date | weekday }}</h5>
-      <div *ngIf="editing" text-right style="margin-top: -12px">
-        <button *ngIf="day.recipe" ion-button round icon-only color="danger" style="height:25px; width:25px;" (click)="deleteEntry(day.recipe)">
-          <ion-icon name="delete"></ion-icon>
-        </button>
+      <h5 class="date-label">{{ day.date | weekday }}</h5>
+      <div class="recipe-title" *ngIf="hasRecipe(day)" text-wrap>
+        <div *ngIf="day.recipe">{{ day.recipe.title }}</div>
+        <div *ngIf="!day.recipe">{{ day.custom }}</div>
+        <div *ngIf="deleting" text-center padding-top>
+          <button ion-button icon-right default color="danger" (click)="deleteEntry(i)">
+            Löschen
+            <ion-icon name="trash"></ion-icon>
+          </button>
+        </div>
       </div>
-      <ion-item *ngIf="editing && !day.recipe">
-        <ion-input #newentry type="text" placeholder="Titel" [(ngModel)]="day.custom" (keyup.enter)="newentry.value=''"></ion-input>
-      </ion-item>
-      <p class="recipe-title" *ngIf="day.recipe" text-wrap>{{ day.recipe.title }}</p>
     </ion-item>
   </ion-list>
 </ion-content>
