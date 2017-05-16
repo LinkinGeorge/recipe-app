@@ -39,6 +39,10 @@ export class RecipeDetailsPage {
     });
   }
 
+  servingsChange(servings: number) {
+    this.servings = servings;
+  }
+
   addToList(ingr: string) {
     this.localStorage.addItem(ingr);
     const message = ingr + ' zur Liste hinzugefügt';
@@ -52,6 +56,16 @@ export class RecipeDetailsPage {
   showConverter() {
     let converterModal = this.modalCtrl.create(ConverterPage);
     converterModal.present();
+  }
+
+  addServing() {
+    this.servings = this.servings + 1;
+  }
+
+  removeServing() {
+    if (this.servings > 1) {
+      this.servings = this.servings - 1;
+    }
   }
 
 }

@@ -33,6 +33,8 @@ import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
 import { RoundPipe } from '../pipes/round/round';
 import { WeekdayPipe } from '../pipes/weekday/weekday';
 
+import { NumberPickerComponent } from '../components/number-picker/number-picker';
+
 import { Environment } from '../environment';
 
 const cloudSettings: CloudSettings = {
@@ -59,7 +61,8 @@ const cloudSettings: CloudSettings = {
     CalcServingsPipe,
     SortRecipesPipe,
     RoundPipe,
-    WeekdayPipe
+    WeekdayPipe,
+    NumberPickerComponent
   ],
   imports: [
     BrowserModule,

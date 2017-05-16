@@ -31,7 +31,7 @@ export class ShoppingListMenuPage {
     }, (error) => {
       checking.dismiss();
       const toast = this.toastCtrl.create({
-          message: 'Es ist ein Fehler bei der Update-Abfrage aufgetreten',
+          message: 'Es ist ein Fehler bei der Update-Abfrage aufgetreten.',
           duration: 3000
         });
         toast.present();

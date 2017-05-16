@@ -71,6 +71,14 @@ export class RecipeFormPage {
     }
   }
 
+  servingsChange(servings: number) {
+    this.model.servings = servings;
+  }
+
+  durationChange(duration: number) {
+    this.model.duration = duration;
+  }
+
   addIngredient() {
     if (this.newIngredient) {
       const ingr = this.newIngredient;

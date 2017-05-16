@@ -1,0 +1,15 @@
+<div text-center>
+  <div text-center style="display: inline-block">
+    <button ion-button icon-only round (click)="minus()" style="height: 40px; width: 40px; vertical-align: middle">
+      <ion-icon name="remove"></ion-icon>
+    </button>
+    <span class="number" style="display: inline-block; vertical-align: middle;">{{ value }}</span>
+    <button ion-button icon-only round (click)="plus()" style="height: 40px; width: 40px; vertical-align: middle">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </div>
+  <div *ngIf="pickerCaption">
+    <div *ngIf="singular(); else regular" class="caption">{{ pickerCaptionSingular }}</div>
+    <ng-template #regular><div class="caption">{{ pickerCaption }}</div></ng-template>
+  </div>
+</div>

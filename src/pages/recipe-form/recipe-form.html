@@ -44,17 +44,11 @@
       </ion-item>
 
       <ion-item>
-        <ion-range min="1" max="10" step="1" [(ngModel)]="model.servings">
-          <ion-label range-left>{{ model.servings }} Personen</ion-label>
-          <ion-icon range-right name="people"></ion-icon>
-        </ion-range>
+        <number-picker [start]="2" [max]="20" [caption]="'Personen'" [captionSingular]="'Person'" (onChange)="servingsChange($event)"></number-picker>
       </ion-item>
 
       <ion-item>
-        <ion-range min="0" max="180" step="5" snaps="true" [(ngModel)]="model.duration">
-          <ion-label range-left>{{ model.duration }} Minuten</ion-label>
-          <ion-icon range-right name="time"></ion-icon>
-        </ion-range>
+        <number-picker [start]="20" [steps]="5" [min]="5" [max]="180" [caption]="'Minuten'" (onChange)="durationChange($event)"></number-picker>
       </ion-item>
 
       <ion-item>
