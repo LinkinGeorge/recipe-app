@@ -34,13 +34,15 @@
 </ion-grid>
 <h2 text-center margin-bottom>Zutaten</h2>
 <ion-list>
-    <button ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
-      <ion-icon name="cart" item-right (click)="addToList(ingredient.textContent)" color="dark"></ion-icon>
-      <span #ingredient>
-        <span>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
-        <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
-      </span>
+  <ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
+    <span #ingredient style="font-size: 16px">
+      <span>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
+      <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
+    </span>
+    <button ion-button icon-only default round outline item-end color="dark" (click)="addToList(ingredient.textContent)" style="height: 40px; width: 40px; padding: 5px">
+      <ion-icon name="cart"></ion-icon>
     </button>
+  </ion-item>
 </ion-list>
 <div text-center>
   <button ion-button (click)="showConverter()">
