@@ -24,11 +24,22 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label floating >Titel</ion-label>
-      <ion-input #newentry type="text"></ion-input>
+      <ion-label floating >Eigenes Rezept</ion-label>
+      <ion-input #newentry type="text" [disabled]="search.value.length > 0"></ion-input>
     </ion-item>
     <ion-item>
-      <button ion-button block default (click)="save(newentry.value)">Hinzufügen</button>
+      <ion-label floating >Durchsuchen</ion-label>
+      <ion-input #search type="text" [disabled]="newentry.value.length > 0"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="search.value.length > 0">
+      <ion-list>
+        <button ion-item *ngFor="let recipe of recipes | filterRecipes:'':'':search.value" (click)="saveRecipe(recipe)" style="border-bottom: 1px #ccc solid; padding: 0.5rem 0">
+          {{ recipe.title }}
+        </button>
+      </ion-list>
+    </ion-item>
+    <ion-item *ngIf="search.value.length === 0">
+      <button ion-button block default (click)="save(newentry.value)" [disabled]="newentry.value.length === 0">Hinzufügen</button>
     </ion-item>
   </ion-list>
 </ion-content>

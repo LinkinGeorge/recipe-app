@@ -40,18 +40,25 @@ export class WeekplanPage {
     let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage');
     newEntryModal.onDidDismiss(data => {
       if (data) {
-        this.addEntry(data.title, data.day);
+        this.addEntry(data.title, data.day, data.recipe);
       }
     })
     newEntryModal.present();
   }
 
-  addEntry(title, dayIndex) {
+  addEntry(title, dayIndex, recipe) {
     if (title !== '') {
       const today = new Date(Date.now());
       this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = null;
       this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = title;
       const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
+      this.localStorage.addEntry(newEntry);
+    } 
+    if (recipe !== null) {
+      const today = new Date(Date.now());
+      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = recipe;
+      this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = '';
+      const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '');
       this.localStorage.addEntry(newEntry);
     }
   }

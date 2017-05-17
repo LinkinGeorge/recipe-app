@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, ViewController } from 'ionic-angular';
 
+import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
+
 @IonicPage()
 @Component({
   selector: 'page-weekplan-new-entry',
@@ -8,8 +10,12 @@ import { IonicPage, ViewController } from 'ionic-angular';
 })
 export class WeekplanNewEntryPage {
   day = "0";
+  recipes = new Array();
 
-  constructor(public viewCtrl: ViewController) {
+  constructor(public viewCtrl: ViewController, public localStorage: LocalStorageProvider) {
+    this.localStorage.getRecipes().then((recipes) => {
+      this.recipes = JSON.parse(recipes);
+    });
   }
 
   ionViewDidLoad() {
@@ -19,7 +25,17 @@ export class WeekplanNewEntryPage {
   save(title) {
     let data = {
       title: title,
-      day: +this.day
+      day: +this.day,
+      recipe: null
+    }
+    this.viewCtrl.dismiss(data);
+  }
+
+  saveRecipe(recipe) {
+    let data = {
+      title: '',
+      day: +this.day,
+      recipe: recipe
     }
     this.viewCtrl.dismiss(data);
   }
