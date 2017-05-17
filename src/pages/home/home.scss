@@ -4,6 +4,34 @@ page-home {
         margin: 0 0.75rem;
     }
 
+    .img-container {
+        position: relative;
+        text-align: right;
+    }
+
+    .thumbnail {
+        height:200px; 
+        object-fit:cover
+    }
+
+    .minutes {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-bottom: 4%;
+        padding-top: 20%;
+        padding-right: 5%;
+        color: white;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75));
+    }
+
+    .categories {
+        padding-top: 0.5rem;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
     div.spin {
         text-align: center;
         margin-top: 5rem;

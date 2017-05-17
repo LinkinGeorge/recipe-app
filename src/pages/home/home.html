@@ -49,18 +49,19 @@
   </ion-list>
   <div *ngIf="recipes">
       <ion-card *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery | sortRecipes:sortType:sortDesc" (tap)="viewRecipe(recipe)">
-        <img *ngIf="!recipe.heroImage" src="assets/images/comingsoon.jpg" style="height:200px; object-fit:cover"/>
-        <img *ngIf="recipe.heroImage" src="{{ recipe.heroImage | thumbnail:600:0 }}" style="height:200px; object-fit:cover"/>
+        <div class="img-container">
+          <img *ngIf="!recipe.heroImage" class="thumbnail" src="assets/images/comingsoon.jpg"/>
+          <img *ngIf="recipe.heroImage" class="thumbnail" src="{{ recipe.heroImage | thumbnail:600:0 }}"/>
+          <div class="minutes">
+            <ion-icon name="time" style="padding-right: 0.5rem"></ion-icon>
+            <span> {{recipe.duration}} min.</span>
+          </div>
+        </div>
         <ion-card-content>
-          <ion-card-title text-wrap>
+          <ion-card-title text-wrap style="padding-top: 0; font-weight: 300; color: black;">
             {{ recipe.title }}
           </ion-card-title>
-          <br>
-          <p>
-            <ion-icon name="time" style="padding-right: 0.5rem"></ion-icon>
-            <span> {{recipe.duration}} Minuten</span>
-          </p>
-          <div *ngIf="recipe.categories" style="padding-top: 0.5rem" text-wrap><span *ngFor="let ctg of recipe.categories"> #<strong>{{ ctg }}</strong> </span></div>
+          <div *ngIf="recipe.categories" class="categories" text-wrap><span *ngFor="let ctg of recipe.categories" style="margin-right: 2px;"><span style="margin-right: 2px;">#</span><strong>{{ ctg }}</strong> </span></div>
         </ion-card-content>
       </ion-card>
   </div>
