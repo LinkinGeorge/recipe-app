@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, ActionSheetController, ToastController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
@@ -23,19 +23,26 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController,
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider
   ) {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
       this.localStorage.setRecipes(recipes);
-    });
-  }
-
-  ionViewDidEnter(){
-    this.localStorage.getRecipes().then((recipes) => {
-      this.recipes = JSON.parse(recipes);
-    })
+    }, error => {
+      this.localStorage.getRecipes().then((recipes) => {
+        if (recipes) {
+          this.recipes = JSON.parse(recipes);
+        }
+      });
+      let toast = this.toastCtrl.create({
+        message: 'Keine Internetverbindung',
+        duration: 1500
+      });
+      toast.present();
+    }
+    );
   }
 
   doRefresh(refresher) {
@@ -43,12 +50,25 @@ export class HomePage {
       this.recipes = recipes;
       this.localStorage.setRecipes(recipes);
       refresher.complete();
-    });
+    }, error => {
+      this.localStorage.getRecipes().then((recipes) => {
+        if (recipes) {
+          this.recipes = JSON.parse(recipes);
+          refresher.complete();
+        }
+      });
+      let toast = this.toastCtrl.create({
+        message: 'Keine Internetverbindung',
+        duration: 1500
+      });
+      toast.present();
+    }
+    );
   }
 
   viewRecipe(recipe) {
     this.navCtrl.push('RecipeDetailsPage', {
-      recipe: recipe
+      recipeId: recipe._id
     });
   }
 

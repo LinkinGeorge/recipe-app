@@ -5,9 +5,9 @@ import { PlanEntry } from '../../models/plan-entry';
 
 @Injectable()
 export class LocalStorageProvider {
-  public recipes;
+  public recipes = new Array();
   public plan = new Array<PlanEntry>();
-  public list = [];
+  public list = new Array<string>();
 
   constructor(public storage: Storage) {
     this.removeExpired();
@@ -19,8 +19,54 @@ export class LocalStorageProvider {
     return this.storage.get('recipes');
   }
 
+  getRecipe(recipeId: string) {
+    return new Promise(
+      resolve => {
+        this.getRecipes().then((recipes) => {
+          if (recipes) {
+            let recipeArray = JSON.parse(recipes);
+            const index = this.getById(recipeArray, recipeId);
+            if (index !== -1) {
+              let stored = recipeArray[index];
+              resolve(stored);
+            } else {
+              console.log('Recipe not found');
+            }
+          }
+        }
+      )
+    });
+  }
+
   setRecipes(recipes) {
     this.storage.set('recipes', JSON.stringify(recipes));
+  }
+
+  addRecipe(recipe) {
+    this.getRecipes().then((recipes) => {
+      if (recipes) {
+        this.recipes = JSON.parse(recipes);
+      }
+      this.recipes.push(recipe);
+      this.storage.set('recipes', JSON.stringify(this.recipes));
+    })
+  }
+
+  updateRecipe(recipe) {
+    this.getRecipes().then((recipes) => {
+      let recipeArray = JSON.parse(recipes);
+      const index = this.getById(recipeArray, recipe._id);
+      if (index !== -1) {
+        recipeArray.splice(index, 1, recipe);
+      }
+      this.storage.set('recipes', JSON.stringify(recipeArray));
+    })
+  }
+
+  private getById(recipes: any[], recipeId: string):number {
+    return recipes.findIndex((rec) => {
+     return rec._id === recipeId;
+    });
   }
 
   // SHOPPING LIST
@@ -31,7 +77,9 @@ export class LocalStorageProvider {
 
   addItem(item: string) {
     this.getList().then((list) => {
-      this.list = JSON.parse(list);
+      if (list) {
+        this.list = JSON.parse(list);
+      }
       this.list.push(item);
       this.storage.set('list', JSON.stringify(this.list));
     });
@@ -51,7 +99,7 @@ export class LocalStorageProvider {
     return this.storage.get('plan');
   }
 
-  addRecipe(entry: PlanEntry) {
+  addEntry(entry: PlanEntry) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
       if (this.datePresent(entry.date)) {
@@ -63,7 +111,7 @@ export class LocalStorageProvider {
     }));
   }
 
-  removeRecipe(date: Date) {
+  removeEntry(date: Date) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
       this.plan.splice(this.getByDate(date), 1);

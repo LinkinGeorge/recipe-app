@@ -52,7 +52,7 @@ export class WeekplanPage {
       this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = null;
       this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = title;
       const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
-      this.localStorage.addRecipe(newEntry);
+      this.localStorage.addEntry(newEntry);
     }
   }
 
@@ -60,7 +60,7 @@ export class WeekplanPage {
     const date = this.addDays(new Date(Date.now()), dayIndex);
     this.plan[this.getByDate(date)].recipe = null;
     this.plan[this.getByDate(date)].custom = '';
-    this.localStorage.removeRecipe(date);
+    this.localStorage.removeEntry(date);
   }
 
   hasRecipe(entry) {
@@ -74,7 +74,7 @@ export class WeekplanPage {
   viewRecipe(recipe = null) {
     if (recipe !== null) {
       this.navCtrl.push('RecipeDetailsPage', {
-        recipe: recipe
+        recipeId: recipe._id
       });
     }
   }

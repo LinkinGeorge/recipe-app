@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
+import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 import { Environment } from '../../environment';
 
@@ -40,6 +41,7 @@ export class RecipeFormPage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public recipeService: RecipesProvider,
+    public localStorage: LocalStorageProvider,
     public toastCtrl: ToastController
   ) {
     if (this.navParams.get('recipe')) {
@@ -67,7 +69,10 @@ export class RecipeFormPage {
       this.recipeService.newRecipe(this.model)
         .subscribe(
           (recipe) => {
-            this.navCtrl.pop();
+            this.localStorage.addRecipe(this.model);
+            this.navCtrl.setPages([
+              { page: 'HomePage' }
+            ]);
           },
           (error) => {
             let toast = this.toastCtrl.create({
@@ -75,13 +80,17 @@ export class RecipeFormPage {
               duration: 1500
             });
             toast.present();
+            this.navCtrl.pop();
           });
         
     } else {
       this.recipeService.updateRecipe(this.model)
         .subscribe(
           (recipe) => {
-            this.navCtrl.pop();
+            this.localStorage.updateRecipe(this.model);
+            this.navCtrl.setPages([
+              { page: 'HomePage' }
+            ]);
           },
           (error) => {
             let toast = this.toastCtrl.create({
@@ -89,6 +98,7 @@ export class RecipeFormPage {
               duration: 1500
             });
             toast.present();
+            this.navCtrl.pop();
           });
     }
   }

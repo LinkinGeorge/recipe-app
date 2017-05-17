@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
@@ -8,7 +8,7 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
   selector: 'page-recipe-details',
   templateUrl: 'recipe-details.html',
 })
-export class RecipeDetailsPage {
+export class RecipeDetailsPage implements OnInit{
   recipe;
   
   cookCount: number;
@@ -25,9 +25,15 @@ export class RecipeDetailsPage {
     public popoverCtrl: PopoverController,
     public localStorage: LocalStorageProvider
   ) {
-    this.recipe = this.navParams.get('recipe');
-    this.cookCount = this.recipe.cookCount;
-    this.servings = this.recipe.servings;
+  }
+
+  ngOnInit() {
+    let id = this.navParams.get('recipeId');
+    this.localStorage.getRecipe(id).then((recipe) => {
+      this.recipe = recipe;
+      this.cookCount = this.recipe.cookCount;
+      this.servings = this.recipe.servings;
+    })
   }
 
   showMenu(event) {
