@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -36,7 +36,12 @@ export class RecipeFormPage {
 
   page: string = 'info';
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public recipeService: RecipesProvider) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public recipeService: RecipesProvider,
+    public toastCtrl: ToastController
+  ) {
     if (this.navParams.get('recipe')) {
       this.model = JSON.parse(JSON.stringify(this.navParams.get('recipe')));
       this.categories = this.model.categories;
@@ -60,14 +65,31 @@ export class RecipeFormPage {
     }
     if (this.newRecipe) {
       this.recipeService.newRecipe(this.model)
-        .subscribe((recipe) => {
-          this.navCtrl.pop();
-        });
+        .subscribe(
+          (recipe) => {
+            this.navCtrl.pop();
+          },
+          (error) => {
+            let toast = this.toastCtrl.create({
+              message: 'Konnte nicht gespeichert werden. Bitte stell sicher, dass du mit dem Internet verbunden bist.',
+              duration: 1500
+            });
+            toast.present();
+          });
+        
     } else {
       this.recipeService.updateRecipe(this.model)
-        .subscribe((recipe) => {
-          this.navCtrl.pop();
-        });
+        .subscribe(
+          (recipe) => {
+            this.navCtrl.pop();
+          },
+          (error) => {
+            let toast = this.toastCtrl.create({
+              message: 'Konnte nicht gespeichert werden. Bitte stell sicher, dass du mit dem Internet verbunden bist.',
+              duration: 1500
+            });
+            toast.present();
+          });
     }
   }
 

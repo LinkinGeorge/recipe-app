@@ -5,11 +5,22 @@ import { PlanEntry } from '../../models/plan-entry';
 
 @Injectable()
 export class LocalStorageProvider {
+  public recipes;
   public plan = new Array<PlanEntry>();
   public list = [];
 
   constructor(public storage: Storage) {
     this.removeExpired();
+  }
+
+  // RECIPES
+
+  getRecipes() {
+    return this.storage.get('recipes');
+  }
+
+  setRecipes(recipes) {
+    this.storage.set('recipes', JSON.stringify(recipes));
   }
 
   // SHOPPING LIST

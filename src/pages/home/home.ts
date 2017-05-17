@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, ActionSheetController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
+import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 @IonicPage()
 @Component({
@@ -22,20 +23,25 @@ export class HomePage {
   constructor(
     public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
-    public recipeService: RecipesProvider
+    public recipeService: RecipesProvider,
+    public localStorage: LocalStorageProvider
   ) {
-
-  }
-
-  ionViewDidLoad(){
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
+      this.localStorage.setRecipes(recipes);
     });
+  }
+
+  ionViewDidEnter(){
+    this.localStorage.getRecipes().then((recipes) => {
+      this.recipes = JSON.parse(recipes);
+    })
   }
 
   doRefresh(refresher) {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
+      this.localStorage.setRecipes(recipes);
       refresher.complete();
     });
   }

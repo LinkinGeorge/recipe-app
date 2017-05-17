@@ -14,6 +14,9 @@ export class RecipeDetailsPage {
   cookCount: number;
   servings: number;
 
+  heroLoaded = false;
+  descrLoaded = false;
+
   constructor(
     public navParams: NavParams, 
     public navCtrl: NavController, 
