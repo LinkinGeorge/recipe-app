@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { PipesModule } from '../../pipes/pipes.module';
 import { WeekplanPage } from './weekplan';
 
 @NgModule({
@@ -8,6 +9,7 @@ import { WeekplanPage } from './weekplan';
   ],
   imports: [
     IonicPageModule.forChild(WeekplanPage),
+    PipesModule
   ],
   exports: [
     WeekplanPage

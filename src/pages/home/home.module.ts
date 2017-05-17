@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { PipesModule } from '../../pipes/pipes.module';
-import { WeekplanNewEntryPage } from './weekplan-new-entry';
+import { HomePage } from './home';
 
 @NgModule({
   declarations: [
-    WeekplanNewEntryPage,
+    HomePage,
   ],
   imports: [
-    IonicPageModule.forChild(WeekplanNewEntryPage),
+    IonicPageModule.forChild(HomePage),
     PipesModule
   ],
   exports: [
-    WeekplanNewEntryPage
+    HomePage
   ]
 })
-export class WeekplanNewEntryPageModule {}
+export class HomePageModule {}

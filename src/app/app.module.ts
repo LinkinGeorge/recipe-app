@@ -12,28 +12,9 @@ import { MarkdownModule } from 'angular2-markdown';
 import { DndModule } from 'ng2-dnd';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ShoppingListPage } from '../pages/shopping-list/shopping-list';
-import { ShoppingListMenuPage } from '../pages/shopping-list-menu/shopping-list-menu';
-import { RecipeDetailsPage } from '../pages/recipe-details/recipe-details';
-import { RecipeDetailsMenuPage } from '../pages/recipe-details-menu/recipe-details-menu';
-import { WeekplanPage } from '../pages/weekplan/weekplan';
-import { WeekplanNewEntryPage } from '../pages/weekplan-new-entry/weekplan-new-entry';
-import { RecipeFormPage } from '../pages/recipe-form/recipe-form';
-import { ConverterPage } from '../pages/converter/converter';
 
 import { RecipesProvider } from '../providers/recipes/recipes';
 import { LocalStorageProvider } from '../providers/local-storage/local-storage';
-
-import { FilterRecipesPipe } from '../pipes/filter-recipes/filter-recipes';
-import { ThumbnailPipe } from '../pipes/thumbnail/thumbnail';
-import { DifficultyStringPipe } from '../pipes/difficulty-string/difficulty-string';
-import { SortRecipesPipe } from '../pipes/sort-recipes/sort-recipes';
-import { CalcServingsPipe } from '../pipes/calc-servings/calc-servings';
-import { RoundPipe } from '../pipes/round/round';
-import { WeekdayPipe } from '../pipes/weekday/weekday';
-
-import { NumberPickerComponent } from '../components/number-picker/number-picker';
 
 import { Environment } from '../environment';
 
@@ -45,24 +26,7 @@ const cloudSettings: CloudSettings = {
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    ShoppingListPage,
-    ShoppingListMenuPage,
-    RecipeDetailsPage,
-    RecipeDetailsMenuPage,
-    RecipeFormPage,
-    WeekplanPage,
-    WeekplanNewEntryPage,
-    ConverterPage,
-    FilterRecipesPipe,
-    ThumbnailPipe,
-    DifficultyStringPipe,
-    CalcServingsPipe,
-    SortRecipesPipe,
-    RoundPipe,
-    WeekdayPipe,
-    NumberPickerComponent
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -76,16 +40,7 @@ const cloudSettings: CloudSettings = {
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage,
-    ShoppingListPage,
-    ShoppingListMenuPage,
-    RecipeDetailsPage,
-    RecipeDetailsMenuPage,
-    RecipeFormPage,
-    WeekplanPage,
-    WeekplanNewEntryPage,
-    ConverterPage
+    MyApp
   ],
   providers: [
     StatusBar,

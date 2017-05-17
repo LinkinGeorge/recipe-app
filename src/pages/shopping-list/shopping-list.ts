@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 
-import { ShoppingListMenuPage } from '../shopping-list-menu/shopping-list-menu';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 @IonicPage()
@@ -35,7 +34,7 @@ export class ShoppingListPage {
   }
 
   showMenu(event) {
-    let popover = this.popoverCtrl.create(ShoppingListMenuPage);
+    let popover = this.popoverCtrl.create('ShoppingListMenuPage');
     popover.present({
       ev: event
     });

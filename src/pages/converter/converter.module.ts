@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+import { PipesModule } from '../../pipes/pipes.module';
 import { ConverterPage } from './converter';
 
 @NgModule({
@@ -8,6 +9,7 @@ import { ConverterPage } from './converter';
   ],
   imports: [
     IonicPageModule.forChild(ConverterPage),
+    PipesModule
   ],
   exports: [
     ConverterPage

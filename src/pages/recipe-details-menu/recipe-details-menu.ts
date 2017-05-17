@@ -3,8 +3,6 @@ import { IonicPage, NavParams, NavController, ViewController, ToastController, A
 
 import { PlanEntry } from '../../models/plan-entry';
 
-import { RecipeFormPage } from '../recipe-form/recipe-form';
-
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
@@ -29,7 +27,7 @@ export class RecipeDetailsMenuPage {
   }
 
   editRecipe() {
-    this.navCtrl.push(RecipeFormPage, {
+    this.navCtrl.push('RecipeFormPage', {
       recipe: this.recipe
     }).then(() => {
       this.viewCtrl.dismiss();

@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
-import { RecipeDetailsMenuPage } from '../recipe-details-menu/recipe-details-menu';
-import { ConverterPage } from '../converter/converter';
-
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 @IonicPage()
@@ -31,7 +28,7 @@ export class RecipeDetailsPage {
   }
 
   showMenu(event) {
-    let popover = this.popoverCtrl.create(RecipeDetailsMenuPage,{
+    let popover = this.popoverCtrl.create('RecipeDetailsMenuPage',{
       recipe: this.recipe
     });
     popover.present({
@@ -54,7 +51,7 @@ export class RecipeDetailsPage {
   }
 
   showConverter() {
-    let converterModal = this.modalCtrl.create(ConverterPage);
+    let converterModal = this.modalCtrl.create('ConverterPage');
     converterModal.present();
   }
 

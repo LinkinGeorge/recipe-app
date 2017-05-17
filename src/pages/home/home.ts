@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, ActionSheetController } from 'ionic-angular';
 
-import { RecipeDetailsPage } from '../recipe-details/recipe-details';
-import { RecipeFormPage } from '../recipe-form/recipe-form';
 import { RecipesProvider } from '../../providers/recipes/recipes';
 
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -42,13 +41,13 @@ export class HomePage {
   }
 
   viewRecipe(recipe) {
-    this.navCtrl.push(RecipeDetailsPage, {
+    this.navCtrl.push('RecipeDetailsPage', {
       recipe: recipe
     });
   }
 
   newRecipe() {
-    this.navCtrl.push(RecipeFormPage);
+    this.navCtrl.push('RecipeFormPage');
   }
 
   toggleSearch() {
