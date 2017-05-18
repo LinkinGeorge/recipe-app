@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, PopoverController } from 'ionic-angular';
 
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -42,7 +42,8 @@ export class RecipeFormPage {
     public navParams: NavParams, 
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public popoverCtrl: PopoverController
   ) {
     if (this.navParams.get('recipe')) {
       this.model = JSON.parse(JSON.stringify(this.navParams.get('recipe')));
@@ -124,21 +125,16 @@ export class RecipeFormPage {
     }
   }
 
-  editIngredient(index) {
-    if (this.editing) {
-      this.newIngredient = new Ingredient('', '');
-      this.editing = false;
-    } else {
-      this.editing = true;
-      this.editIngr = index;
-      this.newIngredient = this.ingredients[index];
-    }
-  }
-
-  updateIngredient(index) {
-    this.ingredients[index] = this.newIngredient;
-    this.newIngredient = new Ingredient('', '');
-    this.editing = false;
+  editIngredient(ingr, index, event) {
+    let editPopover = this.popoverCtrl.create('RecipeFormEditPage', {ingredient: ingr});
+    editPopover.onDidDismiss(ingredient => {
+      if (ingredient) {
+        this.ingredients.splice(index, 1, ingredient)
+      }
+    });
+    editPopover.present({
+      ev: event
+    });
   }
 
   removeIngredient(ingredient) {
