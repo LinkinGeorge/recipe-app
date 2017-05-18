@@ -1,6 +1,7 @@
 import { CalcServingsPipe } from './calc-servings';
 import { DifficultyStringPipe } from './difficulty-string';
 import { FilterRecipesPipe } from './filter-recipes';
+import { NoVeggiesPipe } from './no-veggies';
 import { RoundPipe } from './round';
 import { SortRecipesPipe } from './sort-recipes';
 import { ThumbnailPipe } from './thumbnail';
@@ -12,6 +13,7 @@ import { NgModule } from '@angular/core';
         CalcServingsPipe,
         DifficultyStringPipe,
         FilterRecipesPipe,
+        NoVeggiesPipe,
         RoundPipe,
         SortRecipesPipe,
         ThumbnailPipe,
@@ -24,6 +26,7 @@ import { NgModule } from '@angular/core';
         CalcServingsPipe,
         DifficultyStringPipe,
         FilterRecipesPipe,
+        NoVeggiesPipe,
         RoundPipe,
         SortRecipesPipe,
         ThumbnailPipe,

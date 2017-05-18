@@ -52,6 +52,10 @@
         <div class="img-container">
           <img *ngIf="!recipe.heroImage" class="thumbnail" src="assets/images/comingsoon.jpg"/>
           <img *ngIf="recipe.heroImage" class="thumbnail" src="{{ recipe.heroImage | thumbnail:600:0 }}"/>
+          <div class="veggie">
+            <img *ngIf="recipe.categories.includes('Vegetarisch')" src="assets/svg/vegetarian.svg">
+            <img *ngIf="recipe.categories.includes('Vegan')" src="assets/svg/vegan.svg">
+          </div>
           <div class="minutes">
             <ion-icon name="time" style="padding-right: 0.5rem"></ion-icon>
             <span> {{recipe.duration}} min.</span>
@@ -61,7 +65,7 @@
           <ion-card-title text-wrap style="padding-top: 0; font-weight: 300; color: black;">
             {{ recipe.title }}
           </ion-card-title>
-          <div *ngIf="recipe.categories" class="categories" text-wrap><span *ngFor="let ctg of recipe.categories" style="margin-right: 2px;"><span style="margin-right: 2px;">#</span><strong>{{ ctg }}</strong> </span></div>
+          <div *ngIf="recipe.categories" class="categories" text-wrap><span *ngFor="let ctg of recipe.categories | noVeggies" style="margin-right: 2px;"><span style="margin-right: 2px;">#</span><strong>{{ ctg }}</strong> </span></div>
         </ion-card-content>
       </ion-card>
   </div>
