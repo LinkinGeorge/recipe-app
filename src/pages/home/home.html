@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header [ngClass]="{'hide-header':showheader,'show-header':hideheader}">
   <ion-navbar color="primary">
     <ion-title>
       Rezeptbuch
@@ -13,11 +13,11 @@
       <button class="nav-button" ion-button icon-only (click)="showSortOptions()">
         <ion-icon name="funnel"></ion-icon>
       </button>
-      <button class="nav-button" ion-button icon-only (click)="toggleSearch()">
-        <ion-icon name="search"></ion-icon>
-      </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-searchbar #search [(ngModel)]="query" showCancelButton="true" spellcheck="true"></ion-searchbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -29,11 +29,6 @@
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-  <div *ngIf="searching">
-    <ion-searchbar [(ngModel)]="ingrQuery" placeholder="Suche nach Zutaten"></ion-searchbar>
-    <ion-searchbar [(ngModel)]="ctgQuery" placeholder="Suche nach Kategorien"></ion-searchbar>
-    <ion-searchbar [(ngModel)]="titleQuery" placeholder="Suche nach Titel"></ion-searchbar>
-  </div>
   <div class="spin" *ngIf="!recipes">
     <ion-spinner text-center></ion-spinner>
   </div>
@@ -48,7 +43,7 @@
     </ion-item>
   </ion-list>
   <div *ngIf="recipes">
-      <ion-card *ngFor="let recipe of recipes | filterRecipes:ingrQuery:ctgQuery:titleQuery | sortRecipes:sortType:sortDesc" (tap)="viewRecipe(recipe)">
+      <ion-card *ngFor="let recipe of recipes | filterRecipes:query | sortRecipes:sortType:sortDesc" (tap)="viewRecipe(recipe)">
         <div class="img-container">
           <img *ngIf="!recipe.heroImage" class="thumbnail" src="assets/images/comingsoon.jpg"/>
           <img *ngIf="recipe.heroImage" class="thumbnail" src="{{ recipe.heroImage | thumbnail:600:0 }}"/>

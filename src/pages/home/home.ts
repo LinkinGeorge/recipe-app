@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, ActionSheetController, ToastController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { IonicPage, Content, NavController, ActionSheetController, ToastController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
@@ -10,17 +10,25 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild(Content) content: Content;
+  start = 0;
+  threshold = 100;
+  slideHeaderPrevious = 0;
+  ionScroll:any;
+  showheader:boolean;
+  hideheader:boolean;
+  headercontent:any;
+
   recipes;
 
-  searching = false;
-  ingrQuery = '';
-  ctgQuery = '';
-  titleQuery = '';
+  query = '';
 
   sortType = 'date';
   sortDesc = true;
 
   constructor(
+    public renderer: Renderer,
+    public myElement: ElementRef,
     public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
@@ -43,6 +51,26 @@ export class HomePage {
       toast.present();
     }
     );
+  }
+
+  ngOnInit() {
+    // Ionic scroll element
+    this.ionScroll = this.myElement.nativeElement.getElementsByClassName('scroll-content')[0];
+    // On scroll function
+    this.ionScroll.addEventListener("scroll", () => {
+      if (this.ionScroll.scrollTop - this.start > this.threshold) {
+        this.showheader = true;
+        this.hideheader = false;
+      } else {
+        this.showheader = false;
+        this.hideheader = true;
+      }
+      if (this.slideHeaderPrevious >= this.ionScroll.scrollTop - this.start) {
+        this.showheader = false;
+        this.hideheader = true;
+      }
+      this.slideHeaderPrevious = this.ionScroll.scrollTop - this.start;
+    });
   }
 
   doRefresh(refresher) {
@@ -74,10 +102,6 @@ export class HomePage {
 
   newRecipe() {
     this.navCtrl.push('RecipeFormPage');
-  }
-
-  toggleSearch() {
-    this.searching = !this.searching;
   }
 
   showSortOptions() {
@@ -121,24 +145,24 @@ export class HomePage {
   }
 
   toggleCategory(ctg: string) {
-    if (!this.ctgQuery.includes(ctg)) {
+    if (!this.query.includes(ctg)) {
       // the category is not present in the query
-      if (this.ctgQuery === '') {
-        this.ctgQuery = ctg;
+      if (this.query === '') {
+        this.query = ctg;
       } else {
-        this.ctgQuery = this.ctgQuery.concat(', ' + ctg);
+        this.query = this.query.concat(', ' + ctg);
       }
     } else {
       // category already present in query
-      if (this.ctgQuery.includes(',')) {
+      if (this.query.includes(',')) {
         // there are multiple categories in query
-        if (this.ctgQuery.endsWith(ctg)) {
-          this.ctgQuery = this.ctgQuery.replace((', ' + ctg), '');
+        if (this.query.endsWith(ctg)) {
+          this.query = this.query.replace((', ' + ctg), '');
         } else {
-          this.ctgQuery = this.ctgQuery.replace((ctg + ', '), '');
+          this.query = this.query.replace((ctg + ', '), '');
         }
       } else {
-        this.ctgQuery = '';
+        this.query = '';
       }
     }
   }

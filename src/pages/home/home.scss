@@ -49,4 +49,17 @@ page-home {
         text-align: center;
         margin-top: 5rem;
     }
+
+    .scroll-content{
+        top: -112px !important;
+        padding-top: 120px !important;
+    }
+    .hide-header{
+        transition : top 0.15s ease;
+        top: -112px;
+    }
+    .show-header{
+        transition : top 0.15s ease;
+        top: 0px;
+    }
 }
