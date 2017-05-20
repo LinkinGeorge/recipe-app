@@ -22,13 +22,15 @@
     <button ion-fab color="primary" (click)="toggleFab()">
       <ion-icon name="funnel"></ion-icon>
     </button>
-    <ion-fab-list side="top">
+    <ion-fab-list side="left">
       <button ion-fab [ngClass]="{'filtered': categoryFiltered('Vegetarisch')}" (click)="toggleCategory('Vegetarisch')">
         <img src="assets/svg/vegetarian.svg">
       </button>
       <button ion-fab [ngClass]="{'filtered': categoryFiltered('Vegan')}" (click)="toggleCategory('Vegan')">
         <img src="assets/svg/vegan.svg">
       </button>
+    </ion-fab-list>
+    <ion-fab-list side="top">
       <button ion-fab [ngClass]="{'filtered': categoryFiltered('Pasta')}" (click)="toggleCategory('Pasta')">
         <img src="assets/svg/farfalle.svg">
       </button>

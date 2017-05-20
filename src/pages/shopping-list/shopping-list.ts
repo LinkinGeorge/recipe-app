@@ -33,13 +33,6 @@ export class ShoppingListPage {
     })
   }
 
-  showMenu(event) {
-    let popover = this.popoverCtrl.create('ShoppingListMenuPage');
-    popover.present({
-      ev: event
-    });
-  }
-
   addItem(item) {
     if (item !== '') {
       this.shoppingList.push(item);

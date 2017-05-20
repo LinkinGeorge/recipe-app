@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
@@ -12,10 +12,13 @@ export class WeekplanNewEntryPage {
   day = "0";
   recipes = new Array();
 
-  constructor(public viewCtrl: ViewController, public localStorage: LocalStorageProvider) {
+  constructor(public navParams: NavParams, public viewCtrl: ViewController, public localStorage: LocalStorageProvider) {
     this.localStorage.getRecipes().then((recipes) => {
       this.recipes = JSON.parse(recipes);
     });
+    if (this.navParams.get('day')) {
+      this.day = this.navParams.get('day');
+    }
   }
 
   ionViewDidLoad() {

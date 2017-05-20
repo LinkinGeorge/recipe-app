@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, ViewController, ToastController, ActionSheetController } from 'ionic-angular';
+import { Deploy } from '@ionic/cloud-angular';
 
 @IonicPage()
 @Component({
@@ -12,10 +13,13 @@ export class HomeMenuPage {
   sortString: string;
 
   constructor(
+    public loadingCtrl: LoadingController,
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public viewCtrl: ViewController,
-    public actionSheetCtrl: ActionSheetController
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController,
+    public deploy: Deploy
   ) { 
     this.sortType = this.navParams.get('sortType');
     this.sortDesc = this.navParams.get('sortDesc');
@@ -98,6 +102,41 @@ export class HomeMenuPage {
     } else {
       return 'Aufsteigend';
     }
+  }
+
+  checkForUpdate() {
+   const checking = this.loadingCtrl.create({
+     content: 'Suche nach Updates...'
+   });
+   checking.present();
+
+  this.deploy.check().then((snapshotAvailable: boolean) => {
+      checking.dismiss();
+      if (snapshotAvailable) {
+        this.downloadAndInstall();
+      } else {
+        const toast = this.toastCtrl.create({
+          message: 'Kein Update verfügbar',
+          duration: 3000
+        });
+        toast.present();
+      }
+    }, (error) => {
+      checking.dismiss();
+      const toast = this.toastCtrl.create({
+          message: 'Es ist ein Fehler bei der Update-Abfrage aufgetreten.',
+          duration: 3000
+        });
+        toast.present();
+    });
+  }
+
+  private downloadAndInstall() {
+    const updating = this.loadingCtrl.create({
+      content: 'Updates werden installiert...'
+    });
+    updating.present();
+    this.deploy.download().then(() => this.deploy.extract()).then(() => this.deploy.load());
   }
 
 }

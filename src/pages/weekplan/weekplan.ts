@@ -46,6 +46,16 @@ export class WeekplanPage {
     newEntryModal.present();
   }
 
+  newDayEntry(day) {
+    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: day.toString()});
+    newEntryModal.onDidDismiss(data => {
+      if (data) {
+        this.addEntry(data.title, data.day, data.recipe);
+      }
+    })
+    newEntryModal.present();
+  }
+
   addEntry(title, dayIndex, recipe) {
     if (title !== '') {
       const today = new Date(Date.now());
