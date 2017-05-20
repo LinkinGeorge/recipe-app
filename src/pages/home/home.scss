@@ -4,6 +4,30 @@ page-home {
         margin: 0 0.75rem;
     }
 
+    button img {
+        height: 28px;
+        width: 28px;
+    }
+
+    .fab-in-list {
+        height: 60px;
+        width: 60px;
+        background-color: #222;
+        transition: all .5s ease;
+    }
+
+    .fab-in-list.filtered {
+        background-color: #4357AD;
+    }
+
+    .recipes {
+        transition: opacity .5s ease;
+    }
+
+    .recipes.fade {
+        opacity: 0.3;
+    }
+
     .img-container {
         position: relative;
         text-align: right;

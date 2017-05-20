@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { IonicPage, Content, NavController, ActionSheetController, ToastController } from 'ionic-angular';
+import { IonicPage, Content, NavController, ActionSheetController, ToastController, PopoverController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
@@ -23,6 +23,8 @@ export class HomePage {
 
   query = '';
 
+  fabActive = false;
+
   sortType = 'date';
   sortDesc = true;
 
@@ -32,6 +34,7 @@ export class HomePage {
     public navCtrl: NavController,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
+    public popoverCtrl: PopoverController,
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider
   ) {
@@ -70,6 +73,23 @@ export class HomePage {
         this.hideheader = true;
       }
       this.slideHeaderPrevious = this.ionScroll.scrollTop - this.start;
+    });
+  }
+
+  showMenu(event) {
+    console.log('Test');
+    let popover = this.popoverCtrl.create('HomeMenuPage',{
+      sortType: this.sortType,
+      sortDesc: this.sortDesc
+    });
+    popover.onDidDismiss(data => {
+      if (data) {
+        this.sortDesc = data.sortDesc;
+        this.sortType = data.sortType;
+      }
+    })
+    popover.present({
+      ev: event,
     });
   }
 
@@ -165,6 +185,14 @@ export class HomePage {
         this.query = '';
       }
     }
+  }
+
+  categoryFiltered(ctg: string):boolean {
+    return this.query.trim().toLowerCase().includes(ctg.trim().toLowerCase());
+  }
+
+  toggleFab() {
+    this.fabActive = !this.fabActive;
   }
 
 }

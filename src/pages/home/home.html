@@ -4,14 +4,8 @@
       Rezeptbuch
     </ion-title>
     <ion-buttons end>
-      <button class="nav-button" *ngIf="!sortDesc" ion-button icon-only (click)="sortDesc = true">
-        <ion-icon name="arrow-up"></ion-icon>
-      </button>
-      <button class="nav-button" *ngIf="sortDesc" ion-button icon-only (click)="sortDesc = false">
-        <ion-icon name="arrow-down"></ion-icon>
-      </button>
-      <button class="nav-button" ion-button icon-only (click)="showSortOptions()">
-        <ion-icon name="funnel"></ion-icon>
+      <button ion-button icon-only (click)="showMenu($event)">
+        <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -25,24 +19,28 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-fab right bottom>
-    <button ion-fab icon-only color="primary" (click)="newRecipe()">
-      <ion-icon name="add"></ion-icon>
+    <button ion-fab color="primary" (click)="toggleFab()">
+      <ion-icon name="funnel"></ion-icon>
     </button>
+    <ion-fab-list side="top">
+      <button ion-fab [ngClass]="{'filtered': categoryFiltered('Vegetarisch')}" (click)="toggleCategory('Vegetarisch')">
+        <img src="assets/svg/vegetarian.svg">
+      </button>
+      <button ion-fab [ngClass]="{'filtered': categoryFiltered('Vegan')}" (click)="toggleCategory('Vegan')">
+        <img src="assets/svg/vegan.svg">
+      </button>
+      <button ion-fab [ngClass]="{'filtered': categoryFiltered('Pasta')}" (click)="toggleCategory('Pasta')">
+        <img src="assets/svg/farfalle.svg">
+      </button>
+      <button ion-fab [ngClass]="{'filtered': categoryFiltered('Salat')}" (click)="toggleCategory('Salat')">
+        <img src="assets/svg/salad.svg">
+      </button>
+    </ion-fab-list>
   </ion-fab>
   <div class="spin" *ngIf="!recipes">
     <ion-spinner text-center></ion-spinner>
   </div>
-  <ion-list inset no-lines *ngIf="recipes">
-    <ion-item>
-      <ion-label>Vegetarisch</ion-label>
-      <ion-toggle checked="false" (ionChange)="toggleCategory('Vegetarisch')"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-label>Vegan</ion-label>
-      <ion-toggle checked="false" (ionChange)="toggleCategory('Vegan')"></ion-toggle>
-    </ion-item>
-  </ion-list>
-  <div *ngIf="recipes">
+  <div class="recipes" *ngIf="recipes" [ngClass]="{'fade': fabActive}">
       <ion-card *ngFor="let recipe of recipes | filterRecipes:query | sortRecipes:sortType:sortDesc" (tap)="viewRecipe(recipe)">
         <div class="img-container">
           <img *ngIf="!recipe.heroImage" class="thumbnail" src="assets/images/comingsoon.jpg"/>
