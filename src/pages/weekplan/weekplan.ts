@@ -12,6 +12,7 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
 export class WeekplanPage {
   public plan = new Array<PlanEntry>();
   deleting = false;
+  week = new Array<Date>(7);
 
   constructor(
     public navCtrl: NavController, 
@@ -19,6 +20,9 @@ export class WeekplanPage {
     public modalCtrl: ModalController,
     public localStorage: LocalStorageProvider
   ) {
+    for (var i = 0; i < this.week.length; i++) {
+      this.week[i] = this.addDays(new Date(Date.now()), i);
+    }
     this.localStorage.getPlan().then((plan) => {
       if (plan) {
         this.plan = JSON.parse(plan);
@@ -59,25 +63,22 @@ export class WeekplanPage {
   addEntry(title, dayIndex, recipe) {
     if (title !== '') {
       const today = new Date(Date.now());
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = null;
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = title;
       const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
+      this.plan.push(newEntry);
       this.localStorage.addEntry(newEntry);
     } 
     if (recipe !== null) {
       const today = new Date(Date.now());
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = recipe;
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = '';
       const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '');
+      this.plan.push(newEntry);
       this.localStorage.addEntry(newEntry);
     }
   }
 
-  deleteEntry(dayIndex) {
-    const date = this.addDays(new Date(Date.now()), dayIndex);
-    this.plan[this.getByDate(date)].recipe = null;
-    this.plan[this.getByDate(date)].custom = '';
-    this.localStorage.removeEntry(date);
+  deleteEntry(entry) {
+    this.plan[this.plan.indexOf(entry)].recipe = null;
+    this.plan[this.plan.indexOf(entry)].custom = '';
+    this.localStorage.removeEntry(entry);
   }
 
   hasRecipe(entry) {
@@ -126,12 +127,6 @@ export class WeekplanPage {
     return this.plan.findIndex((day) => {
       return new Date(day.date).getDay() === new Date(date).getDay();
     }) !== -1;
-  }
-  
-  private getByDate(date: Date):number {
-    return this.plan.findIndex((day) => {
-     return new Date(day.date).getDate() === new Date(date).getDate();
-    });
   }
 
 }

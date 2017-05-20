@@ -102,19 +102,15 @@ export class LocalStorageProvider {
   addEntry(entry: PlanEntry) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
-      if (this.datePresent(entry.date)) {
-        this.plan[this.getByDate(entry.date)] = entry;
-      } else {
-        this.plan.push(entry);
-      }
+      this.plan.push(entry);
       this.storage.set('plan', JSON.stringify(this.plan));
     }));
   }
 
-  removeEntry(date: Date) {
+  removeEntry(entry: PlanEntry) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
-      this.plan.splice(this.getByDate(date), 1);
+      this.plan.splice(this.plan.indexOf(entry), 1);
       this.storage.set('plan', JSON.stringify(this.plan));
     }));
   }
@@ -133,18 +129,6 @@ export class LocalStorageProvider {
       }
       this.storage.set('plan', JSON.stringify(this.plan));
     });
-  }
-
-  private getByDate(date: Date):number {
-    return this.plan.findIndex((day) => {
-     return new Date(day.date).getDate() === new Date(date).getDate();
-    });
-  }
-
-  private datePresent(date: Date):boolean {
-    return this.plan.findIndex((day) => {
-      return new Date(day.date).getDate() === new Date(date).getDate();
-    }) !== -1;
   }
 
 }
