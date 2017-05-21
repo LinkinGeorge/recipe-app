@@ -77,7 +77,6 @@ export class HomePage {
   }
 
   showMenu(event) {
-    console.log('Test');
     let popover = this.popoverCtrl.create('HomeMenuPage',{
       sortType: this.sortType,
       sortDesc: this.sortDesc

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, PopoverController } from 'ionic-angular';
+import { IonicPage, ViewController, NavController, NavParams, ToastController, PopoverController } from 'ionic-angular';
 
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -38,6 +38,7 @@ export class RecipeFormPage {
   page: string = 'info';
 
   constructor(
+    public viewCtrl: ViewController,
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public recipeService: RecipesProvider,
@@ -71,9 +72,7 @@ export class RecipeFormPage {
         .subscribe(
           (recipe) => {
             this.localStorage.addRecipe(this.model);
-            this.navCtrl.setPages([
-              { page: 'HomePage' }
-            ]);
+            this.navCtrl.pop();
           },
           (error) => {
             let toast = this.toastCtrl.create({
@@ -89,9 +88,7 @@ export class RecipeFormPage {
         .subscribe(
           (recipe) => {
             this.localStorage.updateRecipe(this.model);
-            this.navCtrl.setPages([
-              { page: 'HomePage' }
-            ]);
+            this.navCtrl.pop();
           },
           (error) => {
             let toast = this.toastCtrl.create({

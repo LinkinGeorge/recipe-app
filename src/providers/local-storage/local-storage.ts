@@ -100,11 +100,17 @@ export class LocalStorageProvider {
   }
 
   addEntry(entry: PlanEntry) {
-    this.getPlan().then((plan => {
-      this.plan = JSON.parse(plan);
-      this.plan.push(entry);
-      this.storage.set('plan', JSON.stringify(this.plan));
-    }));
+    return new Promise(
+      resolve => {
+        this.getPlan().then((plan => {
+          this.plan = JSON.parse(plan);
+          this.plan.push(entry);
+          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+            resolve();
+          });
+        }));
+      }
+    );
   }
 
   removeEntry(entry: PlanEntry) {

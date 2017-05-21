@@ -46,17 +46,17 @@ export class WeekplanPage {
       if (data) {
         this.addEntry(data.title, data.day, data.recipe);
       }
-    })
+    });
     newEntryModal.present();
   }
 
   newDayEntry(day) {
-    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: day.toString()});
+    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: day.getDay().toString()});
     newEntryModal.onDidDismiss(data => {
       if (data) {
         this.addEntry(data.title, data.day, data.recipe);
       }
-    })
+    });
     newEntryModal.present();
   }
 
@@ -64,14 +64,26 @@ export class WeekplanPage {
     if (title !== '') {
       const today = new Date(Date.now());
       const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
-      this.plan.push(newEntry);
-      this.localStorage.addEntry(newEntry);
+      this.localStorage.addEntry(newEntry).then(() => {
+        this.localStorage.getPlan().then((plan) => {
+          if (plan) {
+            this.plan = JSON.parse(plan);
+          }
+          this.fillUpPlan();
+        });
+      });
     } 
     if (recipe !== null) {
       const today = new Date(Date.now());
       const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '');
-      this.plan.push(newEntry);
-      this.localStorage.addEntry(newEntry);
+      this.localStorage.addEntry(newEntry).then(() => {
+        this.localStorage.getPlan().then((plan) => {
+          if (plan) {
+            this.plan = JSON.parse(plan);
+          }
+          this.fillUpPlan();
+        });
+      });;
     }
   }
 
