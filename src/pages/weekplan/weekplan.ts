@@ -51,13 +51,15 @@ export class WeekplanPage {
   }
 
   newDayEntry(dayIndex) {
-    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: dayIndex.toString()});
-    newEntryModal.onDidDismiss(data => {
-      if (data) {
-        this.addEntry(data.title, data.day, data.recipe);
-      }
-    });
-    newEntryModal.present();
+    if (!this.deleting) {
+      let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: dayIndex.toString()});
+      newEntryModal.onDidDismiss(data => {
+        if (data) {
+          this.addEntry(data.title, data.day, data.recipe);
+        }
+      });
+      newEntryModal.present();
+    }
   }
 
   addEntry(title, dayIndex, recipe) {
@@ -103,7 +105,7 @@ export class WeekplanPage {
   }
 
   viewRecipe(recipe = null) {
-    if (recipe !== null) {
+    if (recipe !== null && !this.deleting) {
       this.navCtrl.push('RecipeDetailsPage', {
         recipeId: recipe._id
       });

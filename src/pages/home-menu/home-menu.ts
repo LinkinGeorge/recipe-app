@@ -100,9 +100,9 @@ export class HomeMenuPage {
 
   sortToString(sortDesc: boolean):string {
     if (sortDesc) {
-      return 'Absteigend';
-    } else {
       return 'Aufsteigend';
+    } else {
+      return 'Absteigend';
     }
   }
 
