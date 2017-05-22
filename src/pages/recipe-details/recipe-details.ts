@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
-import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
 @IonicPage()
@@ -24,7 +23,6 @@ export class RecipeDetailsPage {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public popoverCtrl: PopoverController,
-    public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider
   ) {
   }

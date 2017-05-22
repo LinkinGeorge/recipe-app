@@ -50,8 +50,8 @@ export class WeekplanPage {
     newEntryModal.present();
   }
 
-  newDayEntry(day) {
-    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: day.getDay().toString()});
+  newDayEntry(dayIndex) {
+    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: dayIndex.toString()});
     newEntryModal.onDidDismiss(data => {
       if (data) {
         this.addEntry(data.title, data.day, data.recipe);
