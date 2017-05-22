@@ -44,11 +44,11 @@
       </ion-item>
 
       <ion-item>
-        <number-picker [start]="2" [max]="20" [caption]="'Personen'" [captionSingular]="'Person'" (onChange)="servingsChange($event)"></number-picker>
+        <number-picker [start]="model.servings" [max]="20" [caption]="'Personen'" [captionSingular]="'Person'" (onChange)="servingsChange($event)"></number-picker>
       </ion-item>
 
       <ion-item>
-        <number-picker [start]="20" [steps]="5" [min]="5" [max]="180" [caption]="'Minuten'" (onChange)="durationChange($event)"></number-picker>
+        <number-picker [start]="model.duration" [steps]="5" [min]="5" [max]="180" [caption]="'Minuten'" (onChange)="durationChange($event)"></number-picker>
       </ion-item>
 
       <ion-item>

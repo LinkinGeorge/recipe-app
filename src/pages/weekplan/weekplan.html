@@ -18,16 +18,18 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let day of plan; let i = index" (click)="viewRecipe(day.recipe)">
-      <h5 class="date-label" (tap)="newDayEntry(i)">{{ day.date | weekday }}</h5>
-      <div class="recipe-title" *ngIf="hasRecipe(day)" text-wrap>
-        <div *ngIf="day.recipe">{{ day.recipe.title }}</div>
-        <div *ngIf="!day.recipe">{{ day.custom }}</div>
-        <div *ngIf="deleting" text-center padding-top>
-          <button ion-button icon-right default color="danger" (click)="deleteEntry(i)">
-            Löschen
-            <ion-icon name="trash"></ion-icon>
-          </button>
+    <ion-item *ngFor="let day of week; let i = index">
+      <h5 class="date-label" (tap)="newDayEntry(i)">{{ day | weekday }}</h5>
+      <div *ngFor="let entry of plan | dayFilter:day"  (tap)="viewRecipe(entry.recipe)">
+        <div class="recipe-title" *ngIf="hasRecipe(entry)" text-wrap>
+          <div *ngIf="entry.recipe">{{ entry.recipe.title }}</div>
+          <div *ngIf="!entry.recipe">{{ entry.custom }}</div>
+          <div *ngIf="deleting" text-center padding-top>
+            <button ion-button icon-right default color="danger" (click)="deleteEntry(entry)">
+              Löschen
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </div>
         </div>
       </div>
     </ion-item>

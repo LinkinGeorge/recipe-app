@@ -12,6 +12,7 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
 export class WeekplanPage {
   public plan = new Array<PlanEntry>();
   deleting = false;
+  week = new Array<Date>(7);
 
   constructor(
     public navCtrl: NavController, 
@@ -19,6 +20,9 @@ export class WeekplanPage {
     public modalCtrl: ModalController,
     public localStorage: LocalStorageProvider
   ) {
+    for (var i = 0; i < this.week.length; i++) {
+      this.week[i] = this.addDays(new Date(Date.now()), i);
+    }
     this.localStorage.getPlan().then((plan) => {
       if (plan) {
         this.plan = JSON.parse(plan);
@@ -42,42 +46,54 @@ export class WeekplanPage {
       if (data) {
         this.addEntry(data.title, data.day, data.recipe);
       }
-    })
+    });
     newEntryModal.present();
   }
 
-  newDayEntry(day) {
-    let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: day.toString()});
-    newEntryModal.onDidDismiss(data => {
-      if (data) {
-        this.addEntry(data.title, data.day, data.recipe);
-      }
-    })
-    newEntryModal.present();
-  }
-
-  addEntry(title, dayIndex, recipe) {
-    if (title !== '') {
-      const today = new Date(Date.now());
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = null;
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = title;
-      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
-      this.localStorage.addEntry(newEntry);
-    } 
-    if (recipe !== null) {
-      const today = new Date(Date.now());
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].recipe = recipe;
-      this.plan[this.getByDate(this.addDays(today, dayIndex))].custom = '';
-      const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '');
-      this.localStorage.addEntry(newEntry);
+  newDayEntry(dayIndex) {
+    if (!this.deleting) {
+      let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: dayIndex.toString()});
+      newEntryModal.onDidDismiss(data => {
+        if (data) {
+          this.addEntry(data.title, data.day, data.recipe);
+        }
+      });
+      newEntryModal.present();
     }
   }
 
-  deleteEntry(dayIndex) {
-    const date = this.addDays(new Date(Date.now()), dayIndex);
-    this.plan[this.getByDate(date)].recipe = null;
-    this.plan[this.getByDate(date)].custom = '';
-    this.localStorage.removeEntry(date);
+  addEntry(title, dayIndex, recipe) {
+    const id = this.randomString(16, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    if (title !== '') {
+      const today = new Date(Date.now());
+      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title, id);
+      this.localStorage.addEntry(newEntry).then(() => {
+        this.localStorage.getPlan().then((plan) => {
+          if (plan) {
+            this.plan = JSON.parse(plan);
+          }
+          this.fillUpPlan();
+        });
+      });
+    } 
+    if (recipe !== null) {
+      const today = new Date(Date.now());
+      const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '', id);
+      this.localStorage.addEntry(newEntry).then(() => {
+        this.localStorage.getPlan().then((plan) => {
+          if (plan) {
+            this.plan = JSON.parse(plan);
+          }
+          this.fillUpPlan();
+        });
+      });;
+    }
+  }
+
+  deleteEntry(entry) {
+    this.plan[this.plan.indexOf(entry)].recipe = null;
+    this.plan[this.plan.indexOf(entry)].custom = '';
+    this.localStorage.removeEntry(entry._id);
   }
 
   hasRecipe(entry) {
@@ -89,7 +105,7 @@ export class WeekplanPage {
   }
 
   viewRecipe(recipe = null) {
-    if (recipe !== null) {
+    if (recipe !== null && !this.deleting) {
       this.navCtrl.push('RecipeDetailsPage', {
         recipeId: recipe._id
       });
@@ -127,11 +143,13 @@ export class WeekplanPage {
       return new Date(day.date).getDay() === new Date(date).getDay();
     }) !== -1;
   }
-  
-  private getByDate(date: Date):number {
-    return this.plan.findIndex((day) => {
-     return new Date(day.date).getDate() === new Date(date).getDate();
-    });
+
+  private randomString (length, chars) {
+    let result = '';
+    for (let i = length; i > 0; --i) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
   }
 
 }
