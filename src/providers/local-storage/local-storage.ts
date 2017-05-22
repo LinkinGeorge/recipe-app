@@ -43,24 +43,36 @@ export class LocalStorageProvider {
   }
 
   addRecipe(recipe) {
-    this.getRecipes().then((recipes) => {
-      if (recipes) {
-        this.recipes = JSON.parse(recipes);
+    return new Promise(
+      resolve => {
+        this.getRecipes().then((recipes) => {
+          if (recipes) {
+            this.recipes = JSON.parse(recipes);
+          }
+          this.recipes.push(recipe);
+          this.storage.set('recipes', JSON.stringify(this.recipes)).then(() => {
+            resolve(recipe);
+          });
+        })
       }
-      this.recipes.push(recipe);
-      this.storage.set('recipes', JSON.stringify(this.recipes));
-    })
+    );
   }
 
   updateRecipe(recipe) {
-    this.getRecipes().then((recipes) => {
-      let recipeArray = JSON.parse(recipes);
-      const index = this.getById(recipeArray, recipe._id);
-      if (index !== -1) {
-        recipeArray.splice(index, 1, recipe);
+    return new Promise(
+      resolve => {
+        this.getRecipes().then((recipes) => {
+          let recipeArray = JSON.parse(recipes);
+          const index = this.getById(recipeArray, recipe._id);
+          if (index !== -1) {
+            recipeArray.splice(index, 1, recipe);
+          }
+          this.storage.set('recipes', JSON.stringify(recipeArray)).then(() => {
+            resolve(recipe)
+          });
+        })
       }
-      this.storage.set('recipes', JSON.stringify(recipeArray));
-    })
+    )
   }
 
   private getById(recipes: any[], recipeId: string):number {

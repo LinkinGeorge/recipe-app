@@ -63,16 +63,17 @@ export class RecipeFormPage {
   }
 
   save() {
-    this.model.ingredients = this.ingredients;
+    this.model.ingredients = this.ingredients.slice(0);
     if (this.categories.length > 0) {
-      this.model.categories = this.categories;
+      this.model.categories = this.categories.slice(0);
     }
     if (this.newRecipe) {
       this.recipeService.newRecipe(this.model)
         .subscribe(
           (recipe) => {
-            this.localStorage.addRecipe(this.model);
-            this.navCtrl.pop();
+            this.localStorage.addRecipe(this.model).then(() => {
+              this.navCtrl.pop();
+            });
           },
           (error) => {
             let toast = this.toastCtrl.create({
@@ -80,15 +81,15 @@ export class RecipeFormPage {
               duration: 1500
             });
             toast.present();
-            this.navCtrl.pop();
           });
         
     } else {
       this.recipeService.updateRecipe(this.model)
         .subscribe(
           (recipe) => {
-            this.localStorage.updateRecipe(this.model);
-            this.navCtrl.pop();
+            this.localStorage.updateRecipe(this.model).then(() => {
+              this.navCtrl.pop();
+            });
           },
           (error) => {
             let toast = this.toastCtrl.create({

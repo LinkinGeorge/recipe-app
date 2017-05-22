@@ -27,10 +27,10 @@ export class RecipeDetailsMenuPage {
   }
 
   editRecipe() {
-    this.navCtrl.push('RecipeFormPage', {
-      recipe: this.recipe
-    }).then(() => {
-      this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss().then(() => {
+      this.navCtrl.push('RecipeFormPage', {
+        recipe: this.recipe
+      });
     });
   }
 

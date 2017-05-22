@@ -27,7 +27,9 @@ export class HomeMenuPage {
   }
 
   newRecipe() {
-    this.navCtrl.push('RecipeFormPage');
+    this.viewCtrl.dismiss().then(() => {
+      this.navCtrl.push('RecipeFormPage');
+    })
   }
 
   sortDirection() {

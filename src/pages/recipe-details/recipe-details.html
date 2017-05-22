@@ -11,49 +11,49 @@
 </ion-header>
 
 <ion-content>
-<div *ngIf="recipe">
-  <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{recipe.heroImage}}" alt="{{recipe.title}}">
-  <h1 text-center margin text-wrap>{{ recipe.title }}</h1>
-  <div style="font-size: 16px; margin-top: 2rem; margin-bottom: 3rem">
-    <number-picker [start]="recipe.servings" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
-    <div class="info" *ngIf="recipe.categories" text-center text-wrap><span *ngFor="let ctg of recipe.categories"> #<strong>{{ ctg }}</strong> </span></div>
-    <ion-grid>
-      <ion-row>
-        <ion-col col-6 text-right style="padding:0">
-          <span> {{ recipe.duration }} Minuten</span><ion-icon name="time" style="padding: 0 1rem"></ion-icon>
-        </ion-col>
-        <ion-col col-6 text-left style="padding:0">
-          <ion-icon name="star-outline" style="padding: 0 1rem; border-left: 1px #ddd solid"></ion-icon><span> {{ recipe.difficulty | difficultyString }}</span>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-  <h2 text-center margin-bottom>Zutaten</h2>
-  <ion-list>
-    <ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
-      <span #ingredient style="font-size: 16px">
-        <span>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
-        <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
-      </span>
-      <button ion-button icon-only default round outline item-end color="dark" (click)="addToList(ingredient.textContent)" style="height: 40px; width: 40px; padding: 5px">
-        <ion-icon name="cart"></ion-icon>
+  <div *ngIf="recipe">
+    <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{recipe.heroImage}}" alt="{{recipe.title}}">
+    <h1 text-center margin text-wrap>{{ recipe.title }}</h1>
+    <div style="font-size: 16px; margin-top: 2rem; margin-bottom: 3rem">
+      <number-picker [start]="recipe.servings" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
+      <div class="info" *ngIf="recipe.categories" text-center text-wrap><span *ngFor="let ctg of recipe.categories"> #<strong>{{ ctg }}</strong> </span></div>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6 text-right style="padding:0">
+            <span> {{ recipe.duration }} Minuten</span><ion-icon name="time" style="padding: 0 1rem"></ion-icon>
+          </ion-col>
+          <ion-col col-6 text-left style="padding:0">
+            <ion-icon name="star-outline" style="padding: 0 1rem; border-left: 1px #ddd solid"></ion-icon><span> {{ recipe.difficulty | difficultyString }}</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <h2 text-center margin-bottom>Zutaten</h2>
+    <ion-list>
+      <ion-item *ngFor="let ingr of recipe.ingredients" text-wrap>
+        <span #ingredient style="font-size: 16px">
+          <span>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
+          <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
+        </span>
+        <button ion-button icon-only default round outline item-end color="dark" (click)="addToList(ingredient.textContent)" style="height: 40px; width: 40px; padding: 5px">
+          <ion-icon name="cart"></ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+    <div text-center>
+      <button ion-button (click)="showConverter()">
+        <ion-label>Umrechner</ion-label>
+        <ion-icon name="refresh"></ion-icon>
       </button>
-    </ion-item>
-  </ion-list>
-  <div text-center>
-    <button ion-button (click)="showConverter()">
-      <ion-label>Umrechner</ion-label>
-      <ion-icon name="refresh"></ion-icon>
-    </button>
+    </div>
+    <h2 text-center margin-bottom>Beschreibung</h2>
+    <ion-card *ngIf="recipe.description">
+      <ion-card-content>
+        <markdown *ngIf="recipe.description">{{ recipe.description }}</markdown>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="card-background-page">
+      <img *ngIf="recipe.descrImage" src="{{ recipe.descrImage }}" alt="Rezeptbeschreibung">
+    </ion-card>
   </div>
-  <h2 text-center margin-bottom>Beschreibung</h2>
-  <ion-card *ngIf="recipe.description">
-    <ion-card-content>
-      <markdown *ngIf="recipe.description">{{ recipe.description }}</markdown>
-    </ion-card-content>
-  </ion-card>
-  <ion-card class="card-background-page">
-    <img *ngIf="recipe.descrImage" src="{{ recipe.descrImage }}" alt="Rezeptbeschreibung">
-  </ion-card>
-</div>
 </ion-content>
