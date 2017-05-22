@@ -125,10 +125,13 @@ export class LocalStorageProvider {
     );
   }
 
-  removeEntry(entry: PlanEntry) {
+  removeEntry(id: string) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
-      this.plan.splice(this.plan.indexOf(entry), 1);
+      let delIndex = this.findEntryById(id);
+      if (delIndex !== -1) {
+        this.plan.splice(delIndex, 1);
+      }
       this.storage.set('plan', JSON.stringify(this.plan));
     }));
   }
@@ -146,6 +149,12 @@ export class LocalStorageProvider {
         });
       }
       this.storage.set('plan', JSON.stringify(this.plan));
+    });
+  }
+
+  private findEntryById(id: string):number {
+    return this.plan.findIndex((entry) => {
+      return entry._id === id;
     });
   }
 

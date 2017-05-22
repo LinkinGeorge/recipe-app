@@ -61,9 +61,10 @@ export class WeekplanPage {
   }
 
   addEntry(title, dayIndex, recipe) {
+    const id = this.randomString(16, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     if (title !== '') {
       const today = new Date(Date.now());
-      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title);
+      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title, id);
       this.localStorage.addEntry(newEntry).then(() => {
         this.localStorage.getPlan().then((plan) => {
           if (plan) {
@@ -75,7 +76,7 @@ export class WeekplanPage {
     } 
     if (recipe !== null) {
       const today = new Date(Date.now());
-      const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '');
+      const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '', id);
       this.localStorage.addEntry(newEntry).then(() => {
         this.localStorage.getPlan().then((plan) => {
           if (plan) {
@@ -90,7 +91,7 @@ export class WeekplanPage {
   deleteEntry(entry) {
     this.plan[this.plan.indexOf(entry)].recipe = null;
     this.plan[this.plan.indexOf(entry)].custom = '';
-    this.localStorage.removeEntry(entry);
+    this.localStorage.removeEntry(entry._id);
   }
 
   hasRecipe(entry) {
@@ -139,6 +140,14 @@ export class WeekplanPage {
     return this.plan.findIndex((day) => {
       return new Date(day.date).getDay() === new Date(date).getDay();
     }) !== -1;
+  }
+
+  private randomString (length, chars) {
+    let result = '';
+    for (let i = length; i > 0; --i) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
   }
 
 }

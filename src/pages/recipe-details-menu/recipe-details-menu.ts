@@ -43,13 +43,14 @@ export class RecipeDetailsMenuPage {
 
   selectDay() {
     const today = new Date(Date.now());
+    const id = this.randomString(16, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Welcher Tag?',
       buttons: [
         {
           text: this.getWeekdayString(today),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, today, ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, today, '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(today);
           }
@@ -57,7 +58,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 1)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 1), ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 1), '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 1));
           }
@@ -65,7 +66,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 2)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 2), ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 2), '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 2));
           }
@@ -73,7 +74,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 3)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 3), ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 3), '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 3));
           }
@@ -81,7 +82,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 4)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 4), ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 4), '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 4));
           }
@@ -89,7 +90,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 5)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 5), ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 5), '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 5));
           }
@@ -97,7 +98,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 6)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 6), ''));
+            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 6), '', id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 6));
           }
@@ -149,5 +150,13 @@ export class RecipeDetailsMenuPage {
     });
     toast.present(); 
   } 
+
+  private randomString (length, chars) {
+    let result = '';
+    for (let i = length; i > 0; --i) {
+      result += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return result;
+  }
 
 }
