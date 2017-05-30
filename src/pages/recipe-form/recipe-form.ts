@@ -71,9 +71,7 @@ export class RecipeFormPage {
         .subscribe(
           (recipe) => {
             this.localStorage.addRecipe(this.model);
-            this.navCtrl.setPages([
-              { page: 'HomePage' }
-            ]);
+            this.navCtrl.pop();
           },
           (error) => {
             let toast = this.toastCtrl.create({
@@ -89,9 +87,7 @@ export class RecipeFormPage {
         .subscribe(
           (recipe) => {
             this.localStorage.updateRecipe(this.model);
-            this.navCtrl.setPages([
-              { page: 'HomePage' }
-            ]);
+            this.navCtrl.pop();
           },
           (error) => {
             let toast = this.toastCtrl.create({
