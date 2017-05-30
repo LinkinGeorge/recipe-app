@@ -43,24 +43,36 @@ export class LocalStorageProvider {
   }
 
   addRecipe(recipe) {
-    this.getRecipes().then((recipes) => {
-      if (recipes) {
-        this.recipes = JSON.parse(recipes);
+    return new Promise(
+      resolve => {
+        this.getRecipes().then((recipes) => {
+          if (recipes) {
+            this.recipes = JSON.parse(recipes);
+          }
+          this.recipes.push(recipe);
+          this.storage.set('recipes', JSON.stringify(this.recipes)).then(() => {
+            resolve(recipe);
+          });
+        })
       }
-      this.recipes.push(recipe);
-      this.storage.set('recipes', JSON.stringify(this.recipes));
-    })
+    );
   }
 
   updateRecipe(recipe) {
-    this.getRecipes().then((recipes) => {
-      let recipeArray = JSON.parse(recipes);
-      const index = this.getById(recipeArray, recipe._id);
-      if (index !== -1) {
-        recipeArray.splice(index, 1, recipe);
+    return new Promise(
+      resolve => {
+        this.getRecipes().then((recipes) => {
+          let recipeArray = JSON.parse(recipes);
+          const index = this.getById(recipeArray, recipe._id);
+          if (index !== -1) {
+            recipeArray.splice(index, 1, recipe);
+          }
+          this.storage.set('recipes', JSON.stringify(recipeArray)).then(() => {
+            resolve(recipe)
+          });
+        })
       }
-      this.storage.set('recipes', JSON.stringify(recipeArray));
-    })
+    )
   }
 
   private getById(recipes: any[], recipeId: string):number {
@@ -100,21 +112,26 @@ export class LocalStorageProvider {
   }
 
   addEntry(entry: PlanEntry) {
-    this.getPlan().then((plan => {
-      this.plan = JSON.parse(plan);
-      if (this.datePresent(entry.date)) {
-        this.plan[this.getByDate(entry.date)] = entry;
-      } else {
-        this.plan.push(entry);
+    return new Promise(
+      resolve => {
+        this.getPlan().then((plan => {
+          this.plan = JSON.parse(plan);
+          this.plan.push(entry);
+          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+            resolve();
+          });
+        }));
       }
-      this.storage.set('plan', JSON.stringify(this.plan));
-    }));
+    );
   }
 
-  removeEntry(date: Date) {
+  removeEntry(id: string) {
     this.getPlan().then((plan => {
       this.plan = JSON.parse(plan);
-      this.plan.splice(this.getByDate(date), 1);
+      let delIndex = this.findEntryById(id);
+      if (delIndex !== -1) {
+        this.plan.splice(delIndex, 1);
+      }
       this.storage.set('plan', JSON.stringify(this.plan));
     }));
   }
@@ -135,16 +152,10 @@ export class LocalStorageProvider {
     });
   }
 
-  private getByDate(date: Date):number {
-    return this.plan.findIndex((day) => {
-     return new Date(day.date).getDate() === new Date(date).getDate();
+  private findEntryById(id: string):number {
+    return this.plan.findIndex((entry) => {
+      return entry._id === id;
     });
-  }
-
-  private datePresent(date: Date):boolean {
-    return this.plan.findIndex((day) => {
-      return new Date(day.date).getDate() === new Date(date).getDate();
-    }) !== -1;
   }
 
 }

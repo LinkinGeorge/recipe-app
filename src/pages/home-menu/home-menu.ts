@@ -27,7 +27,9 @@ export class HomeMenuPage {
   }
 
   newRecipe() {
-    this.navCtrl.push('RecipeFormPage');
+    this.viewCtrl.dismiss().then(() => {
+      this.navCtrl.push('RecipeFormPage');
+    })
   }
 
   sortDirection() {
@@ -98,9 +100,9 @@ export class HomeMenuPage {
 
   sortToString(sortDesc: boolean):string {
     if (sortDesc) {
-      return 'Absteigend';
-    } else {
       return 'Aufsteigend';
+    } else {
+      return 'Absteigend';
     }
   }
 
