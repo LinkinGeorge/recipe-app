@@ -24,12 +24,22 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label floating >Eigenes Rezept</ion-label>
+      <ion-label>Uhrzeit</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="time"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <number-picker [start]="2" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Eigenes Rezept</ion-label>
       <ion-input #newentry type="text" [disabled]="search.value.length > 0"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating >Durchsuchen</ion-label>
+      <ion-label floating>Durchsuchen</ion-label>
       <ion-input #search type="text" [disabled]="newentry.value.length > 0"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="search.value.length === 0">
+      <button ion-button block default (click)="save(newentry.value)" [disabled]="newentry.value.length === 0">Hinzufügen</button>
     </ion-item>
     <ion-item *ngIf="search.value.length > 0">
       <ion-list>
@@ -37,9 +47,6 @@
           {{ recipe.title }}
         </button>
       </ion-list>
-    </ion-item>
-    <ion-item *ngIf="search.value.length === 0">
-      <button ion-button block default (click)="save(newentry.value)" [disabled]="newentry.value.length === 0">Hinzufügen</button>
     </ion-item>
   </ion-list>
 </ion-content>

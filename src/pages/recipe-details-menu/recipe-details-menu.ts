@@ -50,7 +50,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(today),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, today, '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, today, '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(today);
           }
@@ -58,7 +58,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 1)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 1), '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, this.addDays(today, 1), '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 1));
           }
@@ -66,7 +66,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 2)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 2), '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, this.addDays(today, 2), '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 2));
           }
@@ -74,7 +74,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 3)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 3), '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, this.addDays(today, 3), '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 3));
           }
@@ -82,7 +82,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 4)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 4), '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, this.addDays(today, 4), '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 4));
           }
@@ -90,7 +90,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 5)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 5), '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, this.addDays(today, 5), '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 5));
           }
@@ -98,7 +98,7 @@ export class RecipeDetailsMenuPage {
         {
           text: this.getWeekdayString(this.addDays(today, 6)),
           handler: () => {
-            this.localStorage.addEntry(new PlanEntry(this.recipe, this.addDays(today, 6), '', id));
+            this.localStorage.addEntry(new PlanEntry({id: this.recipe._id, title: this.recipe.title}, this.addDays(today, 6), '', '19:30', 2, id));
             this.viewCtrl.dismiss();
             this.showWeekplanToast(this.addDays(today, 6));
           }

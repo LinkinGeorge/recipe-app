@@ -71,14 +71,9 @@ export class RecipeFormPage {
       this.recipeService.newRecipe(this.model)
         .subscribe(
           (recipe) => {
-<<<<<<< HEAD
-            this.localStorage.addRecipe(this.model);
-            this.navCtrl.pop();
-=======
             this.localStorage.addRecipe(this.model).then(() => {
               this.navCtrl.pop();
             });
->>>>>>> 54568ff5b4c737f32d59481da2f11deb8b8239ea
           },
           (error) => {
             let toast = this.toastCtrl.create({
@@ -92,14 +87,9 @@ export class RecipeFormPage {
       this.recipeService.updateRecipe(this.model)
         .subscribe(
           (recipe) => {
-<<<<<<< HEAD
-            this.localStorage.updateRecipe(this.model);
-            this.navCtrl.pop();
-=======
             this.localStorage.updateRecipe(this.model).then(() => {
               this.navCtrl.pop();
             });
->>>>>>> 54568ff5b4c737f32d59481da2f11deb8b8239ea
           },
           (error) => {
             let toast = this.toastCtrl.create({

@@ -10,6 +10,8 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
 })
 export class WeekplanNewEntryPage {
   day = "0";
+  time = "19:30";
+  servings = 2;
   recipes = new Array();
 
   constructor(public navParams: NavParams, public viewCtrl: ViewController, public localStorage: LocalStorageProvider) {
@@ -21,15 +23,13 @@ export class WeekplanNewEntryPage {
     }
   }
 
-  ionViewDidLoad() {
-
-  }
-
   save(title) {
     let data = {
       title: title,
       day: +this.day,
-      recipe: null
+      recipe: null,
+      time: this.time,
+      servings: this.servings
     }
     this.viewCtrl.dismiss(data);
   }
@@ -38,9 +38,18 @@ export class WeekplanNewEntryPage {
     let data = {
       title: '',
       day: +this.day,
-      recipe: recipe
+      recipe: {
+        id: recipe._id,
+        title: recipe.title,
+        time: this.time,
+        servings: this.servings
+      }
     }
     this.viewCtrl.dismiss(data);
+  }
+
+  servingsChange(servings: number) {
+    this.servings = servings;
   }
 
   dismiss() {

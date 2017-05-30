@@ -44,7 +44,7 @@ export class WeekplanPage {
     let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage');
     newEntryModal.onDidDismiss(data => {
       if (data) {
-        this.addEntry(data.title, data.day, data.recipe);
+        this.addEntry(data.title, data.day, data.recipe, data.time, data.servings);
       }
     });
     newEntryModal.present();
@@ -55,18 +55,18 @@ export class WeekplanPage {
       let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: dayIndex.toString()});
       newEntryModal.onDidDismiss(data => {
         if (data) {
-          this.addEntry(data.title, data.day, data.recipe);
+          this.addEntry(data.title, data.day, {id: data.recipe.id, title: data.recipe.title}, data.time, data.servings);
         }
       });
       newEntryModal.present();
     }
   }
 
-  addEntry(title, dayIndex, recipe) {
+  addEntry(title, dayIndex, recipe, time, servings) {
     const id = this.randomString(16, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
     if (title !== '') {
       const today = new Date(Date.now());
-      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title, id);
+      const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title, time, servings, id);
       this.localStorage.addEntry(newEntry).then(() => {
         this.localStorage.getPlan().then((plan) => {
           if (plan) {
@@ -78,7 +78,7 @@ export class WeekplanPage {
     } 
     if (recipe !== null) {
       const today = new Date(Date.now());
-      const newEntry = new PlanEntry(recipe, this.addDays(today, dayIndex), '', id);
+      const newEntry = new PlanEntry({id: recipe.id, title: recipe.title}, this.addDays(today, dayIndex), '', time, servings, id);
       this.localStorage.addEntry(newEntry).then(() => {
         this.localStorage.getPlan().then((plan) => {
           if (plan) {
@@ -107,7 +107,7 @@ export class WeekplanPage {
   viewRecipe(recipe = null) {
     if (recipe !== null && !this.deleting) {
       this.navCtrl.push('RecipeDetailsPage', {
-        recipeId: recipe._id
+        recipeId: recipe.id
       });
     }
   }
@@ -124,7 +124,7 @@ export class WeekplanPage {
     const today = new Date(Date.now())
     for (var i = 0; i < 7; i++) {
       if (!this.datePresent(this.addDays(today, i))) {
-        this.plan.push({recipe: null, date: this.addDays(today, i), custom: ''});
+        this.plan.push({recipe: null, date: this.addDays(today, i), custom: '', time: '19:30', servings: 2});
       }
     }
     this.plan.sort(function (a, b) {
