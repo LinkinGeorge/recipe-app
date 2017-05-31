@@ -41,9 +41,9 @@ export class WeekplanNewEntryPage {
       recipe: {
         id: recipe._id,
         title: recipe.title,
-        time: this.time,
-        servings: this.servings
-      }
+      },
+      time: this.time,
+      servings: this.servings
     }
     this.viewCtrl.dismiss(data);
   }

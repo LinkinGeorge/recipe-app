@@ -29,7 +29,7 @@ export class HomeMenuPage {
   newRecipe() {
     this.viewCtrl.dismiss().then(() => {
       this.navCtrl.push('RecipeFormPage');
-    })
+    });
   }
 
   sortDirection() {
@@ -104,6 +104,12 @@ export class HomeMenuPage {
     } else {
       return 'Absteigend';
     }
+  }
+
+  settings() {
+    this.viewCtrl.dismiss().then(() => {
+      this.navCtrl.push('SettingsPage');
+    });
   }
 
   checkForUpdate() {

@@ -17,6 +17,9 @@
 
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <ion-list>
     <ion-item *ngFor="let day of week; let i = index">
       <h5 class="date-label" (tap)="newDayEntry(i)">{{ day | weekday }}</h5>

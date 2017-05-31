@@ -32,6 +32,17 @@ export class ShoppingListPage {
       }
     })
   }
+  
+  doRefresh(refresher) {
+    this.localStorage.downloadList().then(() => {
+      this.localStorage.getList().then((list) => {
+        if(list) {
+          this.shoppingList = JSON.parse(list);
+        }
+        refresher.complete();
+      });
+    });
+  }
 
   addItem(item) {
     if (item !== '') {

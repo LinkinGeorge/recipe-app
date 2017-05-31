@@ -1,16 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { AppPreferences } from '@ionic-native/app-preferences';
 
+import { RecipesProvider } from '../recipes/recipes';
 import { PlanEntry } from '../../models/plan-entry';
 
 @Injectable()
 export class LocalStorageProvider {
   public recipes = new Array();
-  public plan = new Array<PlanEntry>();
-  public list = new Array<string>();
+  public plan = [];
+  public list = [];
+  cloudPlan: string = 'test';
+  cloudList: string = 'test';
 
-  constructor(public storage: Storage) {
-    this.removeExpired();
+  baseUrl = 'http://georgs-recipes.herokuapp.com/';
+
+  constructor(public storage: Storage, private appPref: AppPreferences, public api: RecipesProvider) {
+    // this.appPref.fetch('plan').then(plan => {
+    //   this.cloudPlan = plan;
+       this.downloadPlan();
+    // });
+    // this.appPref.fetch('list').then(list => {
+    //   this.cloudList = list;
+       this.downloadList();
+    // });
   }
 
   // RECIPES
@@ -82,9 +95,28 @@ export class LocalStorageProvider {
   }
 
   // SHOPPING LIST
+  
+  downloadList() {
+    return new Promise(
+      resolve => {
+        if (this.cloudList === '') {
+          resolve();
+        } else {
+          this.api.getList(this.cloudList).subscribe(res => {
+            let newList = new Array();
+            newList = res.list.slice(0);
+            this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
+              resolve();
+            });
+          });
+        }
+      }
+    )
+  }
+  
 
   getList() {
-    return this.storage.get('list');
+    return this.storage.get('shopping-list');
   }
 
   addItem(item: string) {
@@ -93,7 +125,11 @@ export class LocalStorageProvider {
         this.list = JSON.parse(list);
       }
       this.list.push(item);
-      this.storage.set('list', JSON.stringify(this.list));
+      this.storage.set('shopping-list', JSON.stringify(this.list)).then(() => {
+        if (this.cloudList !== '') {
+          this.api.updateList(this.cloudList, this.list).subscribe();
+        }
+      });
     });
   }
 
@@ -101,11 +137,33 @@ export class LocalStorageProvider {
     this.getList().then((list) => {
       this.list = JSON.parse(list);
       this.list.splice(this.list.indexOf(item), 1);
-      this.storage.set('list', JSON.stringify(this.list));
+      this.storage.set('shopping-list', JSON.stringify(this.list)).then(() => {
+        if (this.cloudList !== '') {
+          this.api.updateList(this.cloudList, this.list).subscribe();
+        }
+      });
     });
   }
 
   // WEEKPLAN
+
+  downloadPlan() {
+    return new Promise(
+      resolve => {
+        if (this.cloudList === '') {
+          resolve();
+        } else {
+          this.api.getPlan(this.cloudPlan).subscribe(res => {
+            let newPlan = new Array();
+            newPlan = res.plan.slice(0);
+            this.storage.set('plan', JSON.stringify(newPlan)).then(() => {
+              resolve();
+            });
+          });
+        }
+      }
+    )
+  }
 
   getPlan() {
     return this.storage.get('plan');
@@ -118,7 +176,13 @@ export class LocalStorageProvider {
           this.plan = JSON.parse(plan);
           this.plan.push(entry);
           this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
-            resolve();
+            if (this.cloudPlan === '') {
+              resolve();
+            } else {
+              this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+                resolve();
+              });
+            }
           });
         }));
       }
@@ -132,14 +196,18 @@ export class LocalStorageProvider {
       if (delIndex !== -1) {
         this.plan.splice(delIndex, 1);
       }
-      this.storage.set('plan', JSON.stringify(this.plan));
+      this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+        if (this.cloudPlan !== '') {
+          this.api.updatePlan(this.cloudPlan, this.plan).subscribe();
+        }
+      });
     }));
   }
 
+  /*
   private removeExpired() {
     this.storage.get('plan').then((plan) => {
       if (plan) {
-        this.plan = JSON.parse(plan);
         this.plan.forEach(recipe => {
           const recipeDate = new Date(new Date(recipe.date).setHours(0,0,0,0));
           const today = new Date(new Date(Date.now()).setHours(0,0,0,0));
@@ -151,6 +219,7 @@ export class LocalStorageProvider {
       this.storage.set('plan', JSON.stringify(this.plan));
     });
   }
+  */
 
   private findEntryById(id: string):number {
     return this.plan.findIndex((entry) => {

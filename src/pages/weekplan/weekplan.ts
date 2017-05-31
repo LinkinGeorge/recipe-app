@@ -39,12 +39,29 @@ export class WeekplanPage {
       this.fillUpPlan();
     });
   }
+    
+  doRefresh(refresher) {
+    this.localStorage.downloadPlan().then(() => {
+      this.localStorage.getPlan().then((plan) => {
+        if(plan) {
+          this.plan = JSON.parse(plan);
+        }
+        refresher.complete();
+      });
+    });
+  }
 
   newEntry() {
     let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage');
     newEntryModal.onDidDismiss(data => {
       if (data) {
-        this.addEntry(data.title, data.day, data.recipe, data.time, data.servings);
+        let recipe;
+        if (data.recipe) {
+          recipe = {id: data.recipe.id, title: data.recipe.title};
+        } else {
+          recipe = null;
+        }
+        this.addEntry(data.title, data.day, recipe, data.time, data.servings);
       }
     });
     newEntryModal.present();
@@ -55,7 +72,13 @@ export class WeekplanPage {
       let newEntryModal = this.modalCtrl.create('WeekplanNewEntryPage', {day: dayIndex.toString()});
       newEntryModal.onDidDismiss(data => {
         if (data) {
-          this.addEntry(data.title, data.day, {id: data.recipe.id, title: data.recipe.title}, data.time, data.servings);
+          let recipe;
+          if (data.recipe) {
+            recipe = {id: data.recipe.id, title: data.recipe.title};
+          } else {
+            recipe = null;
+          }
+          this.addEntry(data.title, data.day, recipe, data.time, data.servings);
         }
       });
       newEntryModal.present();
