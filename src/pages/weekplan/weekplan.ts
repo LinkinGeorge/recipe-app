@@ -23,20 +23,24 @@ export class WeekplanPage {
     for (var i = 0; i < this.week.length; i++) {
       this.week[i] = this.addDays(new Date(Date.now()), i);
     }
-    this.localStorage.getPlan().then((plan) => {
-      if (plan) {
-        this.plan = JSON.parse(plan);
+    this.localStorage.downloadPlan().then(() => {
+      this.localStorage.getPlan().then((plan) => {
+        if (plan) {
+          this.plan = JSON.parse(plan);
+        }
         this.fillUpPlan();
-      }
+      });
     });
   }
 
   ionViewDidEnter() {
-    this.localStorage.getPlan().then((plan) => {
-      if (plan) {
-        this.plan = JSON.parse(plan);
-      }
-      this.fillUpPlan();
+    this.localStorage.downloadPlan().then(() => {
+      this.localStorage.getPlan().then((plan) => {
+        if (plan) {
+          this.plan = JSON.parse(plan);
+        }
+        this.fillUpPlan();
+      });
     });
   }
     
@@ -127,10 +131,12 @@ export class WeekplanPage {
     }
   }
 
-  viewRecipe(recipe = null) {
+  viewRecipe(recipe = null, servings:number) {
+    console.log(servings);
     if (recipe !== null && !this.deleting) {
       this.navCtrl.push('RecipeDetailsPage', {
-        recipeId: recipe.id
+        recipeId: recipe.id,
+        servings: servings
       });
     }
   }

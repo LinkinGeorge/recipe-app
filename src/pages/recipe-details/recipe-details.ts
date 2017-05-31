@@ -28,11 +28,16 @@ export class RecipeDetailsPage {
   }
 
   ionViewWillEnter() {
-    let id = this.navParams.get('recipeId');
+    const id = this.navParams.get('recipeId');
+    const paramServings = this.navParams.get('servings');
     this.localStorage.getRecipe(id).then((recipe) => {
       this.recipe = recipe;
       this.cookCount = this.recipe.cookCount;
-      this.servings = this.recipe.servings;
+      if (paramServings === null) {
+        this.servings = this.recipe.servings;
+      } else {
+        this.servings = paramServings
+      }
     })
   }
 
