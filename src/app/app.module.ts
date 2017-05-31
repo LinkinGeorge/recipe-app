@@ -6,7 +6,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { AppPreferences } from '@ionic-native/app-preferences';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { MarkdownModule } from 'angular2-markdown';
@@ -18,6 +17,7 @@ import { RecipesProvider } from '../providers/recipes/recipes';
 import { LocalStorageProvider } from '../providers/local-storage/local-storage';
 
 import { Environment } from '../environment';
+import { SettingsProvider } from '../providers/settings/settings';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -46,10 +46,10 @@ const cloudSettings: CloudSettings = {
   providers: [
     StatusBar,
     SplashScreen,
-    AppPreferences,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RecipesProvider,
-    LocalStorageProvider
+    LocalStorageProvider,
+    SettingsProvider
   ]
 })
 export class AppModule {}

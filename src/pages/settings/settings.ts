@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AppPreferences } from '@ionic-native/app-preferences';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @IonicPage()
 @Component({
@@ -16,30 +16,44 @@ export class SettingsPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    private appPref: AppPreferences,
+    public settings: SettingsProvider,
     public api: RecipesProvider
   ) { 
-    this.appPref.fetch('plan').then((plan) => {
-      this.cloudPlan = plan;
+    this.settings.getPlanCode().then((code) => {
+      if (code) {
+        this.cloudPlan = code;
+      }
     });
-    this.appPref.fetch('list').then((list) => {
-      this.cloudList = list;
+    this.settings.getListCode().then((code) => {
+      if (code) {
+        this.cloudList = code;
+      }
     });
   }
 
   save() {
     if (this.cloudPlan !== '') {
-      this.appPref.store('plan', this.cloudPlan).then(() => {
-        this.api.getPlan(this.cloudPlan)
-          .subscribe(res => {},
-          err => {
-            this.api.newPlan(this.cloudPlan)
-              .subscribe();
+      this.api.getPlan(this.cloudPlan)
+      .subscribe(res => {
+        if (res === null) {
+          this.api.newPlan(this.cloudPlan)
+          .subscribe(() => {
+            this.settings.setPlanCode(this.cloudPlan);
           });
+        }
       });
     }
     if (this.cloudList !== '') {
-      this.appPref.store('list', this.cloudList);
+      this.api.getList(this.cloudList)
+      .subscribe(res => {
+        if (res === null) {
+          this.api.newList(this.cloudList)
+          .subscribe(() => {
+            this.settings.setListCode(this.cloudList);
+          });
+        }
+      });
+      this.navCtrl.pop();
     }
   }
 

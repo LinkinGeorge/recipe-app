@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { AppPreferences } from '@ionic-native/app-preferences';
 
 import { RecipesProvider } from '../recipes/recipes';
+import { SettingsProvider } from '../settings/settings';
 import { PlanEntry } from '../../models/plan-entry';
 
 @Injectable()
@@ -10,20 +10,24 @@ export class LocalStorageProvider {
   public recipes = new Array();
   public plan = [];
   public list = [];
-  cloudPlan: string = 'test';
-  cloudList: string = 'test';
+  cloudPlan = '';
+  cloudList = '';
 
   baseUrl = 'http://georgs-recipes.herokuapp.com/';
 
-  constructor(public storage: Storage, private appPref: AppPreferences, public api: RecipesProvider) {
-    // this.appPref.fetch('plan').then(plan => {
-    //   this.cloudPlan = plan;
-       this.downloadPlan();
-    // });
-    // this.appPref.fetch('list').then(list => {
-    //   this.cloudList = list;
-       this.downloadList();
-    // });
+  constructor(public storage: Storage, public api: RecipesProvider, public settings: SettingsProvider) {
+     this.settings.getPlanCode().then(code => {
+       if (code !== null) {
+        this.cloudPlan = code;
+        this.downloadPlan();
+       }
+     });
+     this.settings.getListCode().then(code => {
+       if (code !== null) {
+        this.cloudList = code;
+        this.downloadList();
+       }
+     });
   }
 
   // RECIPES
