@@ -24,7 +24,8 @@
     <ion-item *ngFor="let day of week; let i = index">
       <h5 class="date-label" (tap)="newDayEntry(i)">{{ day | weekday }}</h5>
       <div *ngFor="let entry of plan | dayFilter:day"  (tap)="viewRecipe(entry.recipe, entry.servings)">
-        <div class="recipe-title" *ngIf="hasRecipe(entry)" text-wrap>
+        <div class="entry" *ngIf="hasRecipe(entry)" text-wrap>
+          <div class="entry-info">{{ entry.time }} | {{ entry.servings }} Personen</div>
           <div *ngIf="entry.recipe">{{ entry.recipe.title }}</div>
           <div *ngIf="!entry.recipe">{{ entry.custom }}</div>
           <div *ngIf="deleting" text-center padding-top>
