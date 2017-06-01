@@ -32,13 +32,11 @@ export class SettingsPage {
       }
     });
     this.settings.getDefaultTime().then((time) => {
-      console.log(time);
       if (time) {
         this.time = time;
       }
     });
     this.settings.getDefaultServings().then((serv) => {
-      console.log(serv);
       if (serv) {
         this.servings = serv.toString();
       }

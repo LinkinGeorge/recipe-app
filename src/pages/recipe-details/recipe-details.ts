@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @IonicPage()
 @Component({
@@ -23,8 +24,14 @@ export class RecipeDetailsPage {
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public popoverCtrl: PopoverController,
-    public localStorage: LocalStorageProvider
+    public localStorage: LocalStorageProvider,
+    public settings: SettingsProvider
   ) {
+    this.settings.getDefaultServings().then(servings => {
+      if (servings !== null) {
+        this.servings = servings;
+      }
+    })
   }
 
   ionViewWillEnter() {
@@ -33,12 +40,12 @@ export class RecipeDetailsPage {
     this.localStorage.getRecipe(id).then((recipe) => {
       this.recipe = recipe;
       this.cookCount = this.recipe.cookCount;
-      if (paramServings === null) {
+      if (!paramServings && !this.servings) {
         this.servings = this.recipe.servings;
-      } else {
-        this.servings = paramServings
+      } else if (paramServings) {
+        this.servings = paramServings;
       }
-    })
+    });
   }
 
   showMenu(event) {
@@ -67,16 +74,6 @@ export class RecipeDetailsPage {
   showConverter() {
     let converterModal = this.modalCtrl.create('ConverterPage');
     converterModal.present();
-  }
-
-  addServing() {
-    this.servings = this.servings + 1;
-  }
-
-  removeServing() {
-    if (this.servings > 1) {
-      this.servings = this.servings - 1;
-    }
   }
 
 }
