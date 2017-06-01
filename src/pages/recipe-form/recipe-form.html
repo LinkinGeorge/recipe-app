@@ -34,7 +34,6 @@
     <!-- INFO TAB -->
 
     <ion-list *ngSwitchCase="'info'">
-      <h2 text-center>Info</h2>
       <ion-item>
         <ion-label color="primary" stacked>Titel</ion-label>
         <ion-input type="text" placeholder="Titel" [(ngModel)]="model.title"></ion-input>
@@ -80,7 +79,6 @@
     <!-- INGREDIENTS TAB -->
 
     <ion-list *ngSwitchCase="'ingredients'">
-      <h2 text-center>Zutaten</h2>
       <ion-item *ngIf="ingredients[0].name !== ''">
         <ion-list dnd-sortable-container [sortableData]="ingredients">
           <ion-item *ngFor="let ingr of ingredients; let i = index" dnd-sortable [sortableIndex]="i">
@@ -104,7 +102,6 @@
     <!-- DESCRIPTION TAB -->
 
     <ion-list *ngSwitchCase="'description'">
-      <h2 text-center>Beschreibung</h2>
       <ion-item>
         <ion-textarea rows="8" placeholder="Beschreibung - Markdown für Styling verfügbar" [(ngModel)]="model.description"></ion-textarea>
       </ion-item>
@@ -116,7 +113,6 @@
     <!-- CATEGORIES TAB -->
     
     <ion-list *ngSwitchCase="'categories'">
-      <h2 text-center>Kategorien</h2>
       <ion-item>
         <ion-list>
           <ion-item *ngFor="let ctg of categories">
