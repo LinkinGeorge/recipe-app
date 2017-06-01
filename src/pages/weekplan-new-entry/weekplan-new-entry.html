@@ -27,8 +27,8 @@
       <ion-label>Uhrzeit</ion-label>
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="time"></ion-datetime>
     </ion-item>
-    <ion-item>
-      <number-picker [start]="2" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
+    <ion-item *ngIf="servings">
+      <number-picker [start]="servings" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
     </ion-item>
     <ion-item>
       <ion-label floating>Eigenes Rezept</ion-label>

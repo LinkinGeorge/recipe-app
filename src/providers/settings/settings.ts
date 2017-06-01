@@ -22,4 +22,20 @@ export class SettingsProvider {
     return this.storage.get('list-code');
   }
 
+  setDefaultTime(time:string) {
+    return this.storage.set('default-time', time);
+  }
+
+  getDefaultTime() {
+    return this.storage.get('default-time');
+  }
+
+  setDefaultServings(servings:number) {
+    return this.storage.set('default-servings', servings);
+  }
+
+  getDefaultServings() {
+    return this.storage.get('default-servings');
+  }
+
 }

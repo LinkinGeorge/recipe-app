@@ -9,11 +9,19 @@
   <ion-list>
     <ion-item>
       <ion-label floating>Einkaufsliste</ion-label>
-      <ion-input type="text" [(ngModel)]="cloudList"></ion-input>
+      <ion-input type="text" [(ngModel)]="cloudList" placeholder="Code"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Wochenplan</ion-label>
-      <ion-input type="text" [(ngModel)]="cloudPlan"></ion-input>
+      <ion-input type="text" [(ngModel)]="cloudPlan" placeholder="Code"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Standard Uhrzeit</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="time"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Standard Portionen</ion-label>
+      <ion-input type="number" min="1" [(ngModel)]="servings"></ion-input>
     </ion-item>
   </ion-list>
   <button ion-button block (click)="save()">Speichern</button>

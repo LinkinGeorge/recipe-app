@@ -12,6 +12,8 @@ import { SettingsProvider } from '../../providers/settings/settings';
 export class SettingsPage {
   cloudPlan = '';
   cloudList = '';
+  time = '19:30';
+  servings = '2';
 
   constructor(
     public navCtrl: NavController, 
@@ -27,6 +29,18 @@ export class SettingsPage {
     this.settings.getListCode().then((code) => {
       if (code) {
         this.cloudList = code;
+      }
+    });
+    this.settings.getDefaultTime().then((time) => {
+      console.log(time);
+      if (time) {
+        this.time = time;
+      }
+    });
+    this.settings.getDefaultServings().then((serv) => {
+      console.log(serv);
+      if (serv) {
+        this.servings = serv.toString();
       }
     });
   }
@@ -58,6 +72,8 @@ export class SettingsPage {
         }
       });
     }
+    this.settings.setDefaultTime(this.time);
+    this.settings.setDefaultServings(+this.servings);
     this.navCtrl.pop();
   }
 

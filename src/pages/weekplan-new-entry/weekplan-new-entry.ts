@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @IonicPage()
 @Component({
@@ -11,10 +12,27 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
 export class WeekplanNewEntryPage {
   day = "0";
   time = "19:30";
-  servings = 2;
+  servings: number;
   recipes = new Array();
 
-  constructor(public navParams: NavParams, public viewCtrl: ViewController, public localStorage: LocalStorageProvider) {
+  constructor(
+    public navParams: NavParams, 
+    public viewCtrl: ViewController, 
+    public localStorage: LocalStorageProvider,
+    public settings: SettingsProvider
+  ) {
+    this.settings.getDefaultTime().then((time) => {
+      if (time) {
+        this.time = time;
+      }
+    });
+    this.settings.getDefaultServings().then((serv) => {
+      if (serv) {
+        this.servings = serv;
+      } else {
+        this.servings = 2;
+      }
+    });
     this.localStorage.getRecipes().then((recipes) => {
       this.recipes = JSON.parse(recipes);
     });
