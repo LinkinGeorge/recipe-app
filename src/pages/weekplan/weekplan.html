@@ -6,7 +6,7 @@
         <ion-icon name="add"></ion-icon>
       </button>
       <button class="nav-button" *ngIf="!deleting" ion-button icon-only (click)="deleteMode()">
-        <ion-icon name="trash"></ion-icon>
+        <ion-icon name="create"></ion-icon>
       </button>
       <button class="nav-button" *ngIf="deleting" ion-button icon-only (click)="exitDeleteMode()">
         <ion-icon name="checkbox-outline"></ion-icon>
@@ -28,9 +28,11 @@
           <div *ngIf="entry.recipe">{{ entry.recipe.title }}</div>
           <div *ngIf="!entry.recipe">{{ entry.custom }}</div>
           <div *ngIf="deleting" text-center padding-top>
+            <button ion-button icon-right default color="secondary" (click)="editEntry(entry)">
+              Bearbeiten
+            </button>
             <button ion-button icon-right default color="danger" (click)="deleteEntry(entry)">
               Löschen
-              <ion-icon name="trash"></ion-icon>
             </button>
           </div>
         </div>

@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Bearbeiten</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Uhrzeit</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="time"></ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="servings">
+      <number-picker [start]="servings" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
+    </ion-item>
+    <ion-item>
+      <button ion-button default block (click)="update()">Aktualisieren</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

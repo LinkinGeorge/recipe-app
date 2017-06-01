@@ -189,18 +189,50 @@ export class LocalStorageProvider {
   }
 
   removeEntry(id: string) {
-    this.getPlan().then((plan => {
-      this.plan = JSON.parse(plan);
-      let delIndex = this.findEntryById(id);
-      if (delIndex !== -1) {
-        this.plan.splice(delIndex, 1);
+    return new Promise(
+      resolve => {
+        this.getPlan().then((plan => {
+          this.plan = JSON.parse(plan);
+          let delIndex = this.findEntryById(id);
+          if (delIndex !== -1) {
+            this.plan.splice(delIndex, 1);
+          }
+          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+            if (this.cloudPlan === '') {
+              resolve();
+            } else {
+              this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+                resolve();
+              });
+            }
+          });
+        }));
       }
-      this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
-        if (this.cloudPlan !== '') {
-          this.api.updatePlan(this.cloudPlan, this.plan).subscribe();
-        }
-      });
-    }));
+    );
+  }
+
+  updateEntry(id:string, time:string, servings:number) {
+    return new Promise(
+      resolve => {
+        this.getPlan().then((plan => {
+          this.plan = JSON.parse(plan);
+          let index = this.findEntryById(id);
+          if (index !== -1) {
+            this.plan[index].time = time;
+            this.plan[index].servings = servings;
+          }
+          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+            if (this.cloudPlan === '') {
+              resolve();
+            } else {
+              this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+                resolve();
+              });
+            }
+          });
+        }));
+      }
+    );
   }
 
   /*

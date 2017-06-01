@@ -117,10 +117,20 @@ export class WeekplanPage {
     }
   }
 
+  editEntry(entry) {
+    let editEntryModal = this.modalCtrl.create('WeekplanEditEntryPage', {entry: entry});
+    editEntryModal.onDidDismiss(data => {
+      if (data) {
+        this.localStorage.updateEntry(data._id, data.time, data.servings);
+      }
+    });
+    editEntryModal.present();
+  }
+
   deleteEntry(entry) {
     this.plan[this.plan.indexOf(entry)].recipe = null;
     this.plan[this.plan.indexOf(entry)].custom = '';
-    this.localStorage.removeEntry(entry._id);
+    return this.localStorage.removeEntry(entry._id);
   }
 
   hasRecipe(entry) {
@@ -132,7 +142,6 @@ export class WeekplanPage {
   }
 
   viewRecipe(recipe = null, servings:number) {
-    console.log(servings);
     if (recipe !== null && !this.deleting) {
       this.navCtrl.push('RecipeDetailsPage', {
         recipeId: recipe.id,
