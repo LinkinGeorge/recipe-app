@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Brightness } from '@ionic-native/brightness';
 import { IonicPage, NavParams, NavController, ViewController, ToastController, ActionSheetController } from 'ionic-angular';
 
 import { PlanEntry } from '../../models/plan-entry';
@@ -25,7 +26,8 @@ export class RecipeDetailsMenuPage {
     public actionSheetCtrl: ActionSheetController,
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
-    public settings: SettingsProvider
+    public settings: SettingsProvider,
+    public brightness: Brightness
   ) {
     this.settings.getDefaultTime().then((time) => {
       if (time) {
@@ -53,6 +55,12 @@ export class RecipeDetailsMenuPage {
     this.recipeService.updateRecipe(this.recipe).subscribe(() => {
       this.viewCtrl.dismiss();
     });
+  }
+
+  cookingMode() {
+    this.brightness.setBrightness(1);
+    this.brightness.setKeepScreenOn(true);
+    this.viewCtrl.dismiss();
   }
 
   selectDay() {
