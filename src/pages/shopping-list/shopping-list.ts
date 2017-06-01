@@ -18,19 +18,23 @@ export class ShoppingListPage {
     public popoverCtrl: PopoverController,
     public localStorage: LocalStorageProvider
   ) {
-    this.localStorage.getList().then((list) => {
-      if(list) {
-        this.shoppingList = JSON.parse(list);
-      }
-    })
+    this.localStorage.downloadList().then(() => {
+      this.localStorage.getList().then((list) => {
+        if(list) {
+          this.shoppingList = JSON.parse(list);
+        }
+      });
+    });
   }
 
   ionViewDidEnter() {
-    this.localStorage.getList().then((list) => {
-      if(list) {
-        this.shoppingList = JSON.parse(list);
-      }
-    })
+    this.localStorage.downloadList().then(() => {
+      this.localStorage.getList().then((list) => {
+        if(list) {
+          this.shoppingList = JSON.parse(list);
+        }
+      });
+    });
   }
   
   doRefresh(refresher) {

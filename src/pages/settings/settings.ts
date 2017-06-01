@@ -40,6 +40,8 @@ export class SettingsPage {
           .subscribe(() => {
             this.settings.setPlanCode(this.cloudPlan);
           });
+        } else {
+            this.settings.setPlanCode(this.cloudPlan);
         }
       });
     }
@@ -51,10 +53,12 @@ export class SettingsPage {
           .subscribe(() => {
             this.settings.setListCode(this.cloudList);
           });
+        } else {
+            this.settings.setListCode(this.cloudList);
         }
       });
-      this.navCtrl.pop();
     }
+    this.navCtrl.pop();
   }
 
 }

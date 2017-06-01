@@ -16,18 +16,8 @@ export class LocalStorageProvider {
   baseUrl = 'http://georgs-recipes.herokuapp.com/';
 
   constructor(public storage: Storage, public api: RecipesProvider, public settings: SettingsProvider) {
-     this.settings.getPlanCode().then(code => {
-       if (code !== null) {
-        this.cloudPlan = code;
-        this.downloadPlan();
-       }
-     });
-     this.settings.getListCode().then(code => {
-       if (code !== null) {
-        this.cloudList = code;
-        this.downloadList();
-       }
-     });
+      this.downloadPlan();
+      this.downloadList();
   }
 
   // RECIPES
@@ -103,21 +93,23 @@ export class LocalStorageProvider {
   downloadList() {
     return new Promise(
       resolve => {
-        if (this.cloudList === '') {
-          resolve();
-        } else {
-          this.api.getList(this.cloudList).subscribe(res => {
-            let newList = new Array();
-            newList = res.list.slice(0);
-            this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
-              resolve();
+        this.settings.getListCode().then(code => {
+          if (code !== null) {
+            this.cloudList = code;
+            this.api.getList(this.cloudList).subscribe(res => {
+              let newList = new Array();
+              newList = res.list.slice(0);
+              this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
+                resolve();
+              });
             });
-          });
-        }
+          } else {
+            resolve();
+          }
+        });
       }
     )
   }
-  
 
   getList() {
     return this.storage.get('shopping-list');
@@ -154,17 +146,20 @@ export class LocalStorageProvider {
   downloadPlan() {
     return new Promise(
       resolve => {
-        if (this.cloudList === '') {
-          resolve();
-        } else {
-          this.api.getPlan(this.cloudPlan).subscribe(res => {
-            let newPlan = new Array();
-            newPlan = res.plan.slice(0);
-            this.storage.set('plan', JSON.stringify(newPlan)).then(() => {
-              resolve();
+        this.settings.getPlanCode().then(code => {
+          if (code !== null) {
+            this.cloudPlan = code;
+            this.api.getPlan(this.cloudPlan).subscribe(res => {
+              let newPlan = new Array();
+              newPlan = res.plan.slice(0);
+              this.storage.set('plan', JSON.stringify(newPlan)).then(() => {
+                resolve();
+              });
             });
-          });
-        }
+          } else {
+            resolve();
+          }
+        });
       }
     )
   }
