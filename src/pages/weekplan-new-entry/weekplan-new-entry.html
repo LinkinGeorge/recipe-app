@@ -32,11 +32,11 @@
     </ion-item>
     <ion-item>
       <ion-label floating>Eigenes Rezept</ion-label>
-      <ion-input #newentry type="text" [disabled]="search.value.length > 0"></ion-input>
+      <ion-input #newentry keyboardFix type="text" [disabled]="search.value.length > 0"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Durchsuchen</ion-label>
-      <ion-input #search type="text" [disabled]="newentry.value.length > 0"></ion-input>
+      <ion-input #search keyboardFix type="text" [disabled]="newentry.value.length > 0"></ion-input>
     </ion-item>
     <ion-item *ngIf="search.value.length === 0">
       <button ion-button block default (click)="save(newentry.value)" [disabled]="newentry.value.length === 0">Hinzufügen</button>

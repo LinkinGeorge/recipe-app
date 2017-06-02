@@ -12,7 +12,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-item style="border-bottom: 1px #e2e2e2 solid">
-    <ion-input #newItem type="text" placeholder="Hinzufügen" (keyup.enter)="addItem(newItem.value); newItem.value = ''"
+    <ion-input #newItem keyboardFix type="text" placeholder="Hinzufügen" (keyup.enter)="addItem(newItem.value); newItem.value = ''"
     (input)="addingItem = true"></ion-input>
   </ion-item>
   <ion-list no-lines *ngIf="shoppingList">

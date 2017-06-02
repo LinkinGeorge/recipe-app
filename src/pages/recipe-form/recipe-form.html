@@ -41,7 +41,7 @@
     <ion-list *ngSwitchCase="'info'">
       <ion-item>
         <ion-label color="primary" stacked>Titel</ion-label>
-        <ion-input type="text" placeholder="Titel" [(ngModel)]="model.title"></ion-input>
+        <ion-input keyboardFix type="text" placeholder="Titel" [(ngModel)]="model.title"></ion-input>
       </ion-item>
       <ion-item>
         <button ion-button block default (click)="showHeroPicker()">Titelbild</button>
@@ -94,10 +94,10 @@
         </ion-list>
       </ion-item>
       <ion-item>
-        <ion-input type="text" placeholder="Name" [(ngModel)]="newIngredient.name" (keyup.enter)="addIngredient(newIngredient)"></ion-input>
+        <ion-input keyboardFix type="text" placeholder="Name" [(ngModel)]="newIngredient.name" (keyup.enter)="addIngredient(newIngredient)"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input type="text" placeholder="Hinweis" [(ngModel)]="newIngredient.hint" (keyup.enter)="addIngredient(newIngredient)"></ion-input>
+        <ion-input keyboardFix type="text" placeholder="Hinweis" [(ngModel)]="newIngredient.hint" (keyup.enter)="addIngredient(newIngredient)"></ion-input>
       </ion-item>
       <ion-item>
         <button ion-button default block (click)="addIngredient(newIngredient)">Hinzufügen</button>
@@ -127,7 +127,7 @@
         </ion-list>
       </ion-item>
       <ion-item>
-        <ion-input #ctg type="text" placeholder="Neue Kategorie" (keyup.enter)="addCategory(ctg.value); ctg.value = ''"></ion-input>
+        <ion-input #ctg keyboardFix type="text" placeholder="Neue Kategorie" (keyup.enter)="addCategory(ctg.value); ctg.value = ''"></ion-input>
       </ion-item>
       <ion-item>
         <button ion-button default block (click)="addCategory(ctg.value); ctg.value = ''">Hinzufügen</button>

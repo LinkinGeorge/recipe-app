@@ -1,9 +1,9 @@
 <ion-list *ngIf="updIngr">
   <ion-item>
-    <ion-input type="text" placeholder="Name" [(ngModel)]="updIngr.name"></ion-input>
+    <ion-input keyboardFix type="text" placeholder="Name" [(ngModel)]="updIngr.name"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="text" placeholder="Hint" [(ngModel)]="updIngr.hint"></ion-input>
+    <ion-input keyboardFix type="text" placeholder="Hint" [(ngModel)]="updIngr.hint"></ion-input>
   </ion-item>
   <ion-item>
     <button ion-button default block (click)="updateIngredient()">Aktualisieren</button>
