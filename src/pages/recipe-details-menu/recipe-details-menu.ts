@@ -61,9 +61,12 @@ export class RecipeDetailsMenuPage {
   }
 
   cookingMode() {
-    this.brightness.setBrightness(1);
-    this.brightness.setKeepScreenOn(true);
-    this.viewCtrl.dismiss();
+    this.brightness.getBrightness().then((bright) => {
+      this.brightness.setKeepScreenOn(true);
+      this.brightness.setBrightness(1).then(() => {
+        this.viewCtrl.dismiss(bright);
+      });
+    });
   }
 
   selectDay() {

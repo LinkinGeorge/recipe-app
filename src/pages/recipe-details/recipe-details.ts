@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Brightness } from '@ionic-native/brightness';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -19,6 +20,8 @@ export class RecipeDetailsPage {
   heroLoaded = false;
   descrLoaded = false;
 
+  origBrightness: number;
+
   constructor(
     public navParams: NavParams, 
     public navCtrl: NavController, 
@@ -27,13 +30,14 @@ export class RecipeDetailsPage {
     public popoverCtrl: PopoverController,
     public localStorage: LocalStorageProvider,
     public recipeService: RecipesProvider,
-    public settings: SettingsProvider
+    public settings: SettingsProvider,
+    public brightness: Brightness
   ) {
     this.settings.getDefaultServings().then(servings => {
       if (servings !== null) {
         this.servings = servings;
       }
-    })
+    });
   }
 
   ionViewWillEnter() {
@@ -50,21 +54,31 @@ export class RecipeDetailsPage {
     });
   }
 
+  ionViewWillLeave() {
+    if (this.origBrightness) {
+      this.brightness.setKeepScreenOn(false);
+      this.brightness.setBrightness(this.origBrightness);
+    }
+  }
+
   showMenu(event) {
     let popover = this.popoverCtrl.create('RecipeDetailsMenuPage',{
       recipe: this.recipe
     });
-    popover.onDidDismiss(() => {
-      this.recipeService.getRecipe(this.recipe._id).subscribe(recipe => {
-        this.recipe = recipe;
-      }, error => {
-        let toast = this.toastCtrl.create({
-          message: 'Keine Internetverbindung',
-          duration: 1500
+    popover.onDidDismiss((brightness) => {
+      if (brightness) {
+        this.origBrightness = brightness;
+      } else {
+        this.recipeService.getRecipe(this.recipe._id).subscribe(recipe => {
+          this.recipe = recipe;
+        }, error => {
+          let toast = this.toastCtrl.create({
+            message: 'Keine Internetverbindung',
+            duration: 1500
+          });
+          toast.present();
         });
-        toast.present();
       }
-      );
     });
     popover.present({
       ev: event,
