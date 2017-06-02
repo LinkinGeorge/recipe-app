@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, PopoverController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { SettingsProvider } from '../../providers/settings/settings';
@@ -19,6 +19,7 @@ export class SettingsPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public toastCtrl: ToastController,
+    public popoverCtrl: PopoverController,
     public settings: SettingsProvider,
     public api: RecipesProvider
   ) { 
@@ -41,6 +42,17 @@ export class SettingsPage {
       if (serv) {
         this.servings = serv.toString();
       }
+    });
+  }
+
+  dismiss() {
+    this.navCtrl.pop();
+  }
+
+  showMenu(event) {
+    let popover = this.popoverCtrl.create('SettingsMenuPage');
+    popover.present({
+      ev: event,
     });
   }
 
