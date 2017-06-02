@@ -14,12 +14,20 @@ export class SettingsProvider {
     return this.storage.get('plan-code');
   }
 
+  resetPlanCode() {
+    return this.storage.remove('plan-code');
+  }
+
   setListCode(name:string) {
     return this.storage.set('list-code', name);
   }
 
   getListCode() {
     return this.storage.get('list-code');
+  }
+  
+  resetListCode() {
+    return this.storage.remove('list-code');
   }
 
   setDefaultTime(time:string) {

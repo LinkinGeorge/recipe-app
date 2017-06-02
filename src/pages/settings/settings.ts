@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { SettingsProvider } from '../../providers/settings/settings';
@@ -18,6 +18,7 @@ export class SettingsPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
+    public toastCtrl: ToastController,
     public settings: SettingsProvider,
     public api: RecipesProvider
   ) { 
@@ -44,35 +45,78 @@ export class SettingsPage {
   }
 
   save() {
-    if (this.cloudPlan !== '') {
-      this.api.getPlan(this.cloudPlan)
-      .subscribe(res => {
-        if (res === null) {
-          this.api.newPlan(this.cloudPlan)
-          .subscribe(() => {
-            this.settings.setPlanCode(this.cloudPlan);
+    let planPromise = new Promise(
+      resolve => {
+        if (this.cloudPlan !== '') {
+          this.api.getPlan(this.cloudPlan)
+          .subscribe(res => {
+            if (res === null) {
+              this.api.newPlan(this.cloudPlan)
+              .subscribe(() => {
+                this.settings.setPlanCode(this.cloudPlan).then(() => {
+                  resolve();
+                });
+              });
+            } else {
+              this.settings.setPlanCode(this.cloudPlan).then(() => {
+                resolve();
+              });
+            }
           });
         } else {
-            this.settings.setPlanCode(this.cloudPlan);
+          this.settings.resetPlanCode().then(() => {
+            resolve();
+          });
         }
-      });
-    }
-    if (this.cloudList !== '') {
-      this.api.getList(this.cloudList)
-      .subscribe(res => {
-        if (res === null) {
-          this.api.newList(this.cloudList)
-          .subscribe(() => {
-            this.settings.setListCode(this.cloudList);
+      }
+    );
+    let listPromise = new Promise(
+      resolve => {
+        if (this.cloudList !== '') {
+          this.api.getList(this.cloudList)
+          .subscribe(res => {
+            if (res === null) {
+              this.api.newList(this.cloudList)
+              .subscribe(() => {
+                this.settings.setListCode(this.cloudList).then(() => {
+                  resolve();
+                });
+              });
+            } else {
+              this.settings.setListCode(this.cloudList).then(() => {
+                resolve();
+              });
+            }
           });
         } else {
-            this.settings.setListCode(this.cloudList);
+          this.settings.resetListCode().then(() => {
+            resolve();
+          });
         }
+      }
+    );
+    let timePromise = new Promise(
+      resolve => {
+        this.settings.setDefaultTime(this.time).then(() => {
+          resolve();
+        });
+      }
+    );
+    let servingsPromise = new Promise(
+      resolve => {
+        this.settings.setDefaultServings(+this.servings).then(() => {
+          resolve();
+        });
+      }
+    );
+    Promise.all([planPromise, listPromise, timePromise, servingsPromise]).then(() => {
+      let toast = this.toastCtrl.create({
+        message: 'Erfolgreich gespeichert',
+        duration: 2000
       });
-    }
-    this.settings.setDefaultTime(this.time);
-    this.settings.setDefaultServings(+this.servings);
-    this.navCtrl.pop();
+      toast.present(); 
+      this.navCtrl.pop();
+    });
   }
 
 }

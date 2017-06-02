@@ -46,7 +46,7 @@ export class LocalStorageProvider {
   }
 
   setRecipes(recipes) {
-    this.storage.set('recipes', JSON.stringify(recipes));
+    return this.storage.set('recipes', JSON.stringify(recipes));
   }
 
   addRecipe(recipe) {
