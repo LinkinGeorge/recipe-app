@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
+import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 import { SettingsProvider } from '../../providers/settings/settings';
 
@@ -25,6 +26,7 @@ export class RecipeDetailsPage {
     public toastCtrl: ToastController,
     public popoverCtrl: PopoverController,
     public localStorage: LocalStorageProvider,
+    public recipeService: RecipesProvider,
     public settings: SettingsProvider
   ) {
     this.settings.getDefaultServings().then(servings => {
@@ -52,9 +54,36 @@ export class RecipeDetailsPage {
     let popover = this.popoverCtrl.create('RecipeDetailsMenuPage',{
       recipe: this.recipe
     });
+    popover.onDidDismiss(() => {
+      this.recipeService.getRecipe(this.recipe._id).subscribe(recipe => {
+        this.recipe = recipe;
+      }, error => {
+        let toast = this.toastCtrl.create({
+          message: 'Keine Internetverbindung',
+          duration: 1500
+        });
+        toast.present();
+      }
+      );
+    });
     popover.present({
       ev: event,
     });
+  }
+
+  doRefresh(refresher) {
+    this.recipeService.getRecipe(this.recipe._id).subscribe(recipe => {
+      this.recipe = recipe;
+      refresher.complete();
+    }, error => {
+      refresher.complete();
+      let toast = this.toastCtrl.create({
+        message: 'Keine Internetverbindung',
+        duration: 1500
+      });
+      toast.present();
+    }
+    );
   }
 
   servingsChange(servings: number) {

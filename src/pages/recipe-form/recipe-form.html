@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar color="primary">
+    <ion-buttons left style="margin-left: 1.5rem;">
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title *ngIf="!model.title">Neues Rezept</ion-title>
     <ion-title *ngIf="model.title">{{ model.title }}</ion-title>
     <ion-buttons end>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams, ViewController, ToastController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, ViewController, ToastController, ActionSheetController, ModalController } from 'ionic-angular';
 import { Deploy } from '@ionic/cloud-angular';
 
 @IonicPage()
@@ -19,6 +19,7 @@ export class HomeMenuPage {
     public viewCtrl: ViewController,
     public actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
     public deploy: Deploy
   ) { 
     this.sortType = this.navParams.get('sortType');
@@ -27,9 +28,11 @@ export class HomeMenuPage {
   }
 
   newRecipe() {
-    this.viewCtrl.dismiss().then(() => {
-      this.navCtrl.push('RecipeFormPage');
+    let newRecipeModal = this.modalCtrl.create('RecipeFormPage');
+    newRecipeModal.onDidDismiss(() => {
+      this.viewCtrl.dismiss();
     });
+    newRecipeModal.present();
   }
 
   sortDirection() {

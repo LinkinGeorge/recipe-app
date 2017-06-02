@@ -11,6 +11,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div *ngIf="recipe">
     <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{recipe.heroImage}}" alt="{{recipe.title}}">
     <h1 text-center margin text-wrap>{{ recipe.title }}</h1>

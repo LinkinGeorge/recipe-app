@@ -85,8 +85,20 @@ export class HomePage {
       if (data) {
         this.sortDesc = data.sortDesc;
         this.sortType = data.sortType;
-      }
-    })
+      } else {
+      this.recipeService.getAllRecipes().subscribe(
+        recipes => {
+          this.recipes = recipes;
+          this.localStorage.setRecipes(recipes);
+        }, error => {
+          this.localStorage.getRecipes().then((recipes) => {
+            if (recipes) {
+              this.recipes = JSON.parse(recipes);
+            }
+          });
+        }
+      );} 
+    });
     popover.present({
       ev: event,
     });
@@ -95,8 +107,9 @@ export class HomePage {
   doRefresh(refresher) {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
-      this.localStorage.setRecipes(recipes);
-      refresher.complete();
+      this.localStorage.setRecipes(recipes).then(() => {
+        refresher.complete();
+      });
     }, error => {
       this.localStorage.getRecipes().then((recipes) => {
         if (recipes) {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Brightness } from '@ionic-native/brightness';
-import { IonicPage, NavParams, NavController, ViewController, ToastController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavParams, NavController, ViewController, ToastController, ActionSheetController, ModalController } from 'ionic-angular';
 
 import { PlanEntry } from '../../models/plan-entry';
 
@@ -24,6 +24,7 @@ export class RecipeDetailsMenuPage {
     public viewCtrl: ViewController,
     public toastCtrl: ToastController,
     public actionSheetCtrl: ActionSheetController,
+    public modalCtrl: ModalController,
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
     public settings: SettingsProvider,
@@ -43,11 +44,13 @@ export class RecipeDetailsMenuPage {
   }
 
   editRecipe() {
-    this.viewCtrl.dismiss().then(() => {
-      this.navCtrl.push('RecipeFormPage', {
-        recipe: this.recipe
-      });
+    let editModal = this.modalCtrl.create('RecipeFormPage', {
+      recipe: this.recipe
     });
+    editModal.onDidDismiss(() => {
+      this.viewCtrl.dismiss();
+    });
+    editModal.present();
   }
 
   increaseCookCount() {
