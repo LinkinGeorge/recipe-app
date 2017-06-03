@@ -119,6 +119,8 @@ export class LocalStorageProvider {
     this.getList().then((list) => {
       if (list) {
         this.list = JSON.parse(list);
+      } else {
+        this.list = [];
       }
       this.list.push(item);
       this.storage.set('shopping-list', JSON.stringify(this.list)).then(() => {
@@ -172,17 +174,25 @@ export class LocalStorageProvider {
     return new Promise(
       resolve => {
         this.getPlan().then((plan => {
-          this.plan = JSON.parse(plan);
-          this.plan.push(entry);
-          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
-            if (this.cloudPlan === '') {
-              resolve();
-            } else {
-              this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+          if (plan) {
+            this.plan = JSON.parse(plan);
+            this.plan.push(entry);
+            this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+              if (this.cloudPlan === '') {
                 resolve();
-              });
-            }
-          });
+              } else {
+                this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+                  resolve();
+                });
+              }
+            });
+          } else {
+            this.plan = [];
+            this.plan.push(entry);
+            this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+              resolve();
+            });
+          }
         }));
       }
     );

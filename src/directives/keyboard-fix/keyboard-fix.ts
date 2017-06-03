@@ -5,12 +5,9 @@ import {Directive, ElementRef, Renderer, AfterViewInit} from "@angular/core";
 })
 export class KeyboardFixDirective implements AfterViewInit {
 
-  constructor (private _elRef: ElementRef, private _renderer: Renderer) {
-    console.log('keyboard fix');
-  }
+  constructor (private _elRef: ElementRef, private _renderer: Renderer) { }
 
   ngAfterViewInit() {
-    console.log('keyboard fix');
 
     let input = null;
 
