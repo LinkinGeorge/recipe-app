@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Eintrag nachtragen</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Datum</ion-label>
+      <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="date"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Durchsuchen</ion-label>
+      <ion-input #search keyboardfix type="text"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="search.value.length > 0">
+      <ion-list>
+        <button ion-item *ngFor="let recipe of recipes | sortRecipes:'last-cooked':true:weekplan | filterRecipes:search.value" (click)="save(recipe)" style="border-bottom: 1px #ccc solid; padding: 0.5rem 0">
+          {{ recipe.title }}
+        </button>
+      </ion-list>
+    </ion-item>
+  </ion-list>
+</ion-content>

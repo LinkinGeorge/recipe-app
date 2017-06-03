@@ -117,6 +117,19 @@ export class WeekplanPage {
     }
   }
 
+  pastEntry() {
+    const id = this.randomString(16, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    let pastEntryModal = this.modalCtrl.create('WeekplanPastEntryPage');
+    pastEntryModal.onDidDismiss(data => {
+      if (data) {
+        const recipe = {id: data.recipe.id, title: data.recipe.title};
+        const pastEntry = new PlanEntry(recipe, new Date(data.date), '', '19:30', 2, id);
+        this.localStorage.addEntry(pastEntry);
+      }
+    });
+    pastEntryModal.present();
+  }
+
   editEntry(entry) {
     let editEntryModal = this.modalCtrl.create('WeekplanEditEntryPage', {entry: entry});
     editEntryModal.onDidDismiss(data => {

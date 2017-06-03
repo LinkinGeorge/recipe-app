@@ -2,6 +2,9 @@
   <ion-navbar color="primary">
     <ion-title>Wochenplan</ion-title>
     <ion-buttons end>
+      <button class="nav-button" *ngIf="!deleting" ion-button icon-only (click)="pastEntry()">
+        <ion-icon name="calendar"></ion-icon>
+      </button>
       <button class="nav-button" *ngIf="!deleting" ion-button icon-only (click)="newEntry()">
         <ion-icon name="add"></ion-icon>
       </button>
@@ -14,7 +17,6 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
 
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
