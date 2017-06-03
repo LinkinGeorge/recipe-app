@@ -53,11 +53,11 @@ export class HomeMenuPage {
           }
         },
         {
-          text: 'Wie oft gekocht?',
+          text: 'Lange nicht gekocht',
           handler: () => {
-            this.sortType = 'cook-counter';
+            this.sortType = 'last-cooked';
             this.viewCtrl.dismiss({
-              sortType: 'cook-counter',
+              sortType: 'last-cooked',
               sortDesc: this.sortDesc
             });
           }

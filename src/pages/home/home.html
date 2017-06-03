@@ -43,7 +43,7 @@
     <ion-spinner text-center></ion-spinner>
   </div>
   <div class="recipes" *ngIf="recipes" [ngClass]="{'fade': fabActive}">
-      <ion-card *ngFor="let recipe of recipes | filterRecipes:query | sortRecipes:sortType:sortDesc" (tap)="viewRecipe(recipe)">
+      <ion-card *ngFor="let recipe of recipes | filterRecipes:query | sortRecipes:sortType:sortDesc:weekplan" (tap)="viewRecipe(recipe)">
         <div class="img-container">
           <img *ngIf="!recipe.heroImage" class="thumbnail" src="assets/images/comingsoon.jpg"/>
           <img *ngIf="recipe.heroImage" class="thumbnail" src="{{ recipe.heroImage | thumbnail:600:0 }}"/>

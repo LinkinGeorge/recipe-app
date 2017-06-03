@@ -43,7 +43,7 @@
     </ion-item>
     <ion-item *ngIf="search.value.length > 0">
       <ion-list>
-        <button ion-item *ngFor="let recipe of recipes | filterRecipes:search.value" (click)="saveRecipe(recipe)" style="border-bottom: 1px #ccc solid; padding: 0.5rem 0">
+        <button ion-item *ngFor="let recipe of recipes | sortRecipes:'last-cooked':true:weekplan | filterRecipes:search.value" (click)="saveRecipe(recipe)" style="border-bottom: 1px #ccc solid; padding: 0.5rem 0">
           {{ recipe.title }}
         </button>
       </ion-list>

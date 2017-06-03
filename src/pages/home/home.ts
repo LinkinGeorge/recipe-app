@@ -21,6 +21,7 @@ export class HomePage implements OnInit {
   headercontent:any;
 
   recipes;
+  weekplan = [];
 
   query = '';
 
@@ -56,6 +57,13 @@ export class HomePage implements OnInit {
       toast.present();
     }
     );
+    this.localStorage.downloadPlan().then(() => {
+      this.localStorage.getPlan().then((plan) => {
+        if (plan) {
+          this.weekplan = JSON.parse(plan);
+        }
+      });
+    });
   }
 
   ngOnInit() {
@@ -128,6 +136,13 @@ export class HomePage implements OnInit {
       toast.present();
     }
     );
+    this.localStorage.downloadPlan().then(() => {
+      this.localStorage.getPlan().then((plan) => {
+        if (plan) {
+          this.weekplan = JSON.parse(plan);
+        }
+      });
+    });
   }
 
   viewRecipe(recipe) {

@@ -14,6 +14,7 @@ export class WeekplanNewEntryPage {
   time = "19:30";
   servings: number;
   recipes = new Array();
+  weekplan = [];
 
   constructor(
     public navParams: NavParams, 
@@ -35,6 +36,11 @@ export class WeekplanNewEntryPage {
     });
     this.localStorage.getRecipes().then((recipes) => {
       this.recipes = JSON.parse(recipes);
+    });
+    this.localStorage.getPlan().then((plan) => {
+      if (plan) {
+        this.weekplan = JSON.parse(plan);
+      }
     });
     if (this.navParams.get('day')) {
       this.day = this.navParams.get('day');
