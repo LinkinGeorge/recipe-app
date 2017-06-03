@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, PopoverController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
+import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 import { SettingsProvider } from '../../providers/settings/settings';
 
 @IonicPage()
@@ -21,6 +22,7 @@ export class SettingsPage {
     public toastCtrl: ToastController,
     public popoverCtrl: PopoverController,
     public settings: SettingsProvider,
+    public localStorage: LocalStorageProvider,
     public api: RecipesProvider
   ) { 
     this.settings.getPlanCode().then((code) => {

@@ -104,6 +104,9 @@ export class LocalStorageProvider {
               });
             });
           } else {
+            this.storage.set('shopping-list', JSON.stringify([])).then(() => {
+              resolve();
+            });
             resolve();
           }
         });
@@ -159,7 +162,9 @@ export class LocalStorageProvider {
               });
             });
           } else {
-            resolve();
+            this.storage.set('plan', JSON.stringify([])).then(() => {
+              resolve();
+            });
           }
         });
       }
