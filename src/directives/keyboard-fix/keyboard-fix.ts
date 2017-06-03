@@ -19,6 +19,8 @@ export class KeyboardFixDirective implements AfterViewInit {
 
     if( input ) {
         this._renderer.setElementAttribute(input, 'spellcheck', 'true');
+        this._renderer.setElementAttribute(input, 'autocorrect', 'true');
+        this._renderer.setElementAttribute(input, 'autoComplete', 'true');
     }   
  
   }
