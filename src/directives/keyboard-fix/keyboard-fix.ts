@@ -1,13 +1,16 @@
 import {Directive, ElementRef, Renderer, AfterViewInit} from "@angular/core";
 
 @Directive({
-  selector: '[keyboardFix]'
+  selector: '[keyboardfix]'
 })
 export class KeyboardFixDirective implements AfterViewInit {
 
-  constructor (private _elRef: ElementRef, private _renderer: Renderer) {}
+  constructor (private _elRef: ElementRef, private _renderer: Renderer) {
+    console.log('keyboard fix');
+  }
 
   ngAfterViewInit() {
+    console.log('keyboard fix');
 
     let input = null;
 
@@ -18,9 +21,7 @@ export class KeyboardFixDirective implements AfterViewInit {
     } 
 
     if( input ) {
-        this._renderer.setElementAttribute(input, 'autoComplete', 'true');
         this._renderer.setElementAttribute(input, 'spellcheck', 'true');
-        this._renderer.setElementAttribute(input, 'autocorrect', 'true');
     }   
  
   }

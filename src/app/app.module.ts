@@ -19,7 +19,6 @@ import { LocalStorageProvider } from '../providers/local-storage/local-storage';
 
 import { Environment } from '../environment';
 import { SettingsProvider } from '../providers/settings/settings';
-import { KeyboardFixDirective } from '../directives/keyboard-fix/keyboard-fix';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -29,8 +28,7 @@ const cloudSettings: CloudSettings = {
 
 @NgModule({
   declarations: [
-    MyApp,
-    KeyboardFixDirective
+    MyApp
   ],
   imports: [
     BrowserModule,

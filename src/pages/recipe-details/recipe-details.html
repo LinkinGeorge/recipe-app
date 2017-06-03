@@ -38,7 +38,7 @@
           <span>{{ ingr.name | calcServings:recipe.servings:servings }}</span>
           <span *ngIf="ingr.hint" class="ml-1">({{ ingr.hint }})</span>
         </span>
-        <button ion-button icon-only default round outline item-end color="dark" (click)="addToList(ingredient.textContent)" style="height: 40px; width: 40px; padding: 5px">
+        <button ion-button icon-only round outline item-end color="dark" (click)="addToList(ingredient.textContent)" style="height: 40px; width: 40px; padding: 5px">
           <ion-icon name="cart"></ion-icon>
         </button>
       </ion-item>

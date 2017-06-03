@@ -3,14 +3,16 @@ import { IonicPageModule } from 'ionic-angular';
 import { ComponentsModule } from '../../components/components.module';
 import { DndModule } from 'ng2-dnd';
 import { RecipeFormPage } from './recipe-form';
+import { DirectivesModule } from '../../directives/directives.module';
 
 @NgModule({
   declarations: [
-    RecipeFormPage,
+    RecipeFormPage
   ],
   imports: [
     IonicPageModule.forChild(RecipeFormPage),
     ComponentsModule,
+    DirectivesModule,
     DndModule
   ],
   exports: [
