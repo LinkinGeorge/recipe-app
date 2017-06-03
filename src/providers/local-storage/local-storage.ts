@@ -104,8 +104,14 @@ export class LocalStorageProvider {
               });
             });
           } else {
-            this.storage.set('shopping-list', JSON.stringify([])).then(() => {
-              resolve();
+            this.getList().then((list) => {
+              if (list) {
+                resolve();
+              } else {
+                this.storage.set('shopping-list', JSON.stringify([])).then(() => {
+                  resolve();
+                });
+              }
             });
             resolve();
           }
@@ -162,8 +168,14 @@ export class LocalStorageProvider {
               });
             });
           } else {
-            this.storage.set('plan', JSON.stringify([])).then(() => {
-              resolve();
+            this.getPlan().then((plan) => {
+              if (plan) {
+                resolve();
+              } else {
+                this.storage.set('plan', JSON.stringify([])).then(() => {
+                  resolve();
+                });
+              }
             });
           }
         });
