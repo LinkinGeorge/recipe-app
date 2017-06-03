@@ -59,6 +59,7 @@ export class SettingsPage {
   save() {
     let planPromise = new Promise(
       resolve => {
+        this.cloudPlan = this.cloudPlan.trim().replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
         if (this.cloudPlan !== '') {
           this.api.getPlan(this.cloudPlan)
           .subscribe(res => {
@@ -84,6 +85,7 @@ export class SettingsPage {
     );
     let listPromise = new Promise(
       resolve => {
+        this.cloudList = this.cloudList.trim().replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
         if (this.cloudList !== '') {
           this.api.getList(this.cloudList)
           .subscribe(res => {
