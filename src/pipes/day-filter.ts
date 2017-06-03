@@ -5,10 +5,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DayFilterPipe implements PipeTransform {
 
-  transform(entries: any[], day: Date):any[] {
+  transform(entries: any[], date: Date):any[] {
     let filtered = [];
     entries.forEach(entry => {
-      if (new Date(entry.date).getDate() === new Date(day).getDate()) {
+      const paramDate = new Date(date).setHours(0,0,0,0);
+      const entryDate = new Date(entry.date).setHours(0,0,0,0);
+      if (new Date(paramDate).getTime() === new Date(entryDate).getTime()) {
         filtered.push(entry);
       }
     })
