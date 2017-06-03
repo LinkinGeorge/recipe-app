@@ -1,5 +1,6 @@
-import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
+import { Component, ViewChild, ElementRef, Renderer, OnInit } from '@angular/core';
 import { IonicPage, Content, NavController, ActionSheetController, ToastController, PopoverController } from 'ionic-angular';
+import { Deploy } from '@ionic/cloud-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
@@ -9,7 +10,7 @@ import { LocalStorageProvider } from '../../providers/local-storage/local-storag
   selector: 'page-home',
   templateUrl: 'home.html'
 })
-export class HomePage {
+export class HomePage implements OnInit {
   @ViewChild(Content) content: Content;
   start = 0;
   threshold = 100;
@@ -36,7 +37,8 @@ export class HomePage {
     public toastCtrl: ToastController,
     public popoverCtrl: PopoverController,
     public recipeService: RecipesProvider,
-    public localStorage: LocalStorageProvider
+    public localStorage: LocalStorageProvider,
+    public deploy: Deploy
   ) {
     this.recipeService.getAllRecipes().subscribe(recipes => {
       this.recipes = recipes;
@@ -74,6 +76,8 @@ export class HomePage {
       }
       this.slideHeaderPrevious = this.ionScroll.scrollTop - this.start;
     });
+    // Check for old snapshots
+    this.deleteOldSnapshots();
   }
 
   showMenu(event) {
@@ -205,6 +209,30 @@ export class HomePage {
 
   toggleFab() {
     this.fabActive = !this.fabActive;
+  }
+    
+  deleteOldSnapshots() {
+    this.deploy.getSnapshots().then((snapshots) => {
+      // snapshots will be an array of snapshot uuids
+      this.deploy.info().then((x) => {
+        let deleted = 0;
+        for (let suuid of snapshots) {
+          if (suuid !== x.deploy_uuid) {
+            deleted++;
+            this.deploy.deleteSnapshot(suuid);
+          }
+        }
+        let message = '';
+        deleted === 1 ? message = '1 alte Version gelöscht.' : message = deleted + ' alte Versionen gelöscht.';
+        const toast = this.toastCtrl.create({
+          message: message,
+          duration: 1500
+        });
+        if (deleted !== 0) {
+          toast.present();
+        }
+      });
+    });
   }
 
 }
