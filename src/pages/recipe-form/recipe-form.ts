@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavController, NavParams, ToastController, PopoverController } from 'ionic-angular';
+import { IonicPage, ViewController, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
 
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -44,7 +44,7 @@ export class RecipeFormPage {
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
     public toastCtrl: ToastController,
-    public popoverCtrl: PopoverController
+    public modalCtrl: ModalController
   ) {
     if (this.navParams.get('recipe')) {
       this.model = JSON.parse(JSON.stringify(this.navParams.get('recipe')));
@@ -128,15 +128,13 @@ export class RecipeFormPage {
   }
 
   editIngredient(ingr, index, event) {
-    let editPopover = this.popoverCtrl.create('RecipeFormEditPage', {ingredient: ingr});
-    editPopover.onDidDismiss(ingredient => {
+    let editModal = this.modalCtrl.create('RecipeFormEditPage', {ingredient: ingr});
+    editModal.onDidDismiss(ingredient => {
       if (ingredient) {
         this.ingredients.splice(index, 1, ingredient)
       }
     });
-    editPopover.present({
-      ev: event
-    });
+    editModal.present();
   }
 
   removeIngredient(ingredient) {
