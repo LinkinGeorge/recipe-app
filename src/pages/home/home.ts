@@ -247,6 +247,8 @@ export class HomePage implements OnInit {
           toast.present();
         }
       });
+    }, error => {
+      console.warn(error);
     });
   }
 
