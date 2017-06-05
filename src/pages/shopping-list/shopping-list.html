@@ -17,7 +17,7 @@
   </ion-item>
   <ion-list no-lines *ngIf="shoppingList">
     <ion-item *ngFor="let item of shoppingList">
-      <ion-label>{{ item }}</ion-label>
+      <ion-label text-wrap>{{ item }}</ion-label>
       <ion-checkbox checked="false" (click)="removeItem(item)"></ion-checkbox>
     </ion-item>
   </ion-list>

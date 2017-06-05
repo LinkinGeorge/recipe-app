@@ -108,7 +108,7 @@
 
     <ion-list *ngSwitchCase="'description'">
       <ion-item>
-        <ion-textarea rows="8" placeholder="Beschreibung - Markdown für Styling verfügbar" [(ngModel)]="model.description"></ion-textarea>
+        <ion-textarea keyboardfix rows="8" placeholder="Beschreibung - Markdown für Styling verfügbar" [(ngModel)]="model.description"></ion-textarea>
       </ion-item>
       <ion-item>
         <button ion-button block default (click)="showDescPicker()">Anleitungsbild</button>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
+import { IonicPage, ViewController, NavController, NavParams, ToastController, ModalController, LoadingController } from 'ionic-angular';
 
 import { Recipe, Ingredient } from '../../models/recipe';
 import { RecipesProvider } from '../../providers/recipes/recipes';
@@ -44,7 +44,8 @@ export class RecipeFormPage {
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
     public toastCtrl: ToastController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public loadingCtrl: LoadingController
   ) {
     if (this.navParams.get('recipe')) {
       this.model = JSON.parse(JSON.stringify(this.navParams.get('recipe')));
@@ -67,6 +68,12 @@ export class RecipeFormPage {
   }
 
   save() {
+    let content = '';
+    let loading = this.loadingCtrl.create({
+      content: content
+    });
+    this.newRecipe ? content = 'Rezept wird hinzugefügt...' : content = 'Rezept wird aktualisiert...';
+    loading.present();
     this.model.ingredients = this.ingredients.slice(0);
     if (this.categories.length > 0) {
       this.model.categories = this.categories.slice(0);
@@ -76,7 +83,9 @@ export class RecipeFormPage {
         .subscribe(
           (recipe) => {
             this.localStorage.addRecipe(this.model).then(() => {
-              this.viewCtrl.dismiss();
+              loading.dismiss().then(() => {
+                this.viewCtrl.dismiss();
+              });
             });
           },
           (error) => {
@@ -85,6 +94,7 @@ export class RecipeFormPage {
               duration: 1500
             });
             toast.present();
+            loading.dismiss();
           });
         
     } else {
@@ -92,7 +102,9 @@ export class RecipeFormPage {
         .subscribe(
           (recipe) => {
             this.localStorage.updateRecipe(this.model).then(() => {
-              this.viewCtrl.dismiss();
+              loading.dismiss().then(() => {
+                this.viewCtrl.dismiss();
+              });
             });
           },
           (error) => {
@@ -101,7 +113,7 @@ export class RecipeFormPage {
               duration: 1500
             });
             toast.present();
-            this.viewCtrl.dismiss();
+            loading.dismiss();
           });
     }
   }
