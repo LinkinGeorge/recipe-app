@@ -7,6 +7,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Brightness } from '@ionic-native/brightness';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 import { MarkdownModule } from 'angular2-markdown';
@@ -48,6 +49,7 @@ const cloudSettings: CloudSettings = {
     StatusBar,
     SplashScreen,
     Brightness,
+    SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RecipesProvider,
     LocalStorageProvider,
