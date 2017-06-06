@@ -46,6 +46,7 @@
       <ion-item>
         <button ion-button block default (click)="showHeroPicker()">Titelbild</button>
       </ion-item>
+      <img *ngIf="model.heroImage" class="preview-img" src="{{ model.heroImage }}" alt="{{ model.title }}">
 
       <ion-item>
         <number-picker [start]="model.servings" [max]="20" [caption]="'Personen'" [captionSingular]="'Person'" (onChange)="servingsChange($event)"></number-picker>
@@ -113,6 +114,7 @@
       <ion-item>
         <button ion-button block default (click)="showDescPicker()">Anleitungsbild</button>
       </ion-item>
+      <img *ngIf="model.descrImage" src="{{ model.descrImage }}" alt="{{ model.title }}" class="preview-img">
     </ion-list>
 
     <!-- CATEGORIES TAB -->

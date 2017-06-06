@@ -89,11 +89,7 @@ export class RecipeFormPage {
             });
           },
           (error) => {
-            let toast = this.toastCtrl.create({
-              message: 'Konnte nicht gespeichert werden. Bitte stell sicher, dass du mit dem Internet verbunden bist.',
-              duration: 1500
-            });
-            toast.present();
+            this.displayToast('Konnte nicht gespeichert werden. Bitte stell sicher, dass du mit dem Internet verbunden bist.', 1500);
             loading.dismiss();
           });
         
@@ -108,11 +104,7 @@ export class RecipeFormPage {
             });
           },
           (error) => {
-            let toast = this.toastCtrl.create({
-              message: 'Konnte nicht gespeichert werden. Bitte stell sicher, dass du mit dem Internet verbunden bist.',
-              duration: 1500
-            });
-            toast.present();
+            this.displayToast('Konnte nicht gespeichert werden. Bitte stell sicher, dass du mit dem Internet verbunden bist.', 1500);
             loading.dismiss();
           });
     }
@@ -193,34 +185,52 @@ export class RecipeFormPage {
   
   async showHeroPicker() {
     const client = filestack.init(Environment.filestackKey);
-    const result = await client.pick({
-      accept: ['image/*'],
-      maxFiles: 1,
-      transformations: {
-        crop: {
-          circle: false
+    try {
+      const result = await client.pick({
+        accept: ['image/*'],
+        maxFiles: 1,
+        transformations: {
+          crop: {
+            circle: false
+          }
         }
-      }
-    });
-    const handle = result.filesUploaded[0].handle;
-    this.heroFilename = result.filesUploaded[0].filename;
-    this.model.heroImage = 'https://process.filestackapi.com/resize=w:2000,fit:max/quality=value:80/compress/'+handle;
+      });
+      const handle = result.filesUploaded[0].handle;
+      this.heroFilename = result.filesUploaded[0].filename;
+      this.model.heroImage = 'https://process.filestackapi.com/resize=w:2000,fit:max/quality=value:80/compress/'+handle;
+      this.displayToast(this.heroFilename + ' wurde erfolgreich hochgeladen!', 1500);
+    } catch(e) {
+      this.displayToast('Es ist ein Fehler aufgetreten: ' + e, 1500);
+    }
   }
   
   async showDescPicker() {
     const client = filestack.init(Environment.filestackKey);
-    const result = await client.pick({
-      accept: ['image/*'],
-      maxFiles: 1,
-      transformations: {
-        crop: {
-          circle: false
+    try {
+      const result = await client.pick({
+        accept: ['image/*'],
+        maxFiles: 1,
+        transformations: {
+          crop: {
+            circle: false
+          }
         }
-      }
+      });
+      const handle = result.filesUploaded[0].handle;
+      this.descrFilename = result.filesUploaded[0].filename;
+      this.model.descrImage = 'https://process.filestackapi.com/resize=w:2000,fit:max/quality=value:80/compress/'+handle;
+      this.displayToast(this.descrFilename + ' wurde erfolgreich hochgeladen!', 1500);
+    } catch (e) {
+      this.displayToast('Es ist ein Fehler aufgetreten: ' + e, 1500);
+    }
+  }
+
+  private displayToast(message: string, duration: number) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: duration
     });
-    const handle = result.filesUploaded[0].handle;
-    this.descrFilename = result.filesUploaded[0].filename;
-    this.model.descrImage = 'https://process.filestackapi.com/resize=w:2000,fit:max/quality=value:80/compress/'+handle;
+    toast.present();
   }
 
 }
