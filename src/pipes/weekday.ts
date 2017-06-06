@@ -6,14 +6,26 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class WeekdayPipe implements PipeTransform {
 
   transform(date: Date):string {
-    const toCheck = new Date(date);
-    if (toCheck.getDay() === new Date(Date.now()).getDay()) {
+    const toCheck = new Date(date).setHours(0,0,0,0);
+    const today = new Date(Date.now()).setHours(0,0,0,0);
+    const tomorrow = this.addDays(new Date(today), 1).getTime();
+    const thisWeek = new Array<number>(7);
+    for (var i = 0; i < thisWeek.length; i++) {
+      thisWeek[i] = this.addDays(new Date(Date.now()), i).getTime();
+    }
+    if (toCheck == today) {
       return 'Heute'
-    }
-    if (toCheck.getDay() === new Date(Date.now()).getDay() + 1) {
+    } else if (toCheck== tomorrow) {
       return 'Morgen'
+    } else if (thisWeek.indexOf(new Date(toCheck).getTime()) !== -1) {
+      return this.getWeekdayString(new Date(toCheck).getDay());
+    } else {
+      return this.getWeekdayString(new Date(toCheck).getDay()) + ' (' + new Date(toCheck).toLocaleDateString() + ')';
     }
-    switch (toCheck.getDay()) {
+    
+  }
+  private getWeekdayString(day):string {
+    switch (day) {
       case 0:
         return 'Sonntag'
       case 1:
@@ -32,5 +44,10 @@ export class WeekdayPipe implements PipeTransform {
       default:
         return 'Keine Ahnung'
     }
+  }
+  
+  private addDays(date: Date, days: number): Date {
+    date.setDate(date.getDate() + days);
+    return new Date(date.setHours(0,0,0,0));
   }
 }

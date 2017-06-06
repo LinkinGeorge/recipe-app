@@ -4,6 +4,30 @@ page-weekplan {
         margin: 0 0.75rem;
     }
 
+    .week-nav {
+        padding: .25rem .5rem;
+        border-bottom: 1px #bbb solid;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: uppercase;
+        position: relative;
+        height: 40px;
+    }
+
+    .week-back {
+        padding: 1rem;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .week-forward {
+        padding: 1rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
     .date-label {
         color: #bbb;
         font-size: 10px;

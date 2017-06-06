@@ -13,6 +13,8 @@ export class WeekplanPage {
   public plan = new Array<PlanEntry>();
   deleting = false;
   week = new Array<Date>(7);
+  weekString = 'Diese Woche';
+  weekDifference = 0;
 
   constructor(
     public navCtrl: NavController, 
@@ -171,6 +173,35 @@ export class WeekplanPage {
     this.deleting = true;
   }
 
+  weekBack() {
+    this.weekDifference--;
+    this.weekString = this.getWeekString(this.weekDifference);
+    this.weekDifference === 0 ? this.weekString = 'Diese Woche' : this.weekString = 'Woche (' + this.weekDifference + ')';
+    let oldStart = new Date(this.week[0]);
+    let newStart = new Date(this.subtractDays(oldStart, 7));
+    for (var i = 0; i < this.week.length; i++) {
+      this.week[i] = this.addDays(new Date(newStart), i);
+    }
+  }
+
+  weekForward() {
+    this.weekDifference++;
+    this.weekString = this.getWeekString(this.weekDifference);
+    let oldStart = new Date(this.week[0]);
+    let newStart = new Date(this.addDays(oldStart, 7));
+    for (var i = 0; i < this.week.length; i++) {
+      this.week[i] = this.addDays(new Date(newStart), i);
+    }
+  }
+
+  resetWeek() {
+    this.weekDifference = 0;
+    this.weekString = this.getWeekString(this.weekDifference);
+    for (var i = 0; i < this.week.length; i++) {
+      this.week[i] = this.addDays(new Date(Date.now()), i);
+    }
+  }
+
   private fillUpPlan() {
     const today = new Date(Date.now())
     for (var i = 0; i < 7; i++) {
@@ -184,15 +215,29 @@ export class WeekplanPage {
   }
 
   private addDays(date: Date, days: number): Date {
-    const newDate = new Date();
-    newDate.setDate(date.getDate() + days);
-    return newDate;
+    date.setDate(date.getDate() + days);
+    return date;
+  }
+
+  private subtractDays(date: Date, days: number): Date {
+    date.setDate(date.getDate() - days);
+    return date;
   }
 
   private datePresent(date: Date):boolean {
     return this.plan.findIndex((day) => {
       return new Date(day.date).getDay() === new Date(date).getDay();
     }) !== -1;
+  }
+
+  private getWeekString(difference: number):string {
+    if (difference === 0) {
+      return 'Diese Woche'
+    } else if (difference > 0) {
+      return 'Woche (+' + difference + ')';
+    } else {
+      return 'Woche (' + difference + ')';
+    }
   }
 
   private randomString (length, chars) {

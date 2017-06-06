@@ -16,6 +16,19 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-buttons left class="left-buttons">
+      <button ion-button icon-only (click)="weekBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>{{ weekString }}</ion-title>
+    <ion-buttons right class="right-buttons">
+      <button ion-button icon-only (click)="weekForward()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -40,6 +53,9 @@
           </div>
         </div>
       </div>
+    </ion-item>
+    <ion-item *ngIf="weekDifference !== 0">
+      <button ion-button default full (click)="resetWeek()">Zurück zu dieser Woche</button>
     </ion-item>
   </ion-list>
 </ion-content>
