@@ -35,6 +35,7 @@ export class RecipeFormPage {
   vegetarian: boolean;
   vegan: boolean;
 
+  // navigation between the segments
   page: string = 'info';
 
   constructor(
@@ -55,7 +56,7 @@ export class RecipeFormPage {
       this.vegetarian = this.model.categories.includes('Vegetarisch');
       this.vegan = this.model.categories.includes('Vegan');
     } else {
-      this.model = new Recipe('', 2, 0, 1, 0, this.ingredients);
+      this.model = new Recipe('', 2, 20, 1, 0, this.ingredients);
       this.categories = [];
       this.ingredients = [new Ingredient( '', '' )];
       this.vegetarian = false;
@@ -120,7 +121,7 @@ export class RecipeFormPage {
 
   addIngredient() {
     if (this.newIngredient) {
-      const ingr = this.newIngredient;
+      const ingr = new Ingredient(this.newIngredient.name.trim(), this.newIngredient.hint.trim());
       this.ingredients.push(ingr);
       this.newIngredient = new Ingredient('', '');
     }
@@ -135,7 +136,8 @@ export class RecipeFormPage {
     let editModal = this.modalCtrl.create('RecipeFormEditPage', {ingredient: ingr});
     editModal.onDidDismiss(ingredient => {
       if (ingredient) {
-        this.ingredients.splice(index, 1, ingredient)
+        const ingr = new Ingredient(ingredient.name.trim(), ingredient.hint.trim());
+        this.ingredients.splice(index, 1, ingr);
       }
     });
     editModal.present();
@@ -151,11 +153,11 @@ export class RecipeFormPage {
   
   addCategory(category) {
     if (!this.categories) {
-      this.categories.push(category);
-    } else if (this.categories.indexOf(category) !== -1) {
+      this.categories.push(category.trim());
+    } else if (this.categories.indexOf(category.trim()) !== -1) {
       // leave the categories as is
     } else {
-      this.categories.push(category);
+      this.categories.push(category.trim());
     }
   }
 

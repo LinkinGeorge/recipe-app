@@ -1,3 +1,4 @@
+import { ArrayLengthPipe } from './array-length';
 import { CalcServingsPipe } from './calc-servings';
 import { DayFilterPipe } from './day-filter';
 import { DifficultyStringPipe } from './difficulty-string';
@@ -11,6 +12,7 @@ import { NgModule } from '@angular/core';
  
 @NgModule({
     declarations: [
+        ArrayLengthPipe,
         CalcServingsPipe,
         DayFilterPipe,
         DifficultyStringPipe,
@@ -25,6 +27,7 @@ import { NgModule } from '@angular/core';
  
     ],
     exports: [
+        ArrayLengthPipe,
         CalcServingsPipe,
         DayFilterPipe,
         DifficultyStringPipe,

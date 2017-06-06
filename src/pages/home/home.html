@@ -2,6 +2,7 @@
   <ion-navbar color="primary">
     <ion-title>
       Rezeptbuch
+      <ion-badge *ngIf="recipes" class="recipes-badge">{{ recipes | filterRecipes:query | length }}</ion-badge>
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="showMenu($event)">

@@ -9,6 +9,11 @@ page-home {
         width: 24px;
     }
 
+    .recipes-badge {
+        margin-left: .5rem;
+        background-color: color($colors, secondary);
+    }
+
     .fab-in-list {
         height: 48px;
         width: 48px;
@@ -17,7 +22,7 @@ page-home {
     }
 
     .fab-in-list.filtered {
-        background-color: #4357AD;
+        background-color: color($colors, primary);
     }
 
     .recipes {
