@@ -102,6 +102,8 @@ export class LocalStorageProvider {
               this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
                 resolve();
               });
+            }, error => {
+              resolve();
             });
           } else {
             this.getList().then((list) => {
@@ -166,6 +168,8 @@ export class LocalStorageProvider {
               this.storage.set('plan', JSON.stringify(newPlan)).then(() => {
                 resolve();
               });
+            }, error => {
+              resolve();
             });
           } else {
             this.getPlan().then((plan) => {
