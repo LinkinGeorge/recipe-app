@@ -15,6 +15,8 @@ export class SettingsPage {
   cloudList = '';
   time = '19:30';
   servings = '2';
+  oldPlan = '';
+  oldList = '';
 
   constructor(
     public navCtrl: NavController, 
@@ -28,11 +30,13 @@ export class SettingsPage {
     this.settings.getPlanCode().then((code) => {
       if (code) {
         this.cloudPlan = code;
+        this.oldPlan = code;
       }
     });
     this.settings.getListCode().then((code) => {
       if (code) {
         this.cloudList = code;
+        this.oldList = code;
       }
     });
     this.settings.getDefaultTime().then((time) => {
@@ -60,7 +64,10 @@ export class SettingsPage {
 
   save() {
     let planPromise = new Promise(
-      resolve => {
+      (resolve, reject) => {
+        if (this.cloudPlan == this.oldPlan) {
+          resolve();
+        }
         this.cloudPlan = this.cloudPlan.trim().replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
         if (this.cloudPlan !== '') {
           this.api.getPlan(this.cloudPlan)
@@ -71,12 +78,16 @@ export class SettingsPage {
                 this.settings.setPlanCode(this.cloudPlan).then(() => {
                   resolve();
                 });
+              }, error => {
+                reject();
               });
             } else {
               this.settings.setPlanCode(this.cloudPlan).then(() => {
                 resolve();
               });
             }
+          }, error => {
+            reject();
           });
         } else {
           this.settings.resetPlanCode().then(() => {
@@ -86,7 +97,10 @@ export class SettingsPage {
       }
     );
     let listPromise = new Promise(
-      resolve => {
+      (resolve, reject) => {
+        if (this.cloudList == this.oldList) {
+          resolve();
+        }
         this.cloudList = this.cloudList.trim().replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
         if (this.cloudList !== '') {
           this.api.getList(this.cloudList)
@@ -97,12 +111,16 @@ export class SettingsPage {
                 this.settings.setListCode(this.cloudList).then(() => {
                   resolve();
                 });
+              }, error => {
+                reject();
               });
             } else {
               this.settings.setListCode(this.cloudList).then(() => {
                 resolve();
               });
             }
+          }, error => {
+            reject();
           });
         } else {
           this.settings.resetListCode().then(() => {
@@ -132,6 +150,12 @@ export class SettingsPage {
       });
       toast.present(); 
       this.navCtrl.pop();
+    }).catch(() => {
+      let toast = this.toastCtrl.create({
+        message: 'Konnte nicht gespeichert werden. Sind Sie mit dem Internet verbunden?',
+        duration: 2000
+      });
+      toast.present();
     });
   }
 
