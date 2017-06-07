@@ -126,7 +126,14 @@ export class WeekplanPage {
       if (data) {
         const recipe = {id: data.recipe.id, title: data.recipe.title};
         const pastEntry = new PlanEntry(recipe, new Date(data.date), '', '19:30', 2, id);
-        this.localStorage.addEntry(pastEntry);
+        this.localStorage.addEntry(pastEntry).then(() => {
+          this.localStorage.getPlan().then((plan) => {
+            if (plan) {
+              this.plan = JSON.parse(plan);
+            }
+            this.fillUpPlan();
+          });
+        });
       }
     });
     pastEntryModal.present();
