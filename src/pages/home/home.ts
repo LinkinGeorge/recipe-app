@@ -84,6 +84,8 @@ export class HomePage implements OnInit {
       }
       this.slideHeaderPrevious = this.ionScroll.scrollTop - this.start;
     });
+    // Check for updates
+    this.checkForUpdates();
     // Check for old snapshots
     this.deleteOldSnapshots();
   }
@@ -226,7 +228,7 @@ export class HomePage implements OnInit {
     this.fabActive = !this.fabActive;
   }
     
-  deleteOldSnapshots() {
+  private deleteOldSnapshots() {
     this.deploy.getSnapshots().then((snapshots) => {
       // snapshots will be an array of snapshot uuids
       this.deploy.info().then((x) => {
@@ -250,6 +252,18 @@ export class HomePage implements OnInit {
     }, error => {
       console.warn(error);
     });
+  }
+
+  private checkForUpdates() {
+    this.deploy.check().then(available => {
+      if (available) {
+        let toast = this.toastCtrl.create({
+          message: 'Es ist ein neues Update verfügbar',
+          duration: 1500
+        });
+        toast.present();
+      }
+    }, error => { });
   }
 
 }
