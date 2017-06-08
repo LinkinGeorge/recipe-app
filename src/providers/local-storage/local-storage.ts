@@ -92,18 +92,32 @@ export class LocalStorageProvider {
   
   downloadList() {
     return new Promise(
-      resolve => {
+      (resolve, reject) => {
         this.settings.getListCode().then(code => {
           if (code !== null) {
             this.cloudList = code;
             this.api.getList(this.cloudList).subscribe(res => {
               let newList = new Array();
-              newList = res.list.slice(0);
-              this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
-                resolve();
+              this.getOldList().then(oldList => {
+                if (oldList !== null) {
+                  this.getList().then(localList => {
+                    newList = this.mergeLists(oldList, JSON.parse(localList), res.list);
+                    this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
+                      resolve();
+                    });
+                  });
+                } else {
+                  newList = res.list.slice(0);
+                  this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
+                    resolve();
+                  });
+                }
+                this.storage.set('shopping-list', JSON.stringify(newList)).then(() => {
+                  resolve();
+                });
               });
             }, error => {
-              resolve();
+              reject();
             });
           } else {
             this.getList().then((list) => {
@@ -115,11 +129,29 @@ export class LocalStorageProvider {
                 });
               }
             });
-            resolve();
           }
         });
       }
     )
+  }
+
+  private mergeLists(oldList: string[], list1: string[], list2: string[]):string[] {
+    let removed = oldList.slice();
+    oldList.forEach(entry => {
+      if (list1.indexOf(entry) !== -1 && list2.indexOf(entry) !== -1) {
+        removed.splice(removed.indexOf(entry), 1);
+      } else if (list1.indexOf(entry) === -1 && list2.indexOf(entry) === -1) {
+        removed.splice(removed.indexOf(entry), 1);
+      }
+    });
+    let mergedSet = new Set(list1.concat(list2));
+    mergedSet.forEach(entry => {
+      if (removed.indexOf(entry) !== -1) {
+        mergedSet.delete(entry);
+      }
+    });
+    this.api.updateList(this.cloudList, Array.from(mergedSet)).subscribe();
+    return Array.from(mergedSet);
   }
 
   getList() {
@@ -136,7 +168,10 @@ export class LocalStorageProvider {
       this.list.push(item);
       this.storage.set('shopping-list', JSON.stringify(this.list)).then(() => {
         if (this.cloudList !== '') {
-          this.api.updateList(this.cloudList, this.list).subscribe();
+          this.api.updateList(this.cloudList, this.list).subscribe(cloudList => {}, error => {
+            // set old list if no internet connection (if not refreshed before)
+            this.setOldList(JSON.parse(list));
+          });
         }
       });
     });
@@ -148,7 +183,10 @@ export class LocalStorageProvider {
       this.list.splice(this.list.indexOf(item), 1);
       this.storage.set('shopping-list', JSON.stringify(this.list)).then(() => {
         if (this.cloudList !== '') {
-          this.api.updateList(this.cloudList, this.list).subscribe();
+          this.api.updateList(this.cloudList, this.list).subscribe(cloudList => {}, error => {
+            // set old list if no internet connection (if not refreshed before)
+            this.setOldList(JSON.parse(list));
+          });
         }
       });
     });
@@ -158,7 +196,7 @@ export class LocalStorageProvider {
 
   downloadPlan() {
     return new Promise(
-      resolve => {
+      (resolve, reject) => {
         this.settings.getPlanCode().then(code => {
           if (code !== null) {
             this.cloudPlan = code;
@@ -169,7 +207,7 @@ export class LocalStorageProvider {
                 resolve();
               });
             }, error => {
-              resolve();
+              reject();
             });
           } else {
             this.getPlan().then((plan) => {
@@ -266,22 +304,27 @@ export class LocalStorageProvider {
     );
   }
 
-  /*
-  private removeExpired() {
-    this.storage.get('plan').then((plan) => {
-      if (plan) {
-        this.plan.forEach(recipe => {
-          const recipeDate = new Date(new Date(recipe.date).setHours(0,0,0,0));
-          const today = new Date(new Date(Date.now()).setHours(0,0,0,0));
-          if (recipeDate.getTime() < today.getTime()) {
-            this.plan.splice(this.plan.indexOf(recipe), 1);
-          }
-        });
+  /* OLD LIST VERSIONS TO SYNCHRONIZE PROPERLY */
+
+  setOldList(list: string[]) {
+    this.getOldList().then(oldList => {
+      if (oldList === null) {
+        console.log('setting list');
+        console.log(list);
+        this.storage.set('old-list', list);
       }
-      this.storage.set('plan', JSON.stringify(this.plan));
+      console.log(oldList);
     });
   }
-  */
+
+  getOldList() {
+    return this.storage.get('old-list');
+  }
+  
+  resetOldList() {
+    return this.storage.remove('old-list');
+  }
+  
 
   private findEntryById(id: string):number {
     return this.plan.findIndex((entry) => {

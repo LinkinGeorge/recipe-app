@@ -20,7 +20,15 @@ export class ShoppingListPage {
   ) {
     this.localStorage.downloadList().then(() => {
       this.localStorage.getList().then((list) => {
-        if(list) {
+        if (list) {
+          this.localStorage.resetOldList();
+          this.shoppingList = JSON.parse(list);
+        }
+      });
+    }).catch(() => {
+      this.localStorage.getList().then((list) => {
+        if (list) {
+          this.localStorage.setOldList(JSON.parse(list));
           this.shoppingList = JSON.parse(list);
         }
       });
@@ -30,7 +38,15 @@ export class ShoppingListPage {
   ionViewDidEnter() {
     this.localStorage.downloadList().then(() => {
       this.localStorage.getList().then((list) => {
-        if(list) {
+        if (list) {
+          this.localStorage.resetOldList();
+          this.shoppingList = JSON.parse(list);
+        }
+      });
+    }).catch(() => {
+      this.localStorage.getList().then((list) => {
+        if (list) {
+          this.localStorage.setOldList(JSON.parse(list));
           this.shoppingList = JSON.parse(list);
         }
       });
@@ -40,7 +56,16 @@ export class ShoppingListPage {
   doRefresh(refresher) {
     this.localStorage.downloadList().then(() => {
       this.localStorage.getList().then((list) => {
-        if(list) {
+        if (list) {
+          this.localStorage.resetOldList();
+          this.shoppingList = JSON.parse(list);
+        }
+        refresher.complete();
+      });
+    }).catch(() => {
+      this.localStorage.getList().then((list) => {
+        if (list) {
+          this.localStorage.setOldList(JSON.parse(list));
           this.shoppingList = JSON.parse(list);
         }
         refresher.complete();

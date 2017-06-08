@@ -25,36 +25,15 @@ export class WeekplanPage {
     for (var i = 0; i < this.week.length; i++) {
       this.week[i] = this.addDays(new Date(Date.now()), i);
     }
-    this.localStorage.downloadPlan().then(() => {
-      this.localStorage.getPlan().then((plan) => {
-        if (plan) {
-          this.plan = JSON.parse(plan);
-        }
-        this.fillUpPlan();
-      });
-    });
+    this.refresh();
   }
 
   ionViewDidEnter() {
-    this.localStorage.downloadPlan().then(() => {
-      this.localStorage.getPlan().then((plan) => {
-        if (plan) {
-          this.plan = JSON.parse(plan);
-        }
-        this.fillUpPlan();
-      });
-    });
+    this.refresh();
   }
     
   doRefresh(refresher) {
-    this.localStorage.downloadPlan().then(() => {
-      this.localStorage.getPlan().then((plan) => {
-        if(plan) {
-          this.plan = JSON.parse(plan);
-        }
-        refresher.complete();
-      });
-    });
+    this.refresh(refresher);
   }
 
   newEntry() {
@@ -253,6 +232,30 @@ export class WeekplanPage {
       result += chars[Math.floor(Math.random() * chars.length)];
     }
     return result;
+  }
+
+  private refresh(refresher?) {
+    this.localStorage.downloadPlan().then(() => {
+      this.localStorage.getPlan().then((plan) => {
+        if (plan) {
+          this.plan = JSON.parse(plan);
+        }
+        this.fillUpPlan();
+        if (refresher) {
+          refresher.complete();
+        }
+      });
+    }).catch((error) => {
+      this.localStorage.getPlan().then((plan) => {
+        if (plan) {
+          this.plan = JSON.parse(plan);
+        }
+        this.fillUpPlan();
+        if (refresher) {
+          refresher.complete();
+        }
+      });
+    });
   }
 
 }
