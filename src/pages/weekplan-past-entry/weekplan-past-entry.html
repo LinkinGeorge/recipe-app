@@ -16,6 +16,13 @@
       <ion-datetime displayFormat="DD.MM.YYYY" [(ngModel)]="date"></ion-datetime>
     </ion-item>
     <ion-item>
+      <ion-label>Uhrzeit</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="time"></ion-datetime>
+    </ion-item>
+    <ion-item *ngIf="servings">
+      <number-picker [start]="servings" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
+    </ion-item>
+    <ion-item>
       <ion-label floating>Durchsuchen</ion-label>
       <ion-input #search keyboardfix type="text"></ion-input>
     </ion-item>
