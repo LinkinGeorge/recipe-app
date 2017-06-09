@@ -201,8 +201,7 @@ export class LocalStorageProvider {
           if (code !== null) {
             this.cloudPlan = code;
             this.api.getPlan(this.cloudPlan).subscribe(res => {
-              let newPlan = new Array();
-              newPlan = res.plan.slice(0);
+              let newPlan = res.plan.slice(0);
               this.storage.set('plan', JSON.stringify(newPlan)).then(() => {
                 resolve();
               });
@@ -231,75 +230,87 @@ export class LocalStorageProvider {
 
   addEntry(entry: PlanEntry) {
     return new Promise(
-      resolve => {
-        this.getPlan().then((plan => {
+      (resolve, reject) => {
+        this.getPlan().then(plan => {
           if (plan) {
             this.plan = JSON.parse(plan);
-            this.plan.push(entry);
-            this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
-              if (this.cloudPlan === '') {
-                resolve();
-              } else {
-                this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
-                  resolve();
-                });
-              }
-            });
           } else {
             this.plan = [];
-            this.plan.push(entry);
+          }
+          this.plan.push(entry);
+          if (this.cloudPlan === '') {
             this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
               resolve();
             });
+          } else {
+            this.api.updatePlan(this.cloudPlan, this.plan).subscribe(res => {
+              this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
+                resolve();
+              });
+            }, error => {
+              reject();
+            });
           }
-        }));
+        });
       }
     );
   }
 
   removeEntry(id: string) {
     return new Promise(
-      resolve => {
-        this.getPlan().then((plan => {
+      (resolve, reject) => {
+        this.getPlan().then(plan => {
           this.plan = JSON.parse(plan);
-          let delIndex = this.findEntryById(id);
+          let delIndex = this.findEntryById(this.plan, id);
           if (delIndex !== -1) {
             this.plan.splice(delIndex, 1);
+          } else {
+            reject();
           }
-          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
-            if (this.cloudPlan === '') {
+          if (this.cloudPlan === '') {
+            this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
               resolve();
-            } else {
-              this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+            });
+          } else {
+            this.api.updatePlan(this.cloudPlan, this.plan).subscribe(res => {
+              this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
                 resolve();
               });
-            }
-          });
-        }));
+            }, error => {
+              reject();
+            })
+          }
+        });
       }
     );
   }
 
   updateEntry(id:string, time:string, servings:number) {
     return new Promise(
-      resolve => {
-        this.getPlan().then((plan => {
+      (resolve, reject) => {
+        this.getPlan().then(plan => {
           this.plan = JSON.parse(plan);
-          let index = this.findEntryById(id);
+          let index = this.findEntryById(this.plan, id);
           if (index !== -1) {
             this.plan[index].time = time;
             this.plan[index].servings = servings;
+          } else {
+            reject();
           }
-          this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
-            if (this.cloudPlan === '') {
+          if (this.cloudPlan === '') {
+            this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
               resolve();
-            } else {
-              this.api.updatePlan(this.cloudPlan, this.plan).subscribe(() => {
+            });
+          } else {
+            this.api.updatePlan(this.cloudPlan, this.plan).subscribe(res => {
+              this.storage.set('plan', JSON.stringify(this.plan)).then(() => {
                 resolve();
               });
-            }
-          });
-        }));
+            }, error => {
+              reject();
+            })
+          }
+        });
       }
     );
   }
@@ -309,11 +320,8 @@ export class LocalStorageProvider {
   setOldList(list: string[]) {
     this.getOldList().then(oldList => {
       if (oldList === null) {
-        console.log('setting list');
-        console.log(list);
         this.storage.set('old-list', list);
       }
-      console.log(oldList);
     });
   }
 
@@ -326,8 +334,8 @@ export class LocalStorageProvider {
   }
   
 
-  private findEntryById(id: string):number {
-    return this.plan.findIndex((entry) => {
+  private findEntryById(plan: any[], id: string):number {
+    return plan.findIndex((entry) => {
       return entry._id === id;
     });
   }

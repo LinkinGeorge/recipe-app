@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ToastController } from 'ionic-angular';
 
 import { PlanEntry } from '../../models/plan-entry';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
@@ -20,6 +20,7 @@ export class WeekplanPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public modalCtrl: ModalController,
+    public toastCtrl: ToastController,
     public localStorage: LocalStorageProvider
   ) {
     for (var i = 0; i < this.week.length; i++) {
@@ -76,25 +77,19 @@ export class WeekplanPage {
       const today = new Date(Date.now());
       const newEntry = new PlanEntry(null, this.addDays(today, dayIndex), title, time, servings, id);
       this.localStorage.addEntry(newEntry).then(() => {
-        this.localStorage.getPlan().then((plan) => {
-          if (plan) {
-            this.plan = JSON.parse(plan);
-          }
-          this.fillUpPlan();
-        });
+        this.getPlan();
+      }).catch(() => {
+        this.showToast('Konnte Eintrag nicht hinzufügen, sind Sie mit dem Internet verbunden?');
       });
     } 
     if (recipe !== null) {
       const today = new Date(Date.now());
       const newEntry = new PlanEntry({id: recipe.id, title: recipe.title}, this.addDays(today, dayIndex), '', time, servings, id);
       this.localStorage.addEntry(newEntry).then(() => {
-        this.localStorage.getPlan().then((plan) => {
-          if (plan) {
-            this.plan = JSON.parse(plan);
-          }
-          this.fillUpPlan();
-        });
-      });;
+        this.getPlan();
+      }).catch(() => {
+        this.showToast('Konnte Eintrag nicht hinzufügen, sind Sie mit dem Internet verbunden?');
+      });
     }
   }
 
@@ -106,12 +101,9 @@ export class WeekplanPage {
         const recipe = {id: data.recipe.id, title: data.recipe.title};
         const pastEntry = new PlanEntry(recipe, new Date(data.date), '', data.time, data.servings, id);
         this.localStorage.addEntry(pastEntry).then(() => {
-          this.localStorage.getPlan().then((plan) => {
-            if (plan) {
-              this.plan = JSON.parse(plan);
-            }
-            this.fillUpPlan();
-          });
+          this.getPlan();
+        }).catch(() => {
+          this.showToast('Konnte Eintrag nicht hinzufügen, sind Sie mit dem Internet verbunden?');
         });
       }
     });
@@ -122,16 +114,23 @@ export class WeekplanPage {
     let editEntryModal = this.modalCtrl.create('WeekplanEditEntryPage', {entry: entry});
     editEntryModal.onDidDismiss(data => {
       if (data) {
-        this.localStorage.updateEntry(data._id, data.time, data.servings);
+        this.localStorage.updateEntry(data._id, data.time, data.servings).then(() => {
+          this.getPlan();
+        }).catch(() => {
+          this.getPlan();
+          this.showToast('Konnte Eintrag nicht aktualisieren, sind Sie mit dem Internet verbunden?');
+        });
       }
     });
     editEntryModal.present();
   }
 
   deleteEntry(entry) {
-    this.plan[this.plan.indexOf(entry)].recipe = null;
-    this.plan[this.plan.indexOf(entry)].custom = '';
-    return this.localStorage.removeEntry(entry._id);
+    this.localStorage.removeEntry(entry._id).then(() => {
+      this.getPlan();
+    }).catch(() => {
+      this.showToast('Konnte Eintrag nicht löschen, sind Sie mit dem Internet verbunden?');
+    });
   }
 
   hasRecipe(entry) {
@@ -188,16 +187,24 @@ export class WeekplanPage {
     }
   }
 
-  private fillUpPlan() {
-    const today = new Date(Date.now())
-    for (var i = 0; i < 7; i++) {
-      if (!this.datePresent(this.addDays(today, i))) {
-        this.plan.push({recipe: null, date: this.addDays(today, i), custom: '', time: '19:30', servings: 2});
+  private getPlan() {
+    return new Promise(
+      resolve => {
+        this.localStorage.getPlan().then((plan) => {
+          if (plan) {
+            this.plan = JSON.parse(plan);
+          }
+          this.sortPlan();
+          resolve();
+        });
       }
-    }
+    )
+  }
+
+  private sortPlan() {
     this.plan.sort(function (a, b) {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
-    })
+    });
   }
 
   private addDays(date: Date, days: number): Date {
@@ -208,12 +215,6 @@ export class WeekplanPage {
   private subtractDays(date: Date, days: number): Date {
     date.setDate(date.getDate() - days);
     return date;
-  }
-
-  private datePresent(date: Date):boolean {
-    return this.plan.findIndex((day) => {
-      return new Date(day.date).getDay() === new Date(date).getDay();
-    }) !== -1;
   }
 
   private getWeekString(difference: number):string {
@@ -240,7 +241,7 @@ export class WeekplanPage {
         if (plan) {
           this.plan = JSON.parse(plan);
         }
-        this.fillUpPlan();
+        this.sortPlan();
         if (refresher) {
           refresher.complete();
         }
@@ -250,12 +251,20 @@ export class WeekplanPage {
         if (plan) {
           this.plan = JSON.parse(plan);
         }
-        this.fillUpPlan();
+        this.sortPlan();
         if (refresher) {
           refresher.complete();
         }
       });
     });
+  }
+
+  private showToast(message:string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 2500
+    });
+    toast.present();
   }
 
 }

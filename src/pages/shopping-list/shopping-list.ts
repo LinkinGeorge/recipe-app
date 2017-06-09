@@ -18,59 +18,15 @@ export class ShoppingListPage {
     public popoverCtrl: PopoverController,
     public localStorage: LocalStorageProvider
   ) {
-    this.localStorage.downloadList().then(() => {
-      this.localStorage.getList().then((list) => {
-        if (list) {
-          this.localStorage.resetOldList();
-          this.shoppingList = JSON.parse(list);
-        }
-      });
-    }).catch(() => {
-      this.localStorage.getList().then((list) => {
-        if (list) {
-          this.localStorage.setOldList(JSON.parse(list));
-          this.shoppingList = JSON.parse(list);
-        }
-      });
-    });
+    this.refresh();
   }
 
   ionViewDidEnter() {
-    this.localStorage.downloadList().then(() => {
-      this.localStorage.getList().then((list) => {
-        if (list) {
-          this.localStorage.resetOldList();
-          this.shoppingList = JSON.parse(list);
-        }
-      });
-    }).catch(() => {
-      this.localStorage.getList().then((list) => {
-        if (list) {
-          this.localStorage.setOldList(JSON.parse(list));
-          this.shoppingList = JSON.parse(list);
-        }
-      });
-    });
+    this.refresh();
   }
   
   doRefresh(refresher) {
-    this.localStorage.downloadList().then(() => {
-      this.localStorage.getList().then((list) => {
-        if (list) {
-          this.localStorage.resetOldList();
-          this.shoppingList = JSON.parse(list);
-        }
-        refresher.complete();
-      });
-    }).catch(() => {
-      this.localStorage.getList().then((list) => {
-        if (list) {
-          this.localStorage.setOldList(JSON.parse(list));
-          this.shoppingList = JSON.parse(list);
-        }
-        refresher.complete();
-      });
-    });
+    this.refresh(refresher);
   }
 
   addItem(item) {
@@ -83,6 +39,30 @@ export class ShoppingListPage {
   removeItem(item) {
     this.shoppingList.splice(this.shoppingList.indexOf(item), 1);
     this.localStorage.removeItem(item);
+  }
+
+  private refresh(refresher?) {
+    this.localStorage.downloadList().then(() => {
+      this.localStorage.getList().then((list) => {
+        if (list) {
+          this.localStorage.resetOldList();
+          this.shoppingList = JSON.parse(list);
+        }
+        if (refresher) {
+          refresher.complete();
+        }
+      });
+    }).catch(() => {
+      this.localStorage.getList().then((list) => {
+        if (list) {
+          this.localStorage.setOldList(JSON.parse(list));
+          this.shoppingList = JSON.parse(list);
+        }
+        if (refresher) {
+          refresher.complete();
+        }
+      });
+    });
   }
 
 }
