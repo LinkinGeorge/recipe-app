@@ -16,8 +16,8 @@ export class LocalStorageProvider {
   baseUrl = 'http://georgs-recipes.herokuapp.com/';
 
   constructor(public storage: Storage, public api: RecipesProvider, public settings: SettingsProvider) {
-      this.downloadPlan();
-      this.downloadList();
+    this.downloadPlan();
+    this.downloadList();
   }
 
   // RECIPES
@@ -315,6 +315,12 @@ export class LocalStorageProvider {
     );
   }
 
+  private findEntryById(plan: any[], id: string):number {
+    return plan.findIndex((entry) => {
+      return entry._id === id;
+    });
+  }
+
   /* OLD LIST VERSIONS TO SYNCHRONIZE PROPERLY */
 
   setOldList(list: string[]) {
@@ -331,13 +337,6 @@ export class LocalStorageProvider {
   
   resetOldList() {
     return this.storage.remove('old-list');
-  }
-  
-
-  private findEntryById(plan: any[], id: string):number {
-    return plan.findIndex((entry) => {
-      return entry._id === id;
-    });
   }
 
 }

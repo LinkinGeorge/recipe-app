@@ -4,6 +4,7 @@ import { Deploy } from '@ionic/cloud-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
+import { FavoritesProvider } from '../../providers/favorites/favorites';
 
 @IonicPage()
 @Component({
@@ -22,6 +23,7 @@ export class HomePage implements OnInit {
 
   recipes;
   weekplan = [];
+  favorites: string[];
 
   query = '';
 
@@ -39,6 +41,7 @@ export class HomePage implements OnInit {
     public popoverCtrl: PopoverController,
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
+    public favoriteService: FavoritesProvider,
     public deploy: Deploy
   ) {
     this.recipeService.getAllRecipes().subscribe(recipes => {
@@ -217,6 +220,17 @@ export class HomePage implements OnInit {
       } else {
         this.query = '';
       }
+    }
+  }
+
+  toggleFavorites() {
+    if (this.favorites) {
+      this.favorites = null;
+    } else {
+      this.favoriteService.getFavorites().then((favs) => {
+        this.query = '';
+        this.favorites = favs;
+      });
     }
   }
 

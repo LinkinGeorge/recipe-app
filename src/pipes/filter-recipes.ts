@@ -6,9 +6,25 @@ import { Pipe, PipeTransform, Injectable } from '@angular/core';
 @Injectable()
 export class FilterRecipesPipe implements PipeTransform {
 
-  transform(recipes: any[], query: string): any[] {
-    
-    return filter(recipes, query);
+  transform(recipes: any[], query: string, favorites?: string[]): any[] {
+
+    let favFiltered = new Array();
+    if (favorites) {
+      favFiltered = filterFavorites(recipes, favorites);
+    } else {
+      favFiltered = recipes.slice();
+    }
+    return filter(favFiltered, query);
+
+    function filterFavorites(toFilter: any[], favs: string[]): any[] {
+      let filtered = new Array();
+      toFilter.forEach(recipe => {
+        if (favs.indexOf(recipe._id) !== -1) {
+          filtered.push(recipe);
+        }
+      });
+      return filtered;
+    }
 
     function filter(toFilter: any[], queryIn: string): any[] {
       let queryArray = new Array<string>();

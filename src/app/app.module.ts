@@ -20,6 +20,7 @@ import { LocalStorageProvider } from '../providers/local-storage/local-storage';
 
 import { Environment } from '../environment';
 import { SettingsProvider } from '../providers/settings/settings';
+import { FavoritesProvider } from '../providers/favorites/favorites';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -53,7 +54,8 @@ const cloudSettings: CloudSettings = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RecipesProvider,
     LocalStorageProvider,
-    SettingsProvider
+    SettingsProvider,
+    FavoritesProvider
   ]
 })
 export class AppModule {}

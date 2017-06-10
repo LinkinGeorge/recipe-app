@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { Brightness } from '@ionic-native/brightness';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { IonicPage, NavController, NavParams, ToastController, ModalController, PopoverController } from 'ionic-angular';
 
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 import { SettingsProvider } from '../../providers/settings/settings';
+import { FavoritesProvider } from '../../providers/favorites/favorites';
 
 @IonicPage()
 @Component({
@@ -16,6 +18,7 @@ export class RecipeDetailsPage {
   
   cookCount: number;
   servings: number;
+  favorite: boolean;
 
   heroLoaded = false;
   descrLoaded = false;
@@ -31,7 +34,9 @@ export class RecipeDetailsPage {
     public localStorage: LocalStorageProvider,
     public recipeService: RecipesProvider,
     public settings: SettingsProvider,
-    public brightness: Brightness
+    public favoriteService: FavoritesProvider,
+    public brightness: Brightness,
+    public social: SocialSharing
   ) {
     this.settings.getDefaultServings().then(servings => {
       if (servings !== null) {
@@ -51,6 +56,7 @@ export class RecipeDetailsPage {
       } else if (paramServings) {
         this.servings = paramServings;
       }
+      this.favorite = this.favoriteService.isFavorite(id);
     });
   }
 
@@ -98,6 +104,28 @@ export class RecipeDetailsPage {
       toast.present();
     }
     );
+  }
+
+  share() {
+    this.social.share('Ich kann '+this.recipe.title+' nur weiterempfehlen:', this.recipe.title, null, 'https://georgs-recipes.herokuapp.com/recipe/'+this.recipe._id).then(() => { }).catch(error => {
+      let toast = this.toastCtrl.create({
+        message: 'Es ist ein Fehler aufgetreten: '+error,
+        duration: 1500
+      });
+      toast.present();
+    });
+  }
+
+  toggleFavorite() {
+    if (!this.favorite) {
+      this.favoriteService.addFavorite(this.recipe._id).then(() => {
+        this.favorite = true;
+      });
+    } else {
+      this.favoriteService.removeFavorite(this.recipe._id).then(() => {
+        this.favorite = false;
+      });
+    }
   }
 
   servingsChange(servings: number) {

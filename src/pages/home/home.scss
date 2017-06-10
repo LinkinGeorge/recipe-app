@@ -3,6 +3,18 @@ page-home {
     .nav-button {
         margin: 0 0.75rem;
     }
+    
+    .fav-toggle {
+        margin-right: .75rem;
+
+        ion-icon {
+            transition: all .5s ease;
+        }
+    }
+
+    .fav {
+        color: color($colors, danger) !important;
+    }
 
     button img {
         height: 24px;

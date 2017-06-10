@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Brightness } from '@ionic-native/brightness';
-import { SocialSharing } from '@ionic-native/social-sharing';
 import { IonicPage, NavParams, NavController, ViewController, ToastController, ActionSheetController, ModalController } from 'ionic-angular';
 
 import { PlanEntry } from '../../models/plan-entry';
@@ -29,8 +28,7 @@ export class RecipeDetailsMenuPage {
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
     public settings: SettingsProvider,
-    public brightness: Brightness,
-    public social: SocialSharing
+    public brightness: Brightness
   ) {
     this.settings.getDefaultTime().then((time) => {
       if (time) {
@@ -55,32 +53,12 @@ export class RecipeDetailsMenuPage {
     editModal.present();
   }
 
-  increaseCookCount() {
-    this.recipe.cookCount++;
-    this.recipeService.updateRecipe(this.recipe).subscribe(() => {
-      this.viewCtrl.dismiss();
-    });
-  }
-
   cookingMode() {
     this.brightness.getBrightness().then((bright) => {
       this.brightness.setKeepScreenOn(true);
       this.brightness.setBrightness(1).then(() => {
         this.viewCtrl.dismiss(bright);
       });
-    });
-  }
-
-  share() {
-    this.social.share('Ich kann '+this.recipe.title+' nur weiterempfehlen:', this.recipe.title, null, 'https://georgs-recipes.herokuapp.com/recipe/'+this.recipe._id).then(() => {
-      this.viewCtrl.dismiss();
-    }).catch(error => {
-      let toast = this.toastCtrl.create({
-        message: 'Es ist ein Fehler aufgetreten: '+error,
-        duration: 1500
-      });
-      toast.present();
-      this.viewCtrl.dismiss();
     });
   }
 

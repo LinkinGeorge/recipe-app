@@ -3,6 +3,12 @@
     <ion-title *ngIf="recipe">{{ recipe.title }}</ion-title>
     <ion-title *ngIf="!recipe">Lade...</ion-title>
     <ion-buttons end>
+      <button ion-button icon-only (click)="toggleFavorite()" [ngClass]="{'fav': favorite}" style="margin-right: .75rem;">
+        <ion-icon name="heart" style="transition: all .5s ease"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="share()" style="margin-right: .75rem;">
+        <ion-icon name="share"></ion-icon>
+      </button>
       <button ion-button icon-only (click)="showMenu($event)">
         <ion-icon name="more"></ion-icon>
       </button>
