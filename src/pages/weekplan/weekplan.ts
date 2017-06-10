@@ -238,6 +238,7 @@ export class WeekplanPage {
   private refresh(refresher?) {
     this.localStorage.downloadPlan().then(() => {
       this.localStorage.getPlan().then((plan) => {
+        console.log(JSON.parse(plan));
         if (plan) {
           this.plan = JSON.parse(plan);
         }

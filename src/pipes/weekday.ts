@@ -6,8 +6,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class WeekdayPipe implements PipeTransform {
 
   transform(date: Date):string {
-    const toCheck = new Date(date).setHours(0,0,0,0);
-    const today = new Date(Date.now()).setHours(0,0,0,0);
+    const toCheck = new Date(date).setHours(12,0,0,0);
+    const today = new Date(Date.now()).setHours(12,0,0,0);
     const tomorrow = this.addDays(new Date(today), 1).getTime();
     const thisWeek = new Array<number>(7);
     for (var i = 0; i < thisWeek.length; i++) {
@@ -48,6 +48,6 @@ export class WeekdayPipe implements PipeTransform {
   
   private addDays(date: Date, days: number): Date {
     date.setDate(date.getDate() + days);
-    return new Date(date.setHours(0,0,0,0));
+    return new Date(date.setHours(12,0,0,0));
   }
 }
