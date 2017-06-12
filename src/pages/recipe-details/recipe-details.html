@@ -21,7 +21,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div *ngIf="recipe">
-    <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{recipe.heroImage}}" alt="{{recipe.title}}">
+    <img *ngIf="recipe.heroImage" class="img-fullwidth" src="{{ recipe.heroImage | thumbnail:600:0 }}" alt="{{ recipe.title }}">
     <h1 text-center margin text-wrap>{{ recipe.title }}</h1>
     <div style="font-size: 16px; margin-top: 2rem; margin-bottom: 3rem">
       <number-picker [start]="servings" [caption]="'Portionen'" [captionSingular]="'Portion'" (onChange)="servingsChange($event)"></number-picker>
