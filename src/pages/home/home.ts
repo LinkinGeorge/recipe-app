@@ -5,6 +5,7 @@ import { Deploy } from '@ionic/cloud-angular';
 import { RecipesProvider } from '../../providers/recipes/recipes';
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 import { FavoritesProvider } from '../../providers/favorites/favorites';
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @IonicPage()
 @Component({
@@ -28,6 +29,7 @@ export class HomePage implements OnInit {
   query = '';
 
   fabActive = false;
+  lowData = false;
 
   sortType = 'date';
   sortDesc = true;
@@ -42,6 +44,7 @@ export class HomePage implements OnInit {
     public recipeService: RecipesProvider,
     public localStorage: LocalStorageProvider,
     public favoriteService: FavoritesProvider,
+    public settings: SettingsProvider,
     public deploy: Deploy
   ) {
     this.recipeService.getAllRecipes().subscribe(recipes => {
@@ -66,6 +69,9 @@ export class HomePage implements OnInit {
           this.weekplan = JSON.parse(plan);
         }
       });
+    });
+    this.settings.lowDataMode().then((mode) => {
+      this.lowData = mode;
     });
   }
 

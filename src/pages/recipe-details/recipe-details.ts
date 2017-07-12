@@ -22,6 +22,7 @@ export class RecipeDetailsPage {
 
   heroLoaded = false;
   descrLoaded = false;
+  lowData = false;
 
   origBrightness: number;
 
@@ -42,6 +43,9 @@ export class RecipeDetailsPage {
       if (servings !== null) {
         this.servings = servings;
       }
+    });
+    this.settings.lowDataMode().then(mode => {
+      this.lowData = mode;
     });
   }
 

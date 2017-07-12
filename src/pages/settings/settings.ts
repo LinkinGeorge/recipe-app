@@ -17,6 +17,7 @@ export class SettingsPage {
   servings = '2';
   oldPlan = '';
   oldList = '';
+  lowData = false;
 
   constructor(
     public navCtrl: NavController, 
@@ -48,6 +49,9 @@ export class SettingsPage {
       if (serv) {
         this.servings = serv.toString();
       }
+    });
+    this.settings.lowDataMode().then((mode) => {
+      this.lowData = mode;
     });
   }
 
@@ -143,7 +147,14 @@ export class SettingsPage {
         });
       }
     );
-    Promise.all([planPromise, listPromise, timePromise, servingsPromise]).then(() => {
+    let lowDataPromise = new Promise(
+      resolve => {
+        this.settings.setLowDataMode(this.lowData).then(() => {
+          resolve();
+        });
+      }
+    );
+    Promise.all([planPromise, listPromise, timePromise, servingsPromise, lowDataPromise]).then(() => {
       let toast = this.toastCtrl.create({
         message: 'Erfolgreich gespeichert',
         duration: 2000

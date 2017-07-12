@@ -38,12 +38,28 @@ export class SettingsProvider {
     return this.storage.get('default-time');
   }
 
-  setDefaultServings(servings:number) {
+  setDefaultServings(servings: number) {
     return this.storage.set('default-servings', servings);
   }
 
   getDefaultServings() {
     return this.storage.get('default-servings');
+  }
+
+  setLowDataMode(lowData: boolean) {
+    return this.storage.set('low-data', lowData);
+  }
+
+  lowDataMode() {
+    const mode = this.storage.get('low-data');
+    if (mode) {
+      return mode;
+    }
+    return new Promise(
+      resolve => {
+        resolve(false);
+      }
+    );
   }
 
 }

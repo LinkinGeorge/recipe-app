@@ -50,7 +50,8 @@
       <ion-card *ngFor="let recipe of recipes | filterRecipes:query:favorites | sortRecipes:sortType:sortDesc:weekplan" (tap)="viewRecipe(recipe)">
         <div class="img-container">
           <img *ngIf="!recipe.heroImage" class="thumbnail" src="assets/images/comingsoon.jpg"/>
-          <img *ngIf="recipe.heroImage" class="thumbnail" src="{{ recipe.heroImage | thumbnail:600:0 }}"/>
+          <img *ngIf="recipe.heroImage && !lowData" class="thumbnail" src="{{ recipe.heroImage | thumbnail:600:0 }}"/>
+          <img *ngIf="recipe.heroImage && lowData" class="thumbnail" src="{{ recipe.heroImage | previewimg}}"/>
           <div class="veggie">
             <img *ngIf="recipe.categories.includes('Vegetarisch')" src="assets/svg/vegetarian.svg">
             <img *ngIf="recipe.categories.includes('Vegan')" src="assets/svg/vegan.svg">

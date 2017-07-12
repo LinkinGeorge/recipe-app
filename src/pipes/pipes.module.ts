@@ -4,6 +4,7 @@ import { DayFilterPipe } from './day-filter';
 import { DifficultyStringPipe } from './difficulty-string';
 import { FilterRecipesPipe } from './filter-recipes';
 import { NoVeggiesPipe } from './no-veggies';
+import { PreviewimgPipe } from './previewimg';
 import { RoundPipe } from './round';
 import { SortRecipesPipe } from './sort-recipes';
 import { ThumbnailPipe } from './thumbnail';
@@ -18,6 +19,7 @@ import { NgModule } from '@angular/core';
         DifficultyStringPipe,
         FilterRecipesPipe,
         NoVeggiesPipe,
+        PreviewimgPipe,
         RoundPipe,
         SortRecipesPipe,
         ThumbnailPipe,
@@ -33,6 +35,7 @@ import { NgModule } from '@angular/core';
         DifficultyStringPipe,
         FilterRecipesPipe,
         NoVeggiesPipe,
+        PreviewimgPipe,
         RoundPipe,
         SortRecipesPipe,
         ThumbnailPipe,

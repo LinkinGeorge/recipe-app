@@ -28,10 +28,15 @@
       <ion-label floating>Standard Uhrzeit</ion-label>
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="time"></ion-datetime>
     </ion-item>
-    <ion-item>
+    <ion-item margin-bottom>
       <ion-label floating>Standard Portionen</ion-label>
       <ion-input type="number" min="1" [(ngModel)]="servings"></ion-input>
     </ion-item>
+    <ion-item margin-top>
+      <ion-label>Niedrige Datennutzung</ion-label>
+      <ion-toggle [(ngModel)]="lowData"></ion-toggle>
+    </ion-item>
+    <div padding-vertical text-center>(App neu starten damit es in Kraft tritt)</div>
   </ion-list>
   <button ion-button block (click)="save()">Speichern</button>
 </ion-content>
