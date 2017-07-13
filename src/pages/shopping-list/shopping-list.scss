@@ -1,3 +1,27 @@
 page-shopping-list {
 
+  .item {
+    height: 60px;
+    margin: 0 15px;
+    border-bottom: #dedede 1px solid;
+    position: relative;
+  }
+
+  .check {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: #888 2px solid;
+    border-radius: 20%;
+    margin-top: 21px;
+    margin-left: 10px;
+  }
+
+  .item-text {
+    position: absolute;
+    top: 20px;
+    left: 60px;
+    font-size: 16px;
+  }
+
 }

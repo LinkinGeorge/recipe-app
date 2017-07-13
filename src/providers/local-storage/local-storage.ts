@@ -177,6 +177,23 @@ export class LocalStorageProvider {
     });
   }
 
+  updateItem(item: string, updated: string) {
+    this.getList().then(list => {
+      if (list) {
+        this.list = JSON.parse(list);
+      }
+      this.list.splice(this.list.indexOf(item), 1, updated);
+      this.storage.set('shopping-list', JSON.stringify(this.list)).then(() => {
+        if (this.cloudList !== '') {
+          this.api.updateList(this.cloudList, this.list).subscribe(cloudList => {}, error => {
+            // set old list if no internet connection (if not refreshed before)
+            this.setOldList(JSON.parse(list));
+          });
+        }
+      });
+    });
+  }
+
   removeItem(item: string) {
     this.getList().then((list) => {
       this.list = JSON.parse(list);

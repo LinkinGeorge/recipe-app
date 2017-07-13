@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
 
 import { LocalStorageProvider } from '../../providers/local-storage/local-storage';
 
@@ -14,7 +14,8 @@ export class ShoppingListPage {
 
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams, 
+    public navParams: NavParams,
+    public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
     public localStorage: LocalStorageProvider
   ) {
@@ -34,6 +35,15 @@ export class ShoppingListPage {
       this.shoppingList.push(item);
       this.localStorage.addItem(item);
     }
+  }
+
+  editItem(item) {
+    let editModal = this.modalCtrl.create('ShoppingListEditPage', {item: item});
+    editModal.onDidDismiss(updated => {
+      this.shoppingList.splice(this.shoppingList.indexOf(item), 1, updated);
+      this.localStorage.updateItem(item, updated);
+    });
+    editModal.present();
   }
 
   removeItem(item) {
