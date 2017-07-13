@@ -279,7 +279,8 @@ export class HomePage implements OnInit {
       if (available) {
         let toast = this.toastCtrl.create({
           message: 'Es ist ein neues Update verfügbar',
-          duration: 1500
+          showCloseButton: true,
+          closeButtonText: 'Ok'
         });
         toast.present();
       }
