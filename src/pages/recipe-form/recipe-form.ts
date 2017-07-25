@@ -125,7 +125,7 @@ export class RecipeFormPage {
       this.ingredients.push(ingr);
       this.newIngredient = new Ingredient('', '');
     }
-    if (!this.ingredientAdded){
+    if (!this.ingredientAdded && this.newRecipe){
       // Remove initial empty ingredient on first addition
       this.ingredients.splice(0,1);
       this.ingredientAdded = true;
